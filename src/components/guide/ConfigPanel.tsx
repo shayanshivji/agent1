@@ -1,6 +1,11 @@
 "use client";
 
-import { BSN_ROLES, BSN_WORKFLOWS } from "@/data/bsn-catalog";
+import {
+  FUNCTIONS,
+  INDUSTRIES,
+  useBsnCatalog,
+} from "@/data/engagement-context";
+import { resolveRoles, resolveWorkflows } from "@/data/catalog";
 import { useGuideStore } from "@/store/guide-store";
 import type { InterviewLevel } from "@/types/guide";
 import { Loader2, Sparkles } from "lucide-react";
@@ -18,39 +23,100 @@ interface ConfigPanelProps {
 
 export function ConfigPanel({ onGenerate, isGenerating }: ConfigPanelProps) {
   const {
+    companyName,
+    industryId,
+    functionId,
     workflowId,
     roleId,
     level,
     customNotes,
+    setCompanyName,
+    setIndustryId,
+    setFunctionId,
     setWorkflowId,
     setRoleId,
     setLevel,
     setCustomNotes,
+    getContext,
   } = useGuideStore();
 
-  const workflow = BSN_WORKFLOWS.find((w) => w.id === workflowId);
-  const role = BSN_ROLES.find((r) => r.id === roleId);
+  const ctx = getContext();
+  const workflows = resolveWorkflows(ctx);
+  const roles = resolveRoles(ctx);
+  const workflow = workflows.find((w) => w.id === workflowId);
+  const role = roles.find((r) => r.id === roleId);
+  const isBsn = useBsnCatalog(industryId, functionId);
 
   return (
     <div className="section-card overflow-hidden">
       <div className="px-4 py-3 bg-[var(--bg)] border-b border-[var(--border)]">
         <h2 className="text-sm font-semibold text-[var(--mck-navy)]">
-          Configuration
+          Engagement context
         </h2>
         <p className="text-xs text-[var(--text-muted)] mt-0.5">
-          Workflow + role drive the guide content
+          Industry + function drive workflow catalog
         </p>
       </div>
 
       <div className="p-4 space-y-4">
         <div>
+          <label className="field-label">Company / client</label>
+          <input
+            type="text"
+            value={companyName}
+            onChange={(e) => setCompanyName(e.target.value)}
+            placeholder="e.g. Varsity Brands / BSN Sports"
+            className="field-input"
+          />
+        </div>
+
+        <div>
+          <label className="field-label">Industry</label>
+          <select
+            value={industryId}
+            onChange={(e) => setIndustryId(e.target.value)}
+            className="field-input"
+          >
+            {INDUSTRIES.map((i) => (
+              <option key={i.id} value={i.id}>
+                {i.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className="field-label">Function</label>
+          <select
+            value={functionId}
+            onChange={(e) => setFunctionId(e.target.value)}
+            className="field-input"
+          >
+            {FUNCTIONS.map((f) => (
+              <option key={f.id} value={f.id}>
+                {f.name}
+              </option>
+            ))}
+          </select>
+          {isBsn ? (
+            <p className="text-xs text-emerald-700 mt-1.5">
+              BSN-specific workflow & role catalog loaded
+            </p>
+          ) : (
+            <p className="text-xs text-[var(--text-muted)] mt-1.5">
+              Generic diagnostic templates for this industry/function
+            </p>
+          )}
+        </div>
+
+        <div className="border-t border-[var(--border)] pt-4">
           <label className="field-label">Workflow / process</label>
           <select
             value={workflowId}
             onChange={(e) => setWorkflowId(e.target.value)}
             className="field-input"
           >
-            {BSN_WORKFLOWS.map((w) => (
+            {workflows.map((w) => (
               <option key={w.id} value={w.id}>
                 {w.name}
               </option>
@@ -70,7 +136,7 @@ export function ConfigPanel({ onGenerate, isGenerating }: ConfigPanelProps) {
             onChange={(e) => setRoleId(e.target.value)}
             className="field-input"
           >
-            {BSN_ROLES.map((r) => (
+            {roles.map((r) => (
               <option key={r.id} value={r.id}>
                 {r.name}
               </option>

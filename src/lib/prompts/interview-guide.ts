@@ -1,7 +1,13 @@
 import type { GuideSectionId, InterviewLevel } from "@/types/guide";
-import { getRole, getRoleHints, getWorkflow } from "@/data/bsn-catalog";
+import { getRole, getRoleHints, getWorkflow } from "@/data/catalog";
 import type { SourceDocument } from "@/types/guide";
 import { MCKINSEY_INTERVIEW_PRINCIPLES } from "@/lib/prompts/mckinsey-frameworks";
+import {
+  getEngagementLabel,
+  getFunction,
+  getIndustry,
+  type EngagementContext,
+} from "@/data/engagement-context";
 
 export const SYSTEM_PROMPT = `You are a McKinsey engagement team member creating SME interview guides for a BSN Sports sales support diagnostic (Varsity Brands / KKR portco).
 
@@ -24,10 +30,13 @@ export function buildUserPrompt(input: {
   level: InterviewLevel;
   customNotes?: string;
   sources: SourceDocument[];
+  engagement: EngagementContext;
 }): string {
-  const workflow = getWorkflow(input.workflowId);
-  const role = getRole(input.roleId);
+  const workflow = getWorkflow(input.workflowId, input.engagement);
+  const role = getRole(input.roleId, input.engagement);
   const hints = getRoleHints(input.workflowId, input.roleId);
+  const industry = getIndustry(input.engagement.industryId);
+  const fn = getFunction(input.engagement.functionId);
 
   const sourceBlock =
     input.sources.length > 0
@@ -46,6 +55,10 @@ export function buildUserPrompt(input: {
   }[input.level];
 
   return `Create an interview guide for:
+
+ENGAGEMENT: ${getEngagementLabel(input.engagement)}
+Industry context: ${industry?.description ?? input.engagement.industryId}
+Function context: ${fn?.description ?? input.engagement.functionId}
 
 WORKFLOW: ${workflow?.name ?? input.workflowId}
 ${workflow?.description ?? ""}
@@ -114,9 +127,13 @@ export function templateGuide(input: {
   workflowId: string;
   roleId: string;
   level: InterviewLevel;
+  engagement: EngagementContext;
 }): { sections: { id: GuideSectionId; title: string; content: string; bullets?: string[] }[] } {
-  const workflow = getWorkflow(input.workflowId)!;
-  const role = getRole(input.roleId)!;
+  const workflow = getWorkflow(input.workflowId, input.engagement);
+  const role = getRole(input.roleId, input.engagement);
+  if (!workflow || !role) {
+    throw new Error("Invalid workflow or role for engagement context");
+  }
   const hints = getRoleHints(input.workflowId, input.roleId);
 
   return {

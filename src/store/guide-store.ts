@@ -12,9 +12,17 @@ import type {
   VersionHistoryEntry,
 } from "@/types/guide";
 import { GUIDE_SECTIONS } from "@/types/guide";
-import { getRole, getWorkflow } from "@/data/bsn-catalog";
+import {
+  getRole,
+  getWorkflow,
+  pickDefaultRoleId,
+  pickDefaultWorkflowId,
+  resolveRoles,
+  resolveWorkflows,
+} from "@/data/catalog";
+import { BSN_PRESET, type EngagementContext } from "@/data/engagement-context";
 
-interface GuideStore {
+interface GuideStore extends EngagementContext {
   workflowId: string;
   roleId: string;
   level: InterviewLevel;
@@ -26,6 +34,9 @@ interface GuideStore {
   error: string | null;
   lastGenerationMode: "llm" | "template" | null;
 
+  setCompanyName: (name: string) => void;
+  setIndustryId: (id: string) => void;
+  setFunctionId: (id: string) => void;
   setWorkflowId: (id: string) => void;
   setRoleId: (id: string) => void;
   setLevel: (level: InterviewLevel) => void;
@@ -41,9 +52,13 @@ interface GuideStore {
   saveVersion: (label?: string) => void;
   loadVersion: (versionId: string) => void;
   reset: () => void;
+  getContext: () => EngagementContext;
 }
 
 const defaults = {
+  companyName: BSN_PRESET.companyName,
+  industryId: BSN_PRESET.industryId,
+  functionId: BSN_PRESET.functionId,
   workflowId: "mts-shop-build",
   roleId: "mts-pod",
   level: "deep_dive" as InterviewLevel,
@@ -56,10 +71,55 @@ const defaults = {
   lastGenerationMode: null as "llm" | "template" | null,
 };
 
+function resetSelectionsForContext(
+  ctx: EngagementContext,
+  workflowId: string,
+  roleId: string,
+) {
+  const workflows = resolveWorkflows(ctx);
+  const roles = resolveRoles(ctx);
+  const nextWorkflow = workflows.some((w) => w.id === workflowId)
+    ? workflowId
+    : pickDefaultWorkflowId(ctx);
+  const nextRole = roles.some((r) => r.id === roleId)
+    ? roleId
+    : pickDefaultRoleId(ctx);
+  return { workflowId: nextWorkflow, roleId: nextRole };
+}
+
 export const useGuideStore = create<GuideStore>()(
   persist(
     (set, get) => ({
       ...defaults,
+
+      getContext: () => {
+        const { companyName, industryId, functionId } = get();
+        return { companyName, industryId, functionId };
+      },
+
+      setCompanyName: (companyName) => set({ companyName, guide: null }),
+
+      setIndustryId: (industryId) =>
+        set((s) => {
+          const ctx = { ...s, industryId };
+          const { workflowId, roleId } = resetSelectionsForContext(
+            ctx,
+            s.workflowId,
+            s.roleId,
+          );
+          return { industryId, workflowId, roleId, guide: null };
+        }),
+
+      setFunctionId: (functionId) =>
+        set((s) => {
+          const ctx = { ...s, functionId };
+          const { workflowId, roleId } = resetSelectionsForContext(
+            ctx,
+            s.workflowId,
+            s.roleId,
+          );
+          return { functionId, workflowId, roleId, guide: null };
+        }),
 
       setWorkflowId: (id) => set({ workflowId: id, guide: null }),
       setRoleId: (id) => set({ roleId: id, guide: null }),
@@ -131,10 +191,11 @@ export function buildGuideFromResponse(
   roleId: string,
   level: InterviewLevel,
   sections: { id: GuideSectionId; title: string; content?: string; bullets?: string[] }[],
+  ctx: EngagementContext,
   customNotes?: string,
 ): InterviewGuide {
-  const workflow = getWorkflow(workflowId);
-  const role = getRole(roleId);
+  const workflow = getWorkflow(workflowId, ctx);
+  const role = getRole(roleId, ctx);
   const now = new Date().toISOString();
 
   const normalized = GUIDE_SECTIONS.map((def) => {
@@ -159,5 +220,8 @@ export function buildGuideFromResponse(
     createdAt: now,
     updatedAt: now,
     customNotes,
+    companyName: ctx.companyName,
+    industryId: ctx.industryId,
+    functionId: ctx.functionId,
   };
 }

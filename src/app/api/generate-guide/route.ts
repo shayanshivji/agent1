@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { BSN_PRESET } from "@/data/engagement-context";
 import { complete, hasLlm } from "@/lib/llm/client";
 import {
   SYSTEM_PROMPT,
@@ -15,6 +16,11 @@ export async function POST(request: Request) {
     const level = (body.level ?? "deep_dive") as InterviewLevel;
     const customNotes = body.customNotes as string | undefined;
     const sources = (body.sources ?? []) as SourceDocument[];
+    const engagement = {
+      companyName: (body.companyName as string) || BSN_PRESET.companyName,
+      industryId: (body.industryId as string) || BSN_PRESET.industryId,
+      functionId: (body.functionId as string) || BSN_PRESET.functionId,
+    };
 
     if (!workflowId || !roleId) {
       return NextResponse.json(
@@ -24,7 +30,7 @@ export async function POST(request: Request) {
     }
 
     if (!hasLlm()) {
-      const template = templateGuide({ workflowId, roleId, level });
+      const template = templateGuide({ workflowId, roleId, level, engagement });
       return NextResponse.json({
         sections: template.sections,
         mode: "template",
@@ -33,7 +39,14 @@ export async function POST(request: Request) {
 
     const raw = await complete(
       SYSTEM_PROMPT,
-      buildUserPrompt({ workflowId, roleId, level, customNotes, sources }),
+      buildUserPrompt({
+        workflowId,
+        roleId,
+        level,
+        customNotes,
+        sources,
+        engagement,
+      }),
       { json: true, temperature: 0.35 },
     );
 

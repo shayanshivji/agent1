@@ -10,6 +10,9 @@ import { buildGuideFromResponse, useGuideStore } from "@/store/guide-store";
 
 export function ScopingAgentWorkspace() {
   const {
+    companyName,
+    industryId,
+    functionId,
     workflowId,
     roleId,
     level,
@@ -23,6 +26,7 @@ export function ScopingAgentWorkspace() {
     setError,
     setGuide,
     setLastGenerationMode,
+    getContext,
   } = useGuideStore();
 
   const [llmEnabled, setLlmEnabled] = useState<boolean | null>(null);
@@ -43,6 +47,9 @@ export function ScopingAgentWorkspace() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          companyName,
+          industryId,
+          functionId,
           workflowId,
           roleId,
           level,
@@ -61,6 +68,7 @@ export function ScopingAgentWorkspace() {
           roleId,
           level,
           data.sections,
+          getContext(),
           customNotes || undefined,
         ),
       );

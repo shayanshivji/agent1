@@ -1,4 +1,5 @@
 import type { InterviewGuide } from "@/types/guide";
+import { getEngagementLabel } from "@/data/engagement-context";
 
 export function guideToMarkdown(guide: InterviewGuide): string {
   const lines: string[] = [
@@ -7,11 +8,24 @@ export function guideToMarkdown(guide: InterviewGuide): string {
     `**Role:** ${guide.roleName}  `,
     `**Level:** ${guide.level}  `,
     `**Status:** ${guide.reviewStatus} (draft — validate before field use)  `,
+  ];
+
+  if (guide.companyName && guide.industryId && guide.functionId) {
+    lines.push(
+      `**Context:** ${getEngagementLabel({
+        companyName: guide.companyName,
+        industryId: guide.industryId,
+        functionId: guide.functionId,
+      })}  `,
+    );
+  }
+
+  lines.push(
     `**Generated:** ${new Date(guide.updatedAt).toLocaleString()}`,
     "",
     "---",
     "",
-  ];
+  );
 
   for (const section of guide.sections) {
     lines.push(`## ${section.title}`, "");
