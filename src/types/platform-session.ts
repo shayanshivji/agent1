@@ -25,6 +25,7 @@ export interface ScopingSessionOutput {
   roleId: string;
   level: string;
   customNotes: string;
+  interviewObjective?: string;
   guide: InterviewGuide | null;
 }
 

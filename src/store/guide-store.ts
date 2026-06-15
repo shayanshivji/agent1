@@ -28,6 +28,7 @@ interface GuideStore extends EngagementContext {
   roleId: string;
   level: InterviewLevel;
   customNotes: string;
+  interviewObjective: string;
   sources: SourceDocument[];
   guide: InterviewGuide | null;
   versions: VersionHistoryEntry[];
@@ -42,6 +43,7 @@ interface GuideStore extends EngagementContext {
   setRoleId: (id: string) => void;
   setLevel: (level: InterviewLevel) => void;
   setCustomNotes: (notes: string) => void;
+  setInterviewObjective: (objective: string) => void;
   addSource: (doc: SourceDocument) => void;
   removeSource: (id: string) => void;
   setGuide: (guide: InterviewGuide | null) => void;
@@ -49,6 +51,12 @@ interface GuideStore extends EngagementContext {
   setError: (e: string | null) => void;
   setLastGenerationMode: (mode: "llm" | "template" | null) => void;
   updateSection: (sectionId: GuideSectionId, content: string, bullets?: string[]) => void;
+  updateQuestion: (sectionId: GuideSectionId, index: number, text: string) => void;
+  addQuestion: (sectionId: GuideSectionId, text?: string) => void;
+  removeQuestion: (sectionId: GuideSectionId, index: number) => void;
+  replaceGuideSections: (
+    sections: { id: GuideSectionId; title: string; content?: string; bullets?: string[] }[],
+  ) => void;
   setReviewStatus: (status: ReviewStatus) => void;
   saveVersion: (label?: string) => void;
   loadVersion: (versionId: string) => void;
@@ -64,6 +72,7 @@ const defaults = {
   roleId: "mts-pod",
   level: "deep_dive" as InterviewLevel,
   customNotes: "",
+  interviewObjective: "",
   sources: [] as SourceDocument[],
   guide: null as InterviewGuide | null,
   versions: [] as VersionHistoryEntry[],
@@ -126,6 +135,7 @@ export const useGuideStore = create<GuideStore>()(
       setRoleId: (id) => set({ roleId: id, guide: null }),
       setLevel: (level) => set({ level, guide: null }),
       setCustomNotes: (notes) => set({ customNotes: notes, guide: null }),
+      setInterviewObjective: (objective) => set({ interviewObjective: objective, guide: null }),
 
       addSource: (doc) =>
         set((s) => ({ sources: [...s.sources, doc], guide: null })),
@@ -152,6 +162,77 @@ export const useGuideStore = create<GuideStore>()(
               sections: s.guide.sections.map((sec) =>
                 sec.id === sectionId ? { ...sec, content, bullets } : sec,
               ),
+            },
+          };
+        }),
+
+      updateQuestion: (sectionId, index, text) =>
+        set((s) => {
+          if (!s.guide) return s;
+          return {
+            guide: {
+              ...s.guide,
+              updatedAt: new Date().toISOString(),
+              sections: s.guide.sections.map((sec) => {
+                if (sec.id !== sectionId) return sec;
+                const bullets = [...(sec.bullets ?? [])];
+                bullets[index] = text;
+                return { ...sec, bullets };
+              }),
+            },
+          };
+        }),
+
+      addQuestion: (sectionId, text = "") =>
+        set((s) => {
+          if (!s.guide) return s;
+          return {
+            guide: {
+              ...s.guide,
+              updatedAt: new Date().toISOString(),
+              sections: s.guide.sections.map((sec) =>
+                sec.id === sectionId
+                  ? { ...sec, bullets: [...(sec.bullets ?? []), text] }
+                  : sec,
+              ),
+            },
+          };
+        }),
+
+      removeQuestion: (sectionId, index) =>
+        set((s) => {
+          if (!s.guide) return s;
+          return {
+            guide: {
+              ...s.guide,
+              updatedAt: new Date().toISOString(),
+              sections: s.guide.sections.map((sec) => {
+                if (sec.id !== sectionId) return sec;
+                const bullets = (sec.bullets ?? []).filter((_, i) => i !== index);
+                return { ...sec, bullets: bullets.length ? bullets : undefined };
+              }),
+            },
+          };
+        }),
+
+      replaceGuideSections: (sections) =>
+        set((s) => {
+          if (!s.guide) return s;
+          const byId = new Map(sections.map((sec) => [sec.id, sec]));
+          return {
+            guide: {
+              ...s.guide,
+              updatedAt: new Date().toISOString(),
+              sections: s.guide.sections.map((sec) => {
+                const next = byId.get(sec.id);
+                if (!next) return sec;
+                return {
+                  ...sec,
+                  title: next.title ?? sec.title,
+                  content: next.content ?? "",
+                  bullets: next.bullets,
+                };
+              }),
             },
           };
         }),
@@ -189,6 +270,7 @@ export const useGuideStore = create<GuideStore>()(
           industryId: g.industryId ?? get().industryId,
           functionId: g.functionId ?? get().functionId,
           customNotes: g.customNotes ?? get().customNotes,
+          interviewObjective: g.interviewObjective ?? get().interviewObjective,
         });
       },
 
@@ -208,6 +290,7 @@ export function buildGuideFromResponse(
   sections: { id: GuideSectionId; title: string; content?: string; bullets?: string[] }[],
   ctx: EngagementContext,
   customNotes?: string,
+  interviewObjective?: string,
 ): InterviewGuide {
   const workflow = getWorkflow(workflowId, ctx);
   const role = getRole(roleId, ctx);
@@ -235,6 +318,7 @@ export function buildGuideFromResponse(
     createdAt: now,
     updatedAt: now,
     customNotes,
+    interviewObjective,
     companyName: ctx.companyName,
     industryId: ctx.industryId,
     functionId: ctx.functionId,

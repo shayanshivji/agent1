@@ -1,20 +1,22 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { AlertCircle, Loader2 } from "lucide-react";
 import { ConfigPanel } from "@/components/guide/ConfigPanel";
 import { GuideContextPanel } from "@/components/guide/GuideContextPanel";
-import { GuideEditor } from "@/components/guide/GuideEditor";
+import { GuideReviewEditor } from "@/components/guide/GuideReviewEditor";
+import { GuideExportStep } from "@/components/guide/GuideExportStep";
 import { SourcePanel } from "@/components/guide/SourcePanel";
 import { WorkspaceToolbar } from "@/components/workspace/WorkspaceToolbar";
 import {
-  DEFAULT_WORKSPACE_STAGES,
+  SCOPING_WORKSPACE_STAGES,
   WorkspaceStageStepper,
 } from "@/components/workspace/WorkspaceStageStepper";
 import { StageFooter } from "@/components/workspace/StageFooter";
 import { buildGuideFromResponse, useGuideStore } from "@/store/guide-store";
 import { BSN_PRESET } from "@/data/engagement-context";
 import { flushProjectSave } from "@/store/project-store";
+import { contextGaps } from "@/lib/guide/section-utils";
 
 interface ScopingAgentWorkspaceProps {
   embedded?: boolean;
@@ -29,6 +31,7 @@ export function ScopingAgentWorkspace({ embedded }: ScopingAgentWorkspaceProps =
     roleId,
     level,
     customNotes,
+    interviewObjective,
     sources,
     guide,
     isGenerating,
@@ -38,6 +41,7 @@ export function ScopingAgentWorkspace({ embedded }: ScopingAgentWorkspaceProps =
     setError,
     setGuide,
     setLastGenerationMode,
+    setInterviewObjective,
     getContext,
     reset,
   } = useGuideStore();
@@ -63,7 +67,7 @@ export function ScopingAgentWorkspace({ embedded }: ScopingAgentWorkspaceProps =
   useEffect(() => {
     if (!hydrated) {
       if (guide) {
-        setStage(3);
+        setStage(2);
         setMaxStage(3);
       }
       setHydrated(true);
@@ -71,15 +75,15 @@ export function ScopingAgentWorkspace({ embedded }: ScopingAgentWorkspaceProps =
   }, [guide, hydrated]);
 
   useEffect(() => {
-    if (hydrated && !guide && stage === 3) {
-      setStage(2);
-      setMaxStage((m) => Math.min(m, 2));
+    if (hydrated && !guide && stage > 1) {
+      setStage(1);
+      setMaxStage(1);
     }
   }, [guide, hydrated, stage]);
 
   function handleSessionRestored(hasOutput: boolean) {
     if (hasOutput) {
-      setStage(3);
+      setStage(2);
       setMaxStage(3);
     } else {
       setStage(1);
@@ -109,6 +113,7 @@ export function ScopingAgentWorkspace({ embedded }: ScopingAgentWorkspaceProps =
           roleId,
           level,
           customNotes: customNotes || undefined,
+          interviewObjective: interviewObjective || undefined,
           sources,
         }),
       });
@@ -126,9 +131,10 @@ export function ScopingAgentWorkspace({ embedded }: ScopingAgentWorkspaceProps =
           data.sections,
           getContext(),
           customNotes || undefined,
+          interviewObjective || undefined,
         ),
       );
-      setStage(3);
+      setStage(2);
       setMaxStage(3);
       if (embedded) flushProjectSave();
     } catch (e) {
@@ -142,12 +148,19 @@ export function ScopingAgentWorkspace({ embedded }: ScopingAgentWorkspaceProps =
     Boolean(guide) ||
     sources.length > 0 ||
     customNotes.trim().length > 0 ||
+    interviewObjective.trim().length > 0 ||
     companyName !== BSN_PRESET.companyName ||
     industryId !== BSN_PRESET.industryId ||
     functionId !== BSN_PRESET.functionId ||
     workflowId !== "mts-shop-build" ||
     roleId !== "mts-pod" ||
     level !== "deep_dive";
+
+  const gaps = contextGaps({
+    interviewObjective,
+    sourcesCount: sources.length,
+    llmEnabled: Boolean(llmEnabled),
+  });
 
   function handleClear() {
     if (
@@ -187,7 +200,7 @@ export function ScopingAgentWorkspace({ embedded }: ScopingAgentWorkspaceProps =
       <div className="toolbar-strip border-t-0 pt-0">
         <div className="max-w-[1600px] mx-auto px-6 pb-4">
           <WorkspaceStageStepper
-            steps={DEFAULT_WORKSPACE_STAGES}
+            steps={SCOPING_WORKSPACE_STAGES}
             currentStep={stage}
             maxReachableStep={maxStage}
             onStepClick={goToStep}
@@ -206,82 +219,136 @@ export function ScopingAgentWorkspace({ embedded }: ScopingAgentWorkspaceProps =
         {stage === 1 && (
           <div className="workspace-stage-panel">
             <div className="mb-6">
-              <h2 className="text-xl font-semibold text-[var(--text)]">Configure engagement</h2>
-              <p className="text-sm text-[var(--text-muted)] mt-1">
-                Select industry, workflow, role, and interview level.
+              <h2 className="text-xl font-semibold text-[var(--text)]">
+                Step 1 — Context & objective
+              </h2>
+              <p className="text-sm text-[var(--text-muted)] mt-1 max-w-2xl">
+                Give the agent everything you have: engagement context, interview objective, source
+                files, and focus notes. It will generate a recommended guide in the next step.
               </p>
             </div>
-            <ConfigPanel hideNotes hideFooter />
-            <StageFooter stage={1} onContinue={() => goToStep(2)} continueLabel="Continue to sources" />
-          </div>
-        )}
 
-        {stage === 2 && (
-          <div className="workspace-stage-panel">
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-[var(--text)]">Add sources</h2>
-              <p className="text-sm text-[var(--text-muted)] mt-1">
-                Upload context files and optional instructions. You can skip if using catalog seeds only.
-              </p>
-            </div>
-            <div className="space-y-4">
-              {!llmEnabled && (sources.length > 0 || customNotes.trim()) && (
-                <div className="rounded-md border border-yellow-500/30 bg-yellow-500/10 px-4 py-3 text-xs text-yellow-200">
-                  Template mode is active — uploaded sources and custom notes are not sent to the model.
-                  Add an OpenAI API key for LLM generation, or continue with catalog-based templates.
+            <div className="grid lg:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <ConfigPanel hideNotes hideFooter />
+                <div className="section-card overflow-hidden">
+                  <div className="px-4 py-3 section-card-header">
+                    <h2 className="text-sm font-semibold text-[var(--text)]">Interview objective</h2>
+                    <p className="text-xs text-[var(--text-muted)] mt-0.5">
+                      What must this SME session establish?
+                    </p>
+                  </div>
+                  <div className="p-4">
+                    <textarea
+                      value={interviewObjective}
+                      onChange={(e) => setInterviewObjective(e.target.value)}
+                      placeholder="e.g. Map the MTS shop-build workflow end-to-end, quantify pain in Engage handoffs, and validate Fall peak volume assumptions…"
+                      rows={4}
+                      className="field-input resize-y"
+                    />
+                  </div>
                 </div>
-              )}
-              <SourcePanel />
-              <GuideContextPanel />
+              </div>
+
+              <div className="space-y-4">
+                {!llmEnabled && (sources.length > 0 || customNotes.trim()) && (
+                  <div className="rounded-md border border-yellow-500/30 bg-yellow-500/10 px-4 py-3 text-xs text-yellow-200">
+                    Template mode is active — uploaded sources and custom notes are not sent to the
+                    model. Add an OpenAI API key for LLM generation.
+                  </div>
+                )}
+                <SourcePanel />
+                <GuideContextPanel />
+              </div>
             </div>
+
+            {gaps.length > 0 && (
+              <div className="guide-gaps-banner rounded-md px-4 py-3 mt-6 text-sm">
+                <p className="font-medium text-[var(--text)] flex items-center gap-2 mb-2">
+                  <AlertCircle className="h-4 w-4 text-[var(--accent)]" />
+                  Before you generate
+                </p>
+                <ul className="text-xs text-[var(--text-muted)] space-y-1.5">
+                  {gaps.map((g) => (
+                    <li key={g}>• {g}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
             {isGenerating ? (
               <div className="section-card p-12 flex flex-col items-center gap-4 mt-6">
                 <Loader2 className="h-8 w-8 animate-spin text-[var(--accent)]" />
-                <p className="text-sm text-[var(--text-muted)]">Synthesizing interview guide…</p>
+                <p className="text-sm text-[var(--text-muted)]">Generating recommended interview guide…</p>
               </div>
             ) : (
               <StageFooter
-                stage={2}
+                stage={1}
                 isGenerating={isGenerating}
-                onBack={() => goToStep(1)}
                 onGenerate={handleGenerate}
                 generateLabel="Generate interview guide"
                 showSkip
                 onSkip={handleGenerate}
-                skipLabel="Generate without sources"
+                skipLabel="Generate with current context"
               />
+            )}
+          </div>
+        )}
+
+        {stage === 2 && (
+          <div>
+            {isGenerating ? (
+              <div className="section-card p-12 flex flex-col items-center gap-4">
+                <Loader2 className="h-8 w-8 animate-spin text-[var(--accent)]" />
+                <p className="text-sm text-[var(--text-muted)]">Regenerating interview guide…</p>
+              </div>
+            ) : (
+              <>
+                <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <h2 className="text-xl font-semibold text-[var(--text)]">
+                      Step 2 — Review & edit
+                    </h2>
+                    <p className="text-sm text-[var(--text-muted)] mt-1">
+                      Edit questions inline or give the agent feedback to revise the guide.
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <button type="button" onClick={() => goToStep(1)} className="btn-secondary text-xs">
+                      Edit context
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleGenerate}
+                      disabled={isGenerating}
+                      className="btn-secondary text-xs"
+                    >
+                      Regenerate
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => goToStep(3)}
+                      disabled={!guide}
+                      className="btn-primary text-xs"
+                    >
+                      Continue to export
+                    </button>
+                  </div>
+                </div>
+                <GuideReviewEditor llmEnabled={llmEnabled} />
+              </>
             )}
           </div>
         )}
 
         {stage === 3 && (
           <div>
-            {isGenerating ? (
-              <div className="section-card p-12 flex flex-col items-center gap-4">
-                <Loader2 className="h-8 w-8 animate-spin text-[var(--accent)]" />
-                <p className="text-sm text-[var(--text-muted)]">Synthesizing interview guide…</p>
-              </div>
-            ) : (
-              <>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  <button type="button" onClick={() => goToStep(1)} className="btn-secondary text-xs">
-                    Edit configuration
-                  </button>
-                  <button type="button" onClick={() => goToStep(2)} className="btn-secondary text-xs">
-                    Edit sources
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleGenerate}
-                    disabled={isGenerating}
-                    className="btn-primary text-xs"
-                  >
-                    Regenerate
-                  </button>
-                </div>
-                <GuideEditor llmEnabled={llmEnabled} />
-              </>
-            )}
+            <div className="mb-6 flex flex-wrap gap-2">
+              <button type="button" onClick={() => goToStep(2)} className="btn-secondary text-xs">
+                Back to review
+              </button>
+            </div>
+            <GuideExportStep />
           </div>
         )}
       </main>

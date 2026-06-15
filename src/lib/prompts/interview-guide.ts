@@ -29,6 +29,7 @@ export function buildUserPrompt(input: {
   roleId: string;
   level: InterviewLevel;
   customNotes?: string;
+  interviewObjective?: string;
   sources: SourceDocument[];
   engagement: EngagementContext;
 }): string {
@@ -70,6 +71,9 @@ ${role?.description ?? ""}
 
 INTERVIEW LEVEL: ${input.level}, ${levelGuide}
 
+INTERVIEW OBJECTIVE (must shape the entire guide):
+${input.interviewObjective?.trim() || "Not specified — infer from workflow and role, but flag gaps in need_to_confirm."}
+
 ROLE-SPECIFIC PROBES TO INCORPORATE:
 ${hints.length ? hints.map((h) => `- ${h}`).join("\n") : "- Use workflow + role to infer specific probes"}
 
@@ -94,10 +98,62 @@ Return JSON:
 Required section ids (all must be present):
 objective, role_snapshot, known_facts, need_to_confirm, primary_questions, follow_up_probes, pain_points_to_test, systems_references, evidence_to_capture, fact_base_sizing, likely_outputs, dependencies_handoffs, red_flags, closeout
 
+Section format rules:
+- objective, role_snapshot: narrative "content" only — do NOT use bullets for these sections
+- primary_questions, follow_up_probes, pain_points_to_test, closeout: use bullets as individual interview questions (6-10 each where applicable)
+- known_facts, need_to_confirm: bullets as concise fact or hypothesis items
+
 fact_base_sizing must list specific quantifiable fields to collect for value modeling: % time on workflow, volume/week, cycle time, rework rate, FTE allocation, cost per transaction where applicable.
 
 primary_questions and follow_up_probes should have 6-10 bullets each.
 pain_points_to_test should reference compendium-style hypotheses where relevant.`;
+}
+
+export function buildGuideRefinePrompt(input: {
+  workflowId: string;
+  roleId: string;
+  level: InterviewLevel;
+  customNotes?: string;
+  interviewObjective?: string;
+  sections: { id: GuideSectionId; title: string; content?: string; bullets?: string[] }[];
+  feedback: string;
+  sources: SourceDocument[];
+  engagement: EngagementContext;
+}): string {
+  const workflow = getWorkflow(input.workflowId, input.engagement);
+  const role = getRole(input.roleId, input.engagement);
+
+  const guideBlock = input.sections
+    .map((s) => {
+      const bullets = (s.bullets ?? []).map((b) => `  - ${b}`).join("\n");
+      return `### ${s.title} (${s.id})\n${s.content?.trim() ?? ""}${bullets ? `\n${bullets}` : ""}`;
+    })
+    .join("\n\n");
+
+  return `Revise this interview guide based on consultant feedback.
+
+Engagement: ${getEngagementLabel(input.engagement)}
+Workflow: ${workflow?.name}
+Role: ${role?.name}
+Interview level: ${input.level}
+Interview objective: ${input.interviewObjective?.trim() || "Not specified"}
+Custom notes: ${input.customNotes || "None"}
+
+CURRENT GUIDE:
+${guideBlock}
+
+CONSULTANT FEEDBACK:
+${input.feedback}
+
+Apply the feedback. Keep sections that work; rewrite or add where requested.
+Return JSON with the full updated guide:
+{
+  "sections": [
+    { "id": "<section_id>", "title": "<title>", "content": "...", "bullets": ["..."] }
+  ]
+}
+
+Include ALL section ids. objective and role_snapshot must use content only (no bullets).`;
 }
 
 export function buildSectionRegeneratePrompt(input: {

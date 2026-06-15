@@ -91,6 +91,7 @@ export interface InterviewGuide {
   createdAt: string;
   updatedAt: string;
   customNotes?: string;
+  interviewObjective?: string;
   companyName?: string;
   industryId?: string;
   functionId?: string;

@@ -17,6 +17,7 @@ export async function POST(request: Request) {
     const roleId = body.roleId as string;
     const level = VALID_LEVELS.includes(body.level) ? body.level : "deep_dive";
     const customNotes = body.customNotes as string | undefined;
+    const interviewObjective = body.interviewObjective as string | undefined;
     const sources = (body.sources ?? []) as SourceDocument[];
     const engagement = {
       companyName: (body.companyName as string)?.trim() || BSN_PRESET.companyName,
@@ -50,6 +51,7 @@ export async function POST(request: Request) {
         roleId,
         level,
         customNotes,
+        interviewObjective,
         sources,
         engagement,
       }),

@@ -38,6 +38,7 @@ export function UpstreamHandoffBar({ agentSlug, onApplied }: UpstreamHandoffBarP
   const liveScopingRoleId = useGuideStore((s) => s.roleId);
   const liveScopingLevel = useGuideStore((s) => s.level);
   const liveScopingCustomNotes = useGuideStore((s) => s.customNotes);
+  const liveScopingInterviewObjective = useGuideStore((s) => s.interviewObjective);
 
   const upstreamSlug = UPSTREAM_AGENT[agentSlug];
   if (!upstreamSlug || dismissed) return null;
@@ -81,6 +82,7 @@ export function UpstreamHandoffBar({ agentSlug, onApplied }: UpstreamHandoffBarP
       roleId: liveScopingRoleId,
       level: liveScopingLevel,
       customNotes: liveScopingCustomNotes,
+      interviewObjective: liveScopingInterviewObjective,
       guide: liveScopingGuide,
     });
     onApplied?.();

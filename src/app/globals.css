@@ -656,3 +656,69 @@ code {
     display: none;
   }
 }
+
+/* ── Scoping guide review ── */
+.guide-section-block {
+  padding: 1.25rem;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.guide-confidence-badge {
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.2rem 0.5rem;
+  border-radius: 9999px;
+  white-space: nowrap;
+}
+
+.guide-confidence-high {
+  color: #34d399;
+  background: rgba(52, 211, 153, 0.1);
+  border: 1px solid rgba(52, 211, 153, 0.25);
+}
+
+.guide-confidence-medium {
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.08);
+  border: 1px solid rgba(251, 191, 36, 0.2);
+}
+
+.guide-confidence-low {
+  color: #f87171;
+  background: rgba(248, 113, 113, 0.08);
+  border: 1px solid rgba(248, 113, 113, 0.2);
+}
+
+.guide-gaps-banner {
+  border: 1px solid rgba(251, 191, 36, 0.25);
+  background: rgba(251, 191, 36, 0.06);
+}
+
+.guide-question-row {
+  align-items: stretch;
+}
+
+.guide-question-num {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  width: 1.75rem;
+  padding-top: 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.guide-feedback-chat {
+  margin-top: 1.5rem;
+}
+
+.guide-feedback-messages {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}

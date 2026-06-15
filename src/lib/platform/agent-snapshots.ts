@@ -54,6 +54,7 @@ export function captureAgentSnapshot(slug: PlatformAgentSlug): Partial<AgentSess
       roleId: s.roleId,
       level: s.level,
       customNotes: s.customNotes,
+      interviewObjective: s.interviewObjective ?? "",
       guide: s.guide,
     };
     return { scoping: output };
@@ -135,6 +136,7 @@ export function restoreAgentFromSession(
       roleId: s.roleId,
       level: s.level as InterviewLevel,
       customNotes: s.customNotes,
+      interviewObjective: s.interviewObjective ?? "",
       guide: s.guide,
       error: null,
       isGenerating: false,
@@ -369,5 +371,6 @@ export function readLiveScopingContext() {
     workflowId: s.workflowId,
     roleId: s.roleId,
     customNotes: s.customNotes,
+    interviewObjective: s.interviewObjective,
   };
 }

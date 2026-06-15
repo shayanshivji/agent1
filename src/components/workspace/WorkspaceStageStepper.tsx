@@ -71,3 +71,9 @@ export const DEFAULT_WORKSPACE_STAGES: WorkspaceStage[] = [
   { id: 2, label: "Sources" },
   { id: 3, label: "Output" },
 ];
+
+export const SCOPING_WORKSPACE_STAGES: WorkspaceStage[] = [
+  { id: 1, label: "Context" },
+  { id: 2, label: "Review guide" },
+  { id: 3, label: "Export" },
+];
