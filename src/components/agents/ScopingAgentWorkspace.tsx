@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Loader2, Sparkles } from "lucide-react";
+import { Loader2, RotateCcw, Sparkles } from "lucide-react";
 import { ConfigPanel } from "@/components/guide/ConfigPanel";
 import { GuideEditor } from "@/components/guide/GuideEditor";
 import { SourcePanel } from "@/components/guide/SourcePanel";
 import { WorkflowStepper } from "@/components/guide/WorkflowStepper";
 import { buildGuideFromResponse, useGuideStore } from "@/store/guide-store";
+import { BSN_PRESET } from "@/data/engagement-context";
 
 export function ScopingAgentWorkspace() {
   const {
@@ -27,6 +28,7 @@ export function ScopingAgentWorkspace() {
     setGuide,
     setLastGenerationMode,
     getContext,
+    reset,
   } = useGuideStore();
 
   const [llmEnabled, setLlmEnabled] = useState<boolean | null>(null);
@@ -81,6 +83,29 @@ export function ScopingAgentWorkspace() {
 
   const currentStep = guide ? 3 : isGenerating ? 2 : 1;
 
+  const hasWork =
+    Boolean(guide) ||
+    sources.length > 0 ||
+    customNotes.trim().length > 0 ||
+    companyName !== BSN_PRESET.companyName ||
+    industryId !== BSN_PRESET.industryId ||
+    functionId !== BSN_PRESET.functionId ||
+    workflowId !== "mts-shop-build" ||
+    roleId !== "mts-pod" ||
+    level !== "deep_dive";
+
+  function handleClear() {
+    if (
+      !window.confirm(
+        "Clear all configuration, uploaded sources, and the current guide? Saved versions are kept.",
+      )
+    ) {
+      return;
+    }
+    reset();
+    setError(null);
+  }
+
   return (
     <>
       <div className="toolbar-strip">
@@ -110,6 +135,16 @@ export function ScopingAgentWorkspace() {
             )}
             <button
               type="button"
+              onClick={handleClear}
+              disabled={isGenerating || !hasWork}
+              className="btn-secondary"
+              title="Reset configuration and start over"
+            >
+              <RotateCcw className="h-4 w-4" />
+              Clear & start over
+            </button>
+            <button
+              type="button"
               onClick={handleGenerate}
               disabled={isGenerating}
               className="btn-primary"
@@ -135,7 +170,9 @@ export function ScopingAgentWorkspace() {
           <aside className="lg:col-span-3 space-y-4 lg:sticky lg:top-6 lg:self-start">
             <ConfigPanel
               onGenerate={handleGenerate}
+              onClear={handleClear}
               isGenerating={isGenerating}
+              hasWork={hasWork}
             />
           </aside>
 

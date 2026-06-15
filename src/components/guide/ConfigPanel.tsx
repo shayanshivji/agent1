@@ -8,7 +8,7 @@ import {
 import { resolveRoles, resolveWorkflows } from "@/data/catalog";
 import { useGuideStore } from "@/store/guide-store";
 import type { InterviewLevel } from "@/types/guide";
-import { Loader2, Sparkles } from "lucide-react";
+import { Loader2, RotateCcw, Sparkles } from "lucide-react";
 
 const LEVELS: { value: InterviewLevel; label: string }[] = [
   { value: "intro", label: "Intro (30 min)" },
@@ -18,10 +18,17 @@ const LEVELS: { value: InterviewLevel; label: string }[] = [
 
 interface ConfigPanelProps {
   onGenerate?: () => void;
+  onClear?: () => void;
   isGenerating?: boolean;
+  hasWork?: boolean;
 }
 
-export function ConfigPanel({ onGenerate, isGenerating }: ConfigPanelProps) {
+export function ConfigPanel({
+  onGenerate,
+  onClear,
+  isGenerating,
+  hasWork,
+}: ConfigPanelProps) {
   const {
     companyName,
     industryId,
@@ -174,6 +181,18 @@ export function ConfigPanel({ onGenerate, isGenerating }: ConfigPanelProps) {
             className="field-input resize-y"
           />
         </div>
+
+        {onClear && (
+          <button
+            type="button"
+            onClick={onClear}
+            disabled={isGenerating || !hasWork}
+            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 btn-secondary"
+          >
+            <RotateCcw className="h-4 w-4" />
+            Clear & start over
+          </button>
+        )}
 
         {onGenerate && (
           <button
