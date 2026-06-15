@@ -13,7 +13,8 @@ export function AgentTopNav() {
         <div className="flex items-center gap-1 overflow-x-auto py-2.5">
           {AGENT_ROSTER.map((agent) => {
             const active =
-              pathname === agent.href || pathname?.startsWith(`${agent.href}/`);
+              pathname === agent.href ||
+              pathname?.startsWith(`${agent.href}/`);
 
             return (
               <Link

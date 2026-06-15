@@ -11,6 +11,7 @@ import {
 import { InitiativeConfigPanel } from "@/components/initiatives/InitiativeConfigPanel";
 import { InitiativeList } from "@/components/initiatives/InitiativeList";
 import { InitiativeSidePanel } from "@/components/initiatives/InitiativeSidePanel";
+import { WorkspaceBackLink } from "@/components/layout/WorkspaceBackLink";
 
 export function InitiativesAgentWorkspace() {
   const {
@@ -127,7 +128,8 @@ export function InitiativesAgentWorkspace() {
       <div className="toolbar-strip">
         <div className="max-w-[1600px] mx-auto px-6 py-4 flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h1 className="text-lg font-semibold text-gradient">
+            <WorkspaceBackLink slug="improvement-initiatives" label="Initiatives Agent" />
+            <h1 className="text-lg font-semibold text-gradient mt-2">
               Improvement Initiatives Agent
             </h1>
             <p className="text-sm text-[var(--text-muted)]">

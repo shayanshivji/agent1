@@ -6,6 +6,7 @@ import { ConfigPanel } from "@/components/guide/ConfigPanel";
 import { GuideEditor } from "@/components/guide/GuideEditor";
 import { SourcePanel } from "@/components/guide/SourcePanel";
 import { WorkflowStepper } from "@/components/guide/WorkflowStepper";
+import { WorkspaceBackLink } from "@/components/layout/WorkspaceBackLink";
 import { buildGuideFromResponse, useGuideStore } from "@/store/guide-store";
 import { BSN_PRESET } from "@/data/engagement-context";
 
@@ -111,7 +112,8 @@ export function ScopingAgentWorkspace() {
       <div className="toolbar-strip">
         <div className="max-w-[1600px] mx-auto px-6 py-4 flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h1 className="text-lg font-semibold text-gradient">
+            <WorkspaceBackLink slug="scoping" label="Scoping Agent" />
+            <h1 className="text-lg font-semibold text-gradient mt-2">
               Scoping Agent
             </h1>
             <p className="text-sm text-[var(--text-muted)]">
