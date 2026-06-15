@@ -1,6 +1,7 @@
 import { ProjectShell } from "@/components/project/ProjectShell";
-import { ProjectAgentHost, isLiveAgentSlug } from "@/components/project/ProjectAgentHost";
+import { ProjectAgentHost } from "@/components/project/ProjectAgentHost";
 import { notFound } from "next/navigation";
+import { getAgentBySlug } from "@/data/agent-roster";
 import type { PlatformAgentSlug } from "@/types/platform-session";
 
 interface PageProps {
@@ -11,8 +12,9 @@ interface PageProps {
 export default async function ProjectAgentPage({ params, searchParams }: PageProps) {
   const { projectId, slug } = await params;
   const { tab } = await searchParams;
+  const agent = getAgentBySlug(slug);
 
-  if (!isLiveAgentSlug(slug)) {
+  if (!agent || agent.status !== "live") {
     notFound();
   }
 

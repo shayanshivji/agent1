@@ -10,6 +10,13 @@ import { PlannedAgentPlaceholder } from "@/components/project/PlannedAgentPlaceh
 import type { PlatformAgentSlug } from "@/types/platform-session";
 import { getAgentBySlug } from "@/data/agent-roster";
 
+const LIVE_WORKSPACE_SLUGS: PlatformAgentSlug[] = [
+  "scoping",
+  "live-interview",
+  "process-mapping",
+  "improvement-initiatives",
+];
+
 const WORKSPACES: Record<PlatformAgentSlug, ComponentType<{ embedded?: boolean; initialTab?: string }>> = {
   scoping: ScopingAgentWorkspace,
   "live-interview": LiveInterviewAgentWorkspace,
@@ -43,5 +50,5 @@ export function ProjectAgentHost({ slug, initialTab }: ProjectAgentHostProps) {
 }
 
 export function isLiveAgentSlug(slug: string): slug is PlatformAgentSlug {
-  return slug in WORKSPACES;
+  return LIVE_WORKSPACE_SLUGS.includes(slug as PlatformAgentSlug);
 }
