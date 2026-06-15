@@ -15,6 +15,7 @@ import type {
   InterviewPainPoint,
   InterviewWorkflowStep,
   EvidenceRecord,
+  GuideQuestionItem,
 } from "@/types/interview-execution";
 import { BSN_PRESET, type EngagementContext } from "@/data/engagement-context";
 import {
@@ -23,7 +24,14 @@ import {
   computeCoverageFromTurns,
   parseGuidePayload,
 } from "@/lib/interview-execution/logic";
+import {
+  computeGuideCoverage,
+  extractQuestionsFromGuide,
+  guideToHandoffPayload,
+  syncQuestionStatusFromTurns,
+} from "@/lib/pipeline/guide-handoff";
 import { pickDefaultRoleId, resolveWorkflows } from "@/data/catalog";
+import { useGuideStore } from "@/store/guide-store";
 
 interface InterviewStore extends EngagementContext {
   workflowId: string;
@@ -41,6 +49,10 @@ interface InterviewStore extends EngagementContext {
   liveTurns: LiveTurn[];
   liveDraft: string;
   liveSpeaker: "interviewer" | "interviewee";
+  guideQuestions: GuideQuestionItem[];
+  linkedGuideId: string | null;
+  guideSource: "scoping" | "manual" | null;
+  pendingGuideQuestionId: string | null;
   suggestedFollowUps: string[];
   isGenerating: boolean;
   isSuggesting: boolean;
@@ -61,6 +73,9 @@ interface InterviewStore extends EngagementContext {
   setActiveTab: (t: InterviewTab) => void;
   setLiveDraft: (v: string) => void;
   setLiveSpeaker: (s: "interviewer" | "interviewee") => void;
+  setPendingGuideQuestionId: (id: string | null) => void;
+  askGuideQuestion: (questionId: string) => void;
+  importGuideFromScoping: (force?: boolean) => boolean;
   setSuggestedFollowUps: (f: string[]) => void;
   addSource: (doc: PipelineDocument) => void;
   removeSource: (id: string) => void;
@@ -70,7 +85,7 @@ interface InterviewStore extends EngagementContext {
   setError: (e: string | null) => void;
   setLastGenerationMode: (m: "llm" | "template" | null) => void;
   setReviewStatus: (s: ValidationStatus) => void;
-  addLiveTurn: (content: string) => void;
+  addLiveTurn: (content: string, guideQuestionId?: string) => void;
   removeLiveTurn: (id: string) => void;
   updatePainPoint: (id: string, patch: Partial<InterviewPainPoint>) => void;
   updateWorkflowStep: (id: string, patch: Partial<InterviewWorkflowStep>) => void;
@@ -94,6 +109,10 @@ export const useInterviewStore = create<InterviewStore>()(
       liveTurns: [],
       liveDraft: "",
       liveSpeaker: "interviewer",
+      guideQuestions: [],
+      linkedGuideId: null,
+      guideSource: null,
+      pendingGuideQuestionId: null,
       suggestedFollowUps: [],
       isGenerating: false,
       isSuggesting: false,
@@ -136,7 +155,12 @@ export const useInterviewStore = create<InterviewStore>()(
         set({ workflowId, document: null });
       },
       setRoleId: (roleId) => set({ roleId, document: null }),
-      setMode: (mode) => set({ mode, document: null }),
+      setMode: (mode) => {
+        set({ mode, document: null });
+        if (mode === "live") {
+          get().importGuideFromScoping();
+        }
+      },
       setInputMode: (inputMode) => set({ inputMode, document: null }),
       setStakeholderName: (stakeholderName) => set({ stakeholderName }),
       setCustomNotes: (customNotes) => set({ customNotes }),
@@ -145,6 +169,43 @@ export const useInterviewStore = create<InterviewStore>()(
       setActiveTab: (activeTab) => set({ activeTab }),
       setLiveDraft: (liveDraft) => set({ liveDraft }),
       setLiveSpeaker: (liveSpeaker) => set({ liveSpeaker }),
+      setPendingGuideQuestionId: (pendingGuideQuestionId) => set({ pendingGuideQuestionId }),
+
+      askGuideQuestion: (questionId) => {
+        const q = get().guideQuestions.find((item) => item.id === questionId);
+        if (!q) return;
+        set({
+          pendingGuideQuestionId: questionId,
+          liveSpeaker: "interviewer",
+          liveDraft: q.text,
+        });
+      },
+
+      importGuideFromScoping: (force = false) => {
+        const scoping = useGuideStore.getState();
+        const guide = scoping.guide;
+        if (!guide) return false;
+        if (!force && get().linkedGuideId === guide.id && get().guideQuestions.length > 0) {
+          return true;
+        }
+
+        const questions = extractQuestionsFromGuide(guide);
+        set({
+          guidePayload: guideToHandoffPayload(guide),
+          guideQuestions: questions,
+          linkedGuideId: guide.id,
+          guideSource: "scoping",
+          inputMode: "pipeline",
+          workflowId: guide.workflowId,
+          roleId: guide.roleId,
+          companyName: guide.companyName ?? scoping.companyName,
+          industryId: guide.industryId ?? scoping.industryId,
+          functionId: guide.functionId ?? scoping.functionId,
+          customNotes: guide.customNotes ?? scoping.customNotes,
+        });
+        return true;
+      },
+
       setSuggestedFollowUps: (suggestedFollowUps) => set({ suggestedFollowUps }),
 
       addSource: (doc) => set((s) => ({ sources: [...s.sources, doc], document: null })),
@@ -165,38 +226,79 @@ export const useInterviewStore = create<InterviewStore>()(
           };
         }),
 
-      addLiveTurn: (content) => {
+      addLiveTurn: (content, guideQuestionId) => {
+        const state = get();
+        const qId = guideQuestionId ?? state.pendingGuideQuestionId ?? undefined;
         const turn: LiveTurn = {
           id: uuidv4(),
-          speaker: get().liveSpeaker,
+          speaker: state.liveSpeaker,
           content,
           timestamp: new Date().toISOString(),
+          guideQuestionId: state.liveSpeaker === "interviewer" ? qId : undefined,
         };
-        const liveTurns = [...get().liveTurns, turn];
-        const guide = parseGuidePayload(get().guidePayload);
-        const { score, questionsAsked } = computeCoverageFromTurns(liveTurns, guide);
-        set((s) => ({
+
+        const liveTurns = [...state.liveTurns, turn];
+        let guideQuestions = syncQuestionStatusFromTurns(state.guideQuestions, liveTurns);
+
+        if (state.liveSpeaker === "interviewer" && qId) {
+          guideQuestions = guideQuestions.map((q) =>
+            q.id === qId ? { ...q, status: "asked" as const, linkedTurnIds: [...(q.linkedTurnIds ?? []), turn.id] } : q,
+          );
+        }
+
+        if (state.liveSpeaker === "interviewee") {
+          const lastInterviewer = [...liveTurns].reverse().find((t) => t.speaker === "interviewer");
+          if (lastInterviewer?.guideQuestionId) {
+            guideQuestions = guideQuestions.map((q) =>
+              q.id === lastInterviewer.guideQuestionId
+                ? { ...q, status: "answered" as const, linkedTurnIds: [...(q.linkedTurnIds ?? []), turn.id] }
+                : q,
+            );
+          }
+        }
+
+        const guide = parseGuidePayload(state.guidePayload);
+        const fallback = computeCoverageFromTurns(liveTurns, guide);
+        const score = guideQuestions.length
+          ? computeGuideCoverage(guideQuestions)
+          : fallback.score;
+        const questionsAsked = guideQuestions.length
+          ? guideQuestions.filter((q) => q.status !== "pending").map((q) => q.text)
+          : fallback.questionsAsked;
+
+        set({
           liveTurns,
           liveDraft: "",
-          document: s.document
+          pendingGuideQuestionId: state.liveSpeaker === "interviewer" ? null : state.pendingGuideQuestionId,
+          guideQuestions,
+          document: state.document
             ? {
-                ...s.document,
+                ...state.document,
                 liveTurns,
                 coverage: {
-                  ...s.document.coverage,
+                  ...state.document.coverage,
                   score,
                   questionsAsked,
+                  topics: guideQuestions.map((q) => ({
+                    id: q.id,
+                    name: q.text.slice(0, 80),
+                    status: q.status === "answered" ? "covered" : q.status === "asked" ? "partial" : "missing",
+                    linkedQuestion: q.text,
+                  })),
+                  missingTopics: guideQuestions.filter((q) => q.status === "pending").map((q) => q.text.slice(0, 60)),
                 },
                 updatedAt: new Date().toISOString(),
               }
-            : s.document,
-        }));
+            : state.document,
+        });
       },
 
       removeLiveTurn: (id) =>
-        set((s) => ({
-          liveTurns: s.liveTurns.filter((t) => t.id !== id),
-        })),
+        set((s) => {
+          const liveTurns = s.liveTurns.filter((t) => t.id !== id);
+          const guideQuestions = syncQuestionStatusFromTurns(s.guideQuestions, liveTurns);
+          return { liveTurns, guideQuestions };
+        }),
 
       updatePainPoint: (id, patch) =>
         set((s) => {
@@ -270,6 +372,10 @@ export const useInterviewStore = create<InterviewStore>()(
           liveTurns: [],
           liveDraft: "",
           liveSpeaker: "interviewer",
+          guideQuestions: [],
+          linkedGuideId: null,
+          guideSource: null,
+          pendingGuideQuestionId: null,
           suggestedFollowUps: [],
           isGenerating: false,
           isSuggesting: false,

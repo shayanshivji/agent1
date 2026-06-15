@@ -25,6 +25,16 @@ export interface LiveTurn {
   content: string;
   timestamp: string;
   topicTag?: string;
+  guideQuestionId?: string;
+}
+
+export interface GuideQuestionItem {
+  id: string;
+  text: string;
+  sectionId: string;
+  sectionLabel: string;
+  status: "pending" | "asked" | "answered";
+  linkedTurnIds?: string[];
 }
 
 export interface EvidenceRecord {

@@ -8,7 +8,7 @@ import { useInterviewStore } from "@/store/interview-execution-store";
 import { InterviewConfigPanel } from "@/components/interview/InterviewConfigPanel";
 import { InterviewContextPanel } from "@/components/interview/InterviewContextPanel";
 import { InterviewSourcesPanel } from "@/components/interview/InterviewSourcesPanel";
-import { LiveCapturePanel } from "@/components/interview/LiveCapturePanel";
+import { InterviewChatPanel } from "@/components/interview/InterviewChatPanel";
 import { InterviewTabs } from "@/components/interview/InterviewTabs";
 import {
   InterviewTranscriptView,
@@ -105,7 +105,11 @@ export function LiveInterviewAgentWorkspace() {
           stakeholderName: stakeholderName || undefined,
           customNotes: customNotes || undefined,
           guidePayload,
-          transcriptText,
+          transcriptText:
+            transcriptText ||
+            (liveTurns.length
+              ? liveTurns.map((t) => `[${t.speaker}]: ${t.content}`).join("\n")
+              : undefined),
           liveTurns,
           sources: sources.map((s) => ({ name: s.name, extractedText: s.extractedText })),
         }),
@@ -236,7 +240,7 @@ export function LiveInterviewAgentWorkspace() {
               </p>
             </div>
             <div className="space-y-4">
-              {mode === "live" && <LiveCapturePanel />}
+              {mode === "live" && <InterviewChatPanel />}
               <InterviewSourcesPanel />
               <InterviewContextPanel />
             </div>

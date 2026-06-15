@@ -59,6 +59,11 @@ export function InterviewConfigPanel({ staged }: Props) {
             <option value="transcript">Transcript processing</option>
             <option value="live">Live interview</option>
           </select>
+          {mode === "live" && (
+            <p className="text-xs text-[var(--accent)] mt-2">
+              Live mode auto-loads the interview guide from Scoping Agent when available.
+            </p>
+          )}
         </div>
         <div>
           <label className="field-label">Input mode</label>

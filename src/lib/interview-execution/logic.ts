@@ -27,7 +27,9 @@ export function parseGuidePayload(raw: string): InterviewGuide | null {
   if (!raw.trim()) return null;
   try {
     const parsed = JSON.parse(raw) as { guide?: InterviewGuide } & InterviewGuide;
-    return parsed.guide ?? parsed;
+    if (parsed.guide?.sections?.length) return parsed.guide;
+    if (parsed.sections?.length) return parsed;
+    return null;
   } catch {
     return null;
   }
