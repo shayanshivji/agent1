@@ -1,13 +1,9 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
-import { FileUp, Loader2, X } from "lucide-react";
-import { useInitiativeStore } from "@/store/initiative-store";
 import { filterInitiatives } from "@/lib/initiatives/logic";
 import { ensureInitiativeFields } from "@/lib/diagnostics/mckinsey-framework";
 import { FINDING_TYPE_LABELS } from "@/lib/diagnostics/mckinsey-framework";
-import { extractTextFromFile } from "@/lib/ingest/extract-text";
+import { useInitiativeStore } from "@/store/initiative-store";
 import { HORIZON_LABELS, LEVER_LABELS } from "@/types/initiative";
 
 const TABS = [
@@ -15,7 +11,6 @@ const TABS = [
   { id: "process" as const, label: "Process map" },
   { id: "mapping" as const, label: "Mapping" },
   { id: "horizon" as const, label: "Horizon" },
-  { id: "sources" as const, label: "Sources" },
 ];
 
 export function InitiativeSidePanel() {
@@ -25,36 +20,8 @@ export function InitiativeSidePanel() {
     painPoints,
     processSteps,
     inventory,
-    sources,
     viewFilter,
-    addSource,
-    removeSource,
   } = useInitiativeStore();
-
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [uploading, setUploading] = useState(false);
-
-  async function handleFiles(files: FileList | null) {
-    if (!files?.length) return;
-    setUploading(true);
-    for (const file of Array.from(files)) {
-      try {
-        const text = await extractTextFromFile(file);
-        addSource({
-          id: uuidv4(),
-          name: file.name,
-          type: file.type,
-          uploadedAt: new Date().toISOString(),
-          extractedText: text,
-          charCount: text.length,
-        });
-      } catch {
-        /* skip */
-      }
-    }
-    setUploading(false);
-    if (inputRef.current) inputRef.current.value = "";
-  }
 
   const filtered = inventory
     ? filterInitiatives(inventory.initiatives, viewFilter).map(ensureInitiativeFields)
@@ -196,45 +163,6 @@ export function InitiativeSidePanel() {
           </div>
         )}
 
-        {sidePanel === "sources" && (
-          <div>
-            <button
-              type="button"
-              onClick={() => inputRef.current?.click()}
-              disabled={uploading}
-              className="w-full flex items-center justify-center gap-2 border border-dashed border-[var(--border-strong)] rounded-md py-3 text-xs text-[var(--text-muted)] hover:border-[var(--accent)]"
-            >
-              {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileUp className="h-4 w-4" />}
-              Upload sources
-            </button>
-            <input
-              ref={inputRef}
-              type="file"
-              accept=".txt,.md,.csv,.json"
-              multiple
-              className="hidden"
-              onChange={(e) => handleFiles(e.target.files)}
-            />
-            <div className="mt-3 space-y-2">
-              {sources.map((s) => (
-                <div
-                  key={s.id}
-                  className="flex justify-between items-start border border-[var(--border)] rounded p-2"
-                >
-                  <div>
-                    <span className="source-chip">{s.name}</span>
-                    <p className="text-[10px] text-[var(--text-muted)] mt-1">
-                      {s.charCount} chars
-                    </p>
-                  </div>
-                  <button type="button" onClick={() => removeSource(s.id)}>
-                    <X className="h-4 w-4 text-[var(--text-muted)]" />
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

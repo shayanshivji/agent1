@@ -33,7 +33,7 @@ interface InitiativeStore extends EngagementContext {
   isGenerating: boolean;
   error: string | null;
   lastGenerationMode: "llm" | "template" | null;
-  sidePanel: "sources" | "pain" | "process" | "mapping" | "horizon";
+  sidePanel: "pain" | "process" | "mapping" | "horizon";
 
   setCompanyName: (v: string) => void;
   setIndustryId: (v: string) => void;

@@ -22,10 +22,11 @@ const VIEW_FILTERS: { value: InitiativeViewFilter; label: string }[] = [
 ];
 
 interface Props {
-  onGenerate: () => void;
-  onClear: () => void;
+  onGenerate?: () => void;
+  onClear?: () => void;
   isGenerating?: boolean;
   hasWork?: boolean;
+  staged?: boolean;
 }
 
 export function InitiativeConfigPanel({
@@ -33,6 +34,7 @@ export function InitiativeConfigPanel({
   onClear,
   isGenerating,
   hasWork,
+  staged,
 }: Props) {
   const {
     companyName,
@@ -154,7 +156,7 @@ export function InitiativeConfigPanel({
           </select>
         </div>
 
-        {inputMode === "pipeline" && (
+        {!staged && inputMode === "pipeline" && (
           <div>
             <label className="field-label">Pipeline JSON (Agents 1–3)</label>
             <textarea
@@ -167,51 +169,58 @@ export function InitiativeConfigPanel({
           </div>
         )}
 
-        <div>
-          <label className="field-label">Process map / notes (optional)</label>
-          <textarea
-            value={processMapText}
-            onChange={(e) => setProcessMapText(e.target.value)}
-            placeholder="Paste process map, transcript excerpts, or pain point list…"
-            rows={3}
-            className="field-input resize-y"
-          />
-        </div>
+        {!staged && (
+          <>
+            <div>
+              <label className="field-label">Process map / notes (optional)</label>
+              <textarea
+                value={processMapText}
+                onChange={(e) => setProcessMapText(e.target.value)}
+                placeholder="Paste process map, transcript excerpts, or pain point list…"
+                rows={3}
+                className="field-input resize-y"
+              />
+            </div>
+            <div>
+              <label className="field-label">Instructions</label>
+              <textarea
+                value={customNotes}
+                onChange={(e) => setCustomNotes(e.target.value)}
+                placeholder="Strategic priorities, in-flight programs to flag…"
+                rows={2}
+                className="field-input resize-y"
+              />
+            </div>
+          </>
+        )}
 
-        <div>
-          <label className="field-label">Instructions</label>
-          <textarea
-            value={customNotes}
-            onChange={(e) => setCustomNotes(e.target.value)}
-            placeholder="Strategic priorities, in-flight programs to flag…"
-            rows={2}
-            className="field-input resize-y"
-          />
-        </div>
+        {!staged && onGenerate && (
+          <button
+            type="button"
+            onClick={onGenerate}
+            disabled={isGenerating}
+            className="w-full btn-primary justify-center"
+          >
+            {isGenerating ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Sparkles className="h-4 w-4" />
+            )}
+            Generate initiatives
+          </button>
+        )}
 
-        <button
-          type="button"
-          onClick={onGenerate}
-          disabled={isGenerating}
-          className="w-full btn-primary justify-center"
-        >
-          {isGenerating ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
-          ) : (
-            <Sparkles className="h-4 w-4" />
-          )}
-          Generate initiatives
-        </button>
-
-        <button
-          type="button"
-          onClick={onClear}
-          disabled={isGenerating || !hasWork}
-          className="w-full btn-secondary justify-center"
-        >
-          <RotateCcw className="h-4 w-4" />
-          Clear & start over
-        </button>
+        {!staged && onClear && (
+          <button
+            type="button"
+            onClick={onClear}
+            disabled={isGenerating || !hasWork}
+            className="w-full btn-secondary justify-center"
+          >
+            <RotateCcw className="h-4 w-4" />
+            Clear & start over
+          </button>
+        )}
       </div>
     </div>
   );

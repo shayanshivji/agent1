@@ -396,6 +396,24 @@ body {
   font-weight: 500;
 }
 
+.workspace-stage-stepper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.workspace-stage-panel {
+  max-width: 42rem;
+  margin: 0 auto;
+}
+
+.stage-footer {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
 .error-banner {
   font-size: 0.875rem;
   color: var(--danger);

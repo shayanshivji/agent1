@@ -1,12 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Loader2, RotateCcw, Sparkles } from "lucide-react";
+import { Loader2, RotateCcw } from "lucide-react";
 import { ConfigPanel } from "@/components/guide/ConfigPanel";
+import { GuideContextPanel } from "@/components/guide/GuideContextPanel";
 import { GuideEditor } from "@/components/guide/GuideEditor";
 import { SourcePanel } from "@/components/guide/SourcePanel";
-import { WorkflowStepper } from "@/components/guide/WorkflowStepper";
 import { WorkspaceBackLink } from "@/components/layout/WorkspaceBackLink";
+import {
+  DEFAULT_WORKSPACE_STAGES,
+  WorkspaceStageStepper,
+} from "@/components/workspace/WorkspaceStageStepper";
+import { StageFooter } from "@/components/workspace/StageFooter";
 import { buildGuideFromResponse, useGuideStore } from "@/store/guide-store";
 import { BSN_PRESET } from "@/data/engagement-context";
 
@@ -32,7 +37,10 @@ export function ScopingAgentWorkspace() {
     reset,
   } = useGuideStore();
 
+  const [stage, setStage] = useState(1);
+  const [maxStage, setMaxStage] = useState(1);
   const [llmEnabled, setLlmEnabled] = useState<boolean | null>(null);
+  const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
     fetch("/api/status")
@@ -40,6 +48,16 @@ export function ScopingAgentWorkspace() {
       .then((d) => setLlmEnabled(d.llmEnabled))
       .catch(() => setLlmEnabled(false));
   }, []);
+
+  useEffect(() => {
+    if (!hydrated) {
+      if (guide) {
+        setStage(3);
+        setMaxStage(3);
+      }
+      setHydrated(true);
+    }
+  }, [guide, hydrated]);
 
   async function handleGenerate() {
     setGenerating(true);
@@ -75,14 +93,14 @@ export function ScopingAgentWorkspace() {
           customNotes || undefined,
         ),
       );
+      setStage(3);
+      setMaxStage(3);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Generation failed");
     } finally {
       setGenerating(false);
     }
   }
-
-  const currentStep = guide ? 3 : isGenerating ? 2 : 1;
 
   const hasWork =
     Boolean(guide) ||
@@ -105,6 +123,13 @@ export function ScopingAgentWorkspace() {
     }
     reset();
     setError(null);
+    setStage(1);
+    setMaxStage(1);
+  }
+
+  function goToStep(next: number) {
+    setStage(next);
+    setMaxStage((m) => Math.max(m, next));
   }
 
   return (
@@ -113,93 +138,122 @@ export function ScopingAgentWorkspace() {
         <div className="max-w-[1600px] mx-auto px-6 py-4 flex flex-wrap items-center justify-between gap-4">
           <div>
             <WorkspaceBackLink slug="scoping" label="Scoping Agent" />
-            <h1 className="text-lg font-semibold text-gradient mt-2">
-              Scoping Agent
-            </h1>
+            <h1 className="text-lg font-semibold text-gradient mt-2">Scoping Agent</h1>
             <p className="text-sm text-[var(--text-muted)]">
               Interview guides + fact-base requirements for value sizing
             </p>
           </div>
           <div className="flex items-center gap-3">
             {llmEnabled !== null && (
-              <span
-                className={
-                  llmEnabled ? "badge-mode-llm" : "badge-mode-template"
-                }
-              >
+              <span className={llmEnabled ? "badge-mode-llm" : "badge-mode-template"}>
                 {llmEnabled ? "LLM mode" : "Template mode"}
               </span>
             )}
-            {lastGenerationMode && guide && (
+            {lastGenerationMode && guide && stage === 3 && (
               <span className="text-xs px-2.5 py-1 rounded-full border border-[var(--border)] text-[var(--text-muted)]">
                 Last: {lastGenerationMode}
               </span>
             )}
-            <button
-              type="button"
-              onClick={handleClear}
-              disabled={isGenerating || !hasWork}
-              className="btn-secondary"
-              title="Reset configuration and start over"
-            >
-              <RotateCcw className="h-4 w-4" />
-              Clear & start over
-            </button>
-            <button
-              type="button"
-              onClick={handleGenerate}
-              disabled={isGenerating}
-              className="btn-primary"
-            >
-              {isGenerating ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <Sparkles className="h-4 w-4" />
-              )}
-              Generate guide
-            </button>
+            {stage === 3 && (
+              <button
+                type="button"
+                onClick={handleClear}
+                disabled={isGenerating || !hasWork}
+                className="btn-secondary"
+              >
+                <RotateCcw className="h-4 w-4" />
+                Clear & start over
+              </button>
+            )}
           </div>
         </div>
-        <div className="max-w-[1600px] mx-auto px-6 pb-3">
-          <WorkflowStepper currentStep={currentStep} hasGuide={Boolean(guide)} />
+        <div className="max-w-[1600px] mx-auto px-6 pb-4">
+          <WorkspaceStageStepper
+            steps={DEFAULT_WORKSPACE_STAGES}
+            currentStep={stage}
+            maxReachableStep={maxStage}
+            onStepClick={goToStep}
+          />
         </div>
       </div>
 
       <main className="flex-1 max-w-[1600px] mx-auto w-full px-6 py-6">
         {error && <div className="mb-4 error-banner">{error}</div>}
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          <aside className="lg:col-span-3 space-y-4 lg:sticky lg:top-6 lg:self-start">
-            <ConfigPanel
-              onGenerate={handleGenerate}
-              onClear={handleClear}
-              isGenerating={isGenerating}
-              hasWork={hasWork}
-            />
-          </aside>
+        {stage === 1 && (
+          <div className="workspace-stage-panel">
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-[var(--text)]">Configure engagement</h2>
+              <p className="text-sm text-[var(--text-muted)] mt-1">
+                Select industry, workflow, role, and interview level.
+              </p>
+            </div>
+            <ConfigPanel hideNotes hideFooter />
+            <StageFooter stage={1} onContinue={() => goToStep(2)} continueLabel="Continue to sources" />
+          </div>
+        )}
 
-          <section className="lg:col-span-6">
+        {stage === 2 && (
+          <div className="workspace-stage-panel">
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-[var(--text)]">Add sources</h2>
+              <p className="text-sm text-[var(--text-muted)] mt-1">
+                Upload context files and optional instructions. You can skip if using catalog seeds only.
+              </p>
+            </div>
+            <div className="space-y-4">
+              <SourcePanel />
+              <GuideContextPanel />
+            </div>
             {isGenerating ? (
-              <div className="section-card p-12 flex flex-col items-center justify-center gap-4">
+              <div className="section-card p-12 flex flex-col items-center gap-4 mt-6">
                 <Loader2 className="h-8 w-8 animate-spin text-[var(--accent)]" />
-                <p className="text-sm text-[var(--text-muted)]">
-                  Synthesizing interview guide…
-                </p>
-                <p className="text-xs text-[var(--text-muted)] text-center max-w-sm">
-                  {llmEnabled
-                    ? "BSN catalog + McKinsey frameworks + uploaded sources"
-                    : "BSN seed template, add OPENAI_API_KEY on Vercel for LLM"}
-                </p>
+                <p className="text-sm text-[var(--text-muted)]">Synthesizing interview guide…</p>
               </div>
             ) : (
-              <GuideEditor />
+              <StageFooter
+                stage={2}
+                isGenerating={isGenerating}
+                onBack={() => goToStep(1)}
+                onGenerate={handleGenerate}
+                generateLabel="Generate interview guide"
+                showSkip
+                onSkip={handleGenerate}
+              />
             )}
-          </section>
+          </div>
+        )}
 
-          <aside className="lg:col-span-3 lg:sticky lg:top-6 lg:self-start">
-            <SourcePanel />
-          </aside>
-        </div>
+        {stage === 3 && (
+          <div>
+            {isGenerating ? (
+              <div className="section-card p-12 flex flex-col items-center gap-4">
+                <Loader2 className="h-8 w-8 animate-spin text-[var(--accent)]" />
+                <p className="text-sm text-[var(--text-muted)]">Synthesizing interview guide…</p>
+              </div>
+            ) : (
+              <>
+                <div className="flex flex-wrap gap-2 mb-4">
+                  <button type="button" onClick={() => goToStep(1)} className="btn-secondary text-xs">
+                    Edit configuration
+                  </button>
+                  <button type="button" onClick={() => goToStep(2)} className="btn-secondary text-xs">
+                    Edit sources
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleGenerate}
+                    disabled={isGenerating}
+                    className="btn-primary text-xs"
+                  >
+                    Regenerate
+                  </button>
+                </div>
+                <GuideEditor />
+              </>
+            )}
+          </div>
+        )}
       </main>
     </>
   );

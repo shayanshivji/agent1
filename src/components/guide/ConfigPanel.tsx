@@ -21,6 +21,8 @@ interface ConfigPanelProps {
   onClear?: () => void;
   isGenerating?: boolean;
   hasWork?: boolean;
+  hideNotes?: boolean;
+  hideFooter?: boolean;
 }
 
 export function ConfigPanel({
@@ -28,6 +30,8 @@ export function ConfigPanel({
   onClear,
   isGenerating,
   hasWork,
+  hideNotes,
+  hideFooter,
 }: ConfigPanelProps) {
   const {
     companyName,
@@ -171,18 +175,20 @@ export function ConfigPanel({
           </select>
         </div>
 
-        <div>
-          <label className="field-label">Notes / instructions</label>
-          <textarea
-            value={customNotes}
-            onChange={(e) => setCustomNotes(e.target.value)}
-            placeholder="e.g. Focus on Fall peak season, probe in-flight NSP initiative…"
-            rows={3}
-            className="field-input resize-y"
-          />
-        </div>
+        {!hideNotes && (
+          <div>
+            <label className="field-label">Notes / instructions</label>
+            <textarea
+              value={customNotes}
+              onChange={(e) => setCustomNotes(e.target.value)}
+              placeholder="e.g. Focus on Fall peak season, probe in-flight NSP initiative…"
+              rows={3}
+              className="field-input resize-y"
+            />
+          </div>
+        )}
 
-        {onClear && (
+        {!hideFooter && onClear && (
           <button
             type="button"
             onClick={onClear}
@@ -194,7 +200,7 @@ export function ConfigPanel({
           </button>
         )}
 
-        {onGenerate && (
+        {!hideFooter && onGenerate && (
           <button
             type="button"
             onClick={onGenerate}
