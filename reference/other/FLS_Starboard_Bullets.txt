@@ -1,0 +1,73 @@
+WHAT IS THE MARKET REWARDING IN PEERS?
+
+- Pure-play focus — Rotork, IMI, Pentair each have a clean single-narrative story; investors know exactly what they own and can assign a precise multiple
+- High aftermarket / recurring revenue mix — this is the #1 driver of premium multiples; aftermarket is stickier, higher-margin (~50-60% gross), and less cyclical than OE
+  - PNR Flow: ~23% ROS, aftermarket/recurring heavy
+  - ITT IP: 21%+ op margin, pump aftermarket + parts
+  - Rotork: 24.6% op margin, actuator installed-base service
+- Consistent multi-year margin expansion with credibility
+  - PNR: +170bps in FY25 to 25.2% adj. op margin
+  - XYL: 22.2% EBITDA margin in FY25, guiding +70-110bps in FY26
+  - Rotork: +100bps in FY25 to 24.6%
+  - These companies have 3-5 year track records of delivering; FLS has ~1 year
+- Top-tier peers (PNR Flow, CR PFT, ITT IP, EMR ID) averaged ~23% op margins last year (per Mizuho) — that is the bar the market pays 15-22x for
+- Disciplined capital allocation — consistent buybacks, accretive bolt-ons at high ROIC, no surprise transformational deals
+
+
+WHAT IS THE OPERATING STORY BEHIND FLS'S LOWER VALUATION?
+
+- ~800bps margin gap to best-in-class flow-control peers today (FLS ~16.8% adj. op margin vs. peers ~23%); consensus shows this only compresses to ~660bps by 2027E (per Mizuho)
+- FCD is structurally underearning and the spread vs. FPD is widening
+  - FPD: 14.1% (FY23) → 15.2% (FY24) → 18.6% (FY25) = +450bps improvement
+  - FCD: 10.1% (FY23) → 11.3% (FY24) → 12.0% (FY25) = +190bps improvement
+  - Spread widened from 400bps to 660bps — FPD is executing, FCD is not keeping pace
+- FCD at 12% margin vs. dedicated valve/actuation peers at 20-25% (Rotork 24.6%, CR PFT ~21%, IMI 20%) — same products, 800-1,200bps gap
+- FCD aftermarket only ~26% of segment revenue vs. FPD at ~66% — too dependent on lower-margin project/OE revenue
+- Management still in "prove it" window — real execution only since mid-2024; hit 14-16% margin target 2 years early but new 20% by 2030 target seen as unambitious (100bps/yr)
+- Failed Chart Industries merger (terminated after BKR acquired Chart) removes the "we have a transformational plan" defense and raises questions on strategic clarity
+- Conventional, partially long-tenured board (5 new since 2022 but still room for refresh)
+- 80/20 program only deployed in 2 of 5 BUs — potential is there but unproven at scale
+- Balance sheet underleveraged at 1.25x net debt/EBITDA — capacity for self-help not being utilized
+
+
+WHAT SPECIFICALLY MIGHT THEY LOOK AT ON MARGINS? WHAT OTHER LEVERS?
+
+Margin acceleration (ranked by expected EBITDA impact, per Mizuho framework):
+
+1. Accelerate the 20% margin target — push for 18-20% within 24-36 months vs. 2030
+   - Restructure executive comp to tie 50%+ of LTI to margin and ROIC rather than revenue/TSR alone
+   - Quarterly milestone reporting on margin progress by segment
+
+2. Footprint rationalization — consolidate from 50+ manufacturing sites to 25-30
+   - Mizuho estimates $150-250M in annualized run-rate savings
+   - Trillium integration (closing mid-2026) is a natural catalyst to redraw the plant map
+   - Emerson and Dover playbooks as precedent
+
+3. 80/20 SKU and customer rationalization — accelerate rollout from 2 of 5 BUs to all
+   - Exit bottom 20% of low-margin product tails and unprofitable customer accounts
+   - Reduces manufacturing complexity, engineering support, and working capital drag
+
+4. Aftermarket acceleration
+   - FCD service capture rate: aftermarket from 26% toward 40-50% (FPD at 66% shows what good looks like)
+   - Explicit attach-rate targets for service contracts on installed base
+   - Monetize RedRaven (FLS's IIoT/predictive maintenance platform) — underleveraged vs. Emerson equivalents
+   - Tiered service contracts on the captive installed base
+   - FPD: QRC productivity (126 sites globally), seal attachment rates, nuclear aftermarket buildout ($400M in awards in FY25, 40-60yr plant lives)
+
+5. Pricing system upgrade
+   - Implement dynamic and value-based pricing, particularly on aftermarket where FLS has structural pricing power it has not fully captured
+   - Price critical-path valves (safety, control in hazardous environments) at a premium
+
+6. Strategic alternatives / portfolio review
+   - Formal review evaluating business line or product line exits
+   - Breakup into FPD (pumps/seals) + FCD (valves/automation) as separation optionality
+   - SOTP: FPD at 15-19x EBITDA ($9.6-12.2B) + FCD at 12-16x ($2.6-3.4B) = $12.2-15.6B vs. current ~$11.6B EV
+
+7. Capital return
+   - $1-1.5B accelerated buyback funded by leverage from 1.25x to ~2.5x (still IG)
+   - Current guide is just "repurchase to offset dilution" — bare minimum
+   - ~10% EPS accretion on top of organic margin expansion
+
+8. Governance
+   - Board refresh with capital-markets / pure-play industrial operators
+   - CEO scorecard reset tied to segment-level margin targets and portfolio review deadlines

@@ -1,0 +1,217 @@
+# Agent 03 — Current-State Process Mapping Agent
+# Source: reference/blueprints/03-current-state-process-mapping-agent.pdf
+
+meta:
+  id: agent-03
+  name: Current-State Process Mapping Agent
+  version: 0.1.0
+  status: planned
+  phase: diagnostic
+  build_priority: 2
+
+concept:
+  purpose: >
+    Convert interview transcripts and supporting materials into structured current-state
+    process maps using ProcessAI, surfacing pain points and improvement opportunities.
+  one_liner: ProcessAI-powered as-is maps with pain points and fact packs
+
+guardrails:
+  - ProcessAI as core engine for map generation and pain extraction
+  - Never infer process steps not in source materials
+  - Flag ambiguous or incomplete steps for human review
+  - Preserve interviewee terminology
+  - Full source traceability from map step → transcript segment
+
+kpis:
+  - metric: time_to_process_map
+    target: "-70% vs manual"
+  - metric: pain_point_capture_rate
+    target: "90%+"
+  - metric: analyst_edit_rate_post_review
+    target: "<20%"
+  - metric: source_traceability
+    target: "100%"
+
+workflow:
+  steps:
+    - id: ingest_materials
+      name: Ingest Materials
+      engine: document_parser
+    - id: run_processai
+      name: Run ProcessAI Engine
+      engine: processai
+      mckinsey_ref_needed: true
+    - id: generate_process_maps
+      name: Generate Process Maps
+      engine: process_mapping_logic
+    - id: identify_pain_areas
+      name: Identify Pain Areas
+      engine: pain_point_detection
+    - id: validate_and_package
+      name: Validate & Package
+      engine: human_review + export
+
+inputs:
+  required:
+    - key: interview_transcripts
+      type: array[Transcript]
+      from: agent-02
+  optional:
+    - key: call_recordings
+      type: array[file]
+    - key: sops_and_handoffs
+      type: array[file]
+      reference: reference/client-materials/
+    - key: stakeholder_map
+      type: StakeholderMap
+    - key: prior_process_docs
+      type: array[file]
+      reference: reference/decks/20260324_BSN_Process-Maps.pptx
+
+outputs:
+  - key: swimlane_process_maps
+    type: array[ProcessMap]
+    export: [visio, pptx, mermaid]
+  - key: pain_point_inventory
+    type: array[PainPoint]
+    consumers: [agent-04]
+  - key: improvement_opportunities
+    type: array[Opportunity]
+    consumers: [agent-04]
+  - key: process_fact_packs
+    type: array[ProcessFactPack]
+
+integrations:
+  - system: ProcessAI
+    direction: read
+    mckinsey_ref_needed: true
+  - system: agent-02
+    direction: read
+  - system: agent-04
+    direction: write
+  - system: document_export_layer
+    direction: write
+    mckinsey_ref_needed: true
+
+vb_validation_baseline:
+  reference_maps: reference/decks/20260324_BSN_Process-Maps.pptx
+  reference_pain_points:
+    source: reference/decks/20260410_BSN_Phase-1-compendium.pptx
+    examples:
+      - 25% incomplete MTS intake forms
+      - 20-25% shops not going live
+      - ~30% time on inventory filtering in shop build
+
+stakeholder_review:
+  data_engineer:
+    requirements:
+      - ProcessMap JSON schema: lanes, steps, handoffs, systems, citations[]
+      - ProcessAI output normalization layer
+    risks:
+      - ProcessAI export format mismatch with internal schema
+    open_questions:
+      - ProcessAI API contract and rate limits?
+
+  software_engineer:
+    requirements:
+      - Diff view: agent map vs reference/decks process maps for eval
+      - Mermaid render for web; Visio export for BA workflow
+    risks:
+      - Pain point deduplication across multiple SME interviews
+    open_questions:
+      - Merge maps from 3 SMEs per workflow — voting or ED merge?
+
+  ux_ui_engineer:
+    requirements:
+      - Interactive swim-lane viewer with click-through to transcript quote
+      - Pain point cards tagged type (handoff, rework, system, policy)
+    risks:
+      - Dense maps unreadable on laptop — need zoom and pod filter
+    open_questions:
+      - Match compendium slide layout for process map exports?
+
+  cto:
+    requirements:
+      - System touchpoints on each step (Engage, QOE, TAL, SAP)
+      - Integration complexity flag per pain point
+    risks:
+      - Maps omit shadow IT / Excel workarounds
+    open_questions:
+      - IT architecture diagram input for Agent 03?
+
+  coo:
+    requirements:
+      - Maps reflect real handoffs between pods (TM → SSR → MTS)
+      - Volume/cycle time on critical path steps where known
+    risks:
+      - Missing exception paths that cause daily fire drills
+    open_questions:
+      - Shadowing data to supplement transcripts?
+
+  client:
+    requirements:
+      - Validate maps in working session ≤30 min per workflow
+      - Terminology matches support teams PDF
+    risks:
+      - SME says "that's not how it works" at steerco
+    open_questions:
+      - Client validation calendar in Week 2?
+
+  partner_mckinsey:
+    requirements:
+      - Fact packs syndicate-ready for diagnostic readout
+      - Pain points quantified where data exists from compendium
+    risks:
+      - ProcessAI maps look generic without VB-specific detail
+    open_questions:
+      - ProcessAI training/fine-tune on VB corpus?
+
+  senior_partner_mckinsey:
+    requirements:
+      - ProcessAI usage follows firm licensing and quality standards
+    risks:
+      - Client data in ProcessAI without DPA
+    open_questions:
+      - ProcessAI deployment environment for KKR client phase?
+
+  em_mckinsey:
+    requirements:
+      - Parallel map generation per prioritized workflow
+      - Track validation status per map
+    risks:
+      - Week 2 slip if validation sessions not scheduled
+    open_questions:
+      - Which workflows skip live validation during BC?
+
+  ap_mckinsey:
+    requirements:
+      - Maps cover handoffs called out in support teams PDF boundaries
+      - Pain inventory aligns with Phase 1 compendium themes
+    risks:
+      - Over-map low-impact workflows, under-map MTS
+    open_questions:
+      - ED sign-off checklist for process fact packs?
+
+  ba_mckinsey:
+    requirements:
+      - <20% edit to export PPT/Visio
+      - Pain point ID stable for lever mapping in Agent 04
+    risks:
+      - Re-draw maps manually because export format wrong
+    open_questions:
+      - Firm Visio stencil / PPT process template?
+
+open_decisions:
+  - id: OD-03-001
+    question: ProcessAI integration — API, batch upload, or human-in-loop export?
+    owner: user (McKinsey internal) + software_engineer
+    blocking: run_processai step
+  - id: OD-03-002
+    question: Golden eval — compare to 20260324 process maps or compendium only?
+    owner: BA + AP
+    blocking: eval harness
+
+mckinsey_resources_to_request:
+  - ProcessAI documentation, API access, sample outputs
+  - Prior sales-support ProcessAI engagement examples
+  - Visio/PPT process map templates used in GM&S diagnostics

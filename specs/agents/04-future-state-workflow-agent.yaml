@@ -1,0 +1,218 @@
+# Agent 04 — Future-State Workflow Mapping Agent
+# Source: reference/blueprints/04-future-state-workflow-agent.pdf
+
+meta:
+  id: agent-04
+  name: Future-State Workflow Mapping Agent
+  version: 0.1.0
+  status: planned
+  phase: design
+  build_priority: 5
+
+concept:
+  purpose: >
+    Generate AI-powered improvement initiatives and redesign current-state workflows
+    into future-state operating models with high-level build plans.
+  one_liner: To-be workflows, initiatives, delta view, and build plans
+
+guardrails:
+  - Anchor future-state to current-state maps from Agent 03
+  - Every initiative grounded in a specific pain point ID
+  - Show what changes vs what stays the same
+  - Flag dependencies between initiatives
+  - Never design future state for unapproved initiatives
+
+kpis:
+  - metric: pain_point_coverage_in_future_state
+    target: "95%+"
+  - metric: redesign_acceptance_rate
+    target: "80%+"
+  - metric: build_plan_completeness
+    target: "90%+"
+  - metric: time_to_first_future_state_draft
+    target: "-65% vs manual"
+
+workflow:
+  steps:
+    - id: ingest_current_state
+      name: Ingest Current State
+      engine: retrieval_layer
+    - id: generate_initiatives
+      name: Generate Initiatives
+      engine: llm + initiative_pattern_library
+    - id: redesign_workflows
+      name: Redesign Workflows
+      engine: llm + process_redesign
+    - id: produce_delta_view
+      name: Produce Delta View
+      engine: delta_generation
+    - id: draft_build_plans
+      name: Draft Build Plans
+      engine: build_plan_generator + human_review
+
+inputs:
+  required:
+    - key: current_state_maps
+      type: array[ProcessMap]
+      from: agent-03
+    - key: pain_point_inventory
+      type: array[PainPoint]
+      from: agent-03
+  optional:
+    - key: tech_constraints
+      type: TechConstraints
+    - key: strategic_priorities
+      type: array[string]
+    - key: engineering_requirements
+      type: array[string]
+
+outputs:
+  - key: improvement_initiatives
+    type: array[Initiative]
+    schema_ref: schemas/initiative.json
+    consumers: [agent-05, agent-06]
+    horizons: [H1_short, H2_medium, H3_bold_vision]
+  - key: future_state_diagrams
+    type: array[ProcessMap]
+  - key: current_vs_future_delta
+    type: array[DeltaView]
+  - key: build_plans
+    type: array[BuildPlan]
+    consumers: [agent-05]
+
+integrations:
+  - system: agent-03
+    direction: read
+  - system: ProcessAI
+    direction: read
+    mckinsey_ref_needed: true
+  - system: agent-05
+    direction: write
+  - system: document_export_layer
+    direction: write
+
+vb_context:
+  reference_initiatives:
+    source: reference/models/survey-data-analysis-v6.xlsx
+    categories: [Automation, Process]
+    example_archetypes:
+      - AI Co-Pilot for TM sales support
+      - MTS shop build templates
+      - Self-serve coordinator journey (bold vision from compendium)
+  bold_vision:
+    source: reference/decks/20260410_BSN_Phase-1-compendium.pptx
+    description: Agent-led self-serve MTS shop journey with FSP fallback
+
+stakeholder_review:
+  data_engineer:
+    requirements:
+      - Initiative schema links pain_point_ids[], horizon, category, dependencies[]
+      - Build plan schema: features, rules, edge_cases, systems, kpis
+    risks:
+      - Initiative sprawl without deduplication against survey model v6
+    open_questions:
+      - Import initiative library from v6 as seed vs generate fresh?
+
+  software_engineer:
+    requirements:
+      - Human approval gate on initiative list before redesign step
+      - Classify lever type: process_redesign | ai_automation | both
+    risks:
+      - Circular dependencies in initiative graph
+    open_questions:
+      - Auto-detect duplicates vs compendium initiatives in progress?
+
+  ux_ui_engineer:
+    requirements:
+      - Side-by-side current/future swim-lanes with change highlights
+      - Initiative cards with horizon tabs (H1/H2/H3)
+    risks:
+      - Bold vision H3 overwhelms H1 practical roadmap in client view
+    open_questions:
+      - Separate views for steerco vs engineering handoff?
+
+  cto:
+    requirements:
+      - Build plans include system requirements and integration points
+      - Tech dependency section per initiative (Engage, SAP, etc.)
+    risks:
+      - Initiatives require custom build where SaaS config suffices
+    open_questions:
+      - JK Tech / SAP alliance scope for Phase 2?
+
+  coo:
+    requirements:
+      - H1 initiatives executable without major org redesign
+      - Change impact per pod documented
+    risks:
+      - Future state assumes staffing model client can't support
+    open_questions:
+      - In-flight initiatives from compendium — merge or exclude?
+
+  client:
+    requirements:
+      - Initiatives recognizable from their pain (intake forms, shop go-live)
+      - Bold vision optional, not presented as immediate commitment
+    risks:
+      - "AI replaces our teams" narrative from automation initiatives
+    open_questions:
+      - Client workshop format for initiative pressure-test?
+
+  partner_mckinsey:
+    requirements:
+      - 10-15 H1 initiatives confirmed for BRD detailing (workplan deliverable)
+      - Initiatives split process vs AI levers per BC methodology
+    risks:
+      - Initiative quality below compendium bar from original 7-week study
+    open_questions:
+      - BRD template from firm for Horizon 1?
+
+  senior_partner_mckinsey:
+    requirements:
+      - Bold vision differentiated as H3, not mixed into near-term ROI
+    risks:
+      - Overpromise agent-native operating model in 3-week study
+    open_questions:
+      - Standard GM&S initiative taxonomy?
+
+  em_mckinsey:
+    requirements:
+      - Week 2-3 deliverable: initiative longlist → shortlist → H1 BRD inputs
+    risks:
+      - Design phase starts before diagnostic validation complete
+    open_questions:
+      - Parallel H1 BRD drafting while H2/H3 still in review?
+
+  ap_mckinsey:
+    requirements:
+      - Each initiative traces to pain point and compendium evidence
+      - Build plans sufficient for BA to populate BRD sections
+    risks:
+      - Generic "implement AI co-pilot" without workflow specificity
+    open_questions:
+      - ED review of initiative list before Agent 05 sizing?
+
+  ba_mckinsey:
+    requirements:
+      - Delta view exportable to compendium slide format
+      - Feature list per lever matches BRD section structure
+    risks:
+      - Manual rewrite of build plans for BRD compliance
+    open_questions:
+      - Firm BRD Word template and section taxonomy?
+
+open_decisions:
+  - id: OD-04-001
+    question: Seed initiatives from survey v6 or generate net-new from pain inventory?
+    owner: AP + BA
+    blocking: generate_initiatives
+  - id: OD-04-002
+    question: How to tag in-flight compendium initiatives to avoid double-counting?
+    owner: AP
+    blocking: initiative approval gate
+
+mckinsey_resources_to_request:
+  - GM&S BRD template for Horizon 1 initiatives
+  - Initiative pattern library for sales support / shared services
+  - ProcessAI future-state redesign patterns
+  - Classification rubric for process vs AI levers (from BC deck)

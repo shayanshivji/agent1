@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "fact-requirement.json",
+  "title": "FactRequirement",
+  "type": "object",
+  "required": ["id", "workflow_id", "field_type", "description", "required_for_sizing"],
+  "properties": {
+    "id": { "type": "string" },
+    "workflow_id": { "type": "string" },
+    "field_type": {
+      "type": "string",
+      "enum": ["volume", "time", "fte", "rate", "cost", "system", "other"]
+    },
+    "description": { "type": "string" },
+    "unit": { "type": "string" },
+    "required_for_sizing": { "type": "boolean" },
+    "known_value": { "type": ["number", "string", "null"] },
+    "known_value_source": { "type": "string" },
+    "v6_model_cell_ref": { "type": "string" },
+    "collection_method": {
+      "type": "string",
+      "enum": ["interview", "document", "system_export", "benchmark"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["known", "partial", "missing"],
+      "default": "missing"
+    }
+  }
+}

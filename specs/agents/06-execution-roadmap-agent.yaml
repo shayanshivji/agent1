@@ -1,0 +1,232 @@
+# Agent 06 — Execution Roadmap Agent
+# Source: reference/blueprints/06-execution-roadmap-agent.pdf
+
+meta:
+  id: agent-06
+  name: Execution Roadmap Agent
+  version: 0.1.0
+  status: planned
+  phase: design
+  build_priority: 6
+
+concept:
+  purpose: >
+    Score and sequence improvement initiatives into a prioritized, phased execution
+    roadmap based on value, feasibility, and client constraints.
+  one_liner: Prioritized phased roadmap with auditable rationale
+
+guardrails:
+  - Always show prioritization rationale — no black box ranking
+  - Flag trade-offs and dependency conflicts explicitly
+  - Never hard-code sequencing without human sign-off
+  - Adapt phasing to client constraints and risk tolerance
+  - Outputs structured for direct client presentation
+
+kpis:
+  - metric: roadmap_acceptance_rate
+    target: "80%+"
+  - metric: time_to_first_roadmap_draft
+    target: "-65% vs manual"
+  - metric: initiative_sequencing_accuracy
+    target: "85%+"
+  - metric: tradeoff_flags_resolved_pre_client
+    target: "100%"
+
+workflow:
+  steps:
+    - id: ingest_all_inputs
+      name: Ingest All Inputs
+      engine: retrieval_layer
+    - id: score_initiatives
+      name: Score Initiatives
+      engine: scoring_and_ranking
+    - id: apply_constraints
+      name: Apply Constraints
+      engine: constraint_logic
+    - id: draft_roadmap
+      name: Draft Roadmap
+      engine: llm + roadmap_generation
+    - id: human_review
+      name: Human Review
+      engine: human_review + export
+
+inputs:
+  required:
+    - key: approved_initiatives
+      type: array[Initiative]
+      from: agent-04
+    - key: value_estimates
+      type: array[ValueEstimate]
+      from: agent-05
+  optional:
+    - key: client_constraints
+      type: ClientConstraints
+      fields: [timeline, budget, risk_tolerance, peak_seasons]
+    - key: feasibility_scores
+      type: array[FeasibilityScore]
+    - key: dependency_map
+      type: DependencyGraph
+      from: agent-04
+    - key: strategic_priorities
+      type: array[string]
+
+outputs:
+  - key: prioritized_initiative_list
+    type: array[RankedInitiative]
+    fields: [rank, scores, rationale]
+  - key: phased_roadmap
+    type: Roadmap
+    phases: [days_0_100, year_1, years_2_5]
+  - key: tradeoff_dependency_report
+    type: TradeoffReport
+  - key: rationale_documentation
+    type: array[RationaleDoc]
+  - key: client_presentation_export
+    type: file
+    formats: [pptx]
+
+integrations:
+  - system: agent-05
+    direction: read
+  - system: agent-04
+    direction: read
+  - system: internal_knowledge_base
+    direction: read
+    mckinsey_ref_needed: true
+  - system: document_export_layer
+    direction: write
+
+scoring_model:
+  dimensions:
+    - name: value
+      weight: 0.35
+      source: agent-05 estimates (use midpoint of range)
+    - name: feasibility
+      weight: 0.25
+      source: agent-04 build plans + compendium feasibility labels
+    - name: strategic_fit
+      weight: 0.20
+      source: client priorities + sponsor thesis
+    - name: dependency_readiness
+      weight: 0.20
+      source: dependency_map — penalize blocked initiatives
+  horizons:
+    H1: 0-3 months — mostly process + quick automation
+    H2: 3-12 months — system integrations
+    H3: 12+ months — bold vision (e.g., agent-led MTS self-serve)
+
+stakeholder_review:
+  data_engineer:
+    requirements:
+      - Scoring inputs auditable — store weights, raw scores, computed rank
+      - Dependency graph as DAG validation
+    risks:
+      - Rank instability when value ranges overlap significantly
+    open_questions:
+      - Monte Carlo on ranges vs deterministic midpoint?
+
+  software_engineer:
+    requirements:
+      - Constraint solver for phasing (resource caps, dependency order)
+      - Human override on rank with mandatory rationale text
+    risks:
+      - LLM re-orders roadmap inconsistently on re-run
+    open_questions:
+      - Freeze roadmap version at partner sign-off?
+
+  ux_ui_engineer:
+    requirements:
+      - Gantt-style roadmap with drag-adjust phasing (ED override)
+      - Trade-off panel: "moving X before Y risks Z"
+    risks:
+      - Cluttered slide if all 40+ initiatives from v6 shown
+    open_questions:
+      - Top 10-15 only in client view vs full backlog internal?
+
+  cto:
+    requirements:
+      - Phase 1 roadmap respects integration capacity and vendor roadmap
+      - Tech dependencies visible on timeline
+    risks:
+      - Sequencing assumes parallel engineering streams that don't exist
+    open_questions:
+      - JK Tech capacity assumptions for Phase 2?
+
+  coo:
+    requirements:
+      - Avoid peak Fall season for major process changes
+      - Pod change fatigue — stagger initiatives by function
+    risks:
+      - H1 overload across all pods simultaneously
+    open_questions:
+      - Client change management capacity input?
+
+  client:
+    requirements:
+      - Roadmap shows quick wins they can communicate to teams
+      - Realistic given their in-flight compendium initiatives
+    risks:
+      - Rejection if roadmap ignores work already started
+    open_questions:
+      - Merge in-flight initiatives as committed baseline?
+
+  partner_mckinsey:
+    requirements:
+      - 100-day plan crisp for steerco close
+      - Rationale defensible under challenge
+    risks:
+      - Black-box AI ranking rejected by senior partners
+    open_questions:
+      - Partner review before vs after client pre-read?
+
+  senior_partner_mckinsey:
+    requirements:
+      - Roadmap narrative supports PE fund value creation story
+      - Replication template for next portco
+    risks:
+      - Too VB-specific to generalize
+    open_questions:
+      - Standard PE value creation roadmap template?
+
+  em_mckinsey:
+    requirements:
+      - Final roadmap Week 3 deliverable with version control
+      - All trade-off flags resolved or explicitly accepted
+    risks:
+      - Last-minute partner edits break sequencing logic
+    open_questions:
+      - Roadmap lock date before final stairco?
+
+  ap_mckinsey:
+    requirements:
+      - Top 10-15 H1 initiatives match Agent 04 approved set
+      - Sequencing aligns with compendium prioritization rubric (open item)
+    risks:
+      - High-value low-feasibility initiatives ranked too aggressively
+    open_questions:
+      - ED veto power on rank vs weighted score?
+
+  ba_mckinsey:
+    requirements:
+      - PPT export matches steerco roadmap slide format
+      - One-slide executive summary + appendix detail
+    risks:
+      - Manual rebuild for compendium-style visuals
+    open_questions:
+      - Firm roadmap PPT template?
+
+open_decisions:
+  - id: OD-06-001
+    question: Scoring weights — use compendium rubric once aligned or default above?
+    owner: AP + Partner
+    blocking: score_initiatives
+  - id: OD-06-002
+    question: Show 5-year exit-timeline alignment for KKR or ops-only horizon?
+    owner: Partner
+    blocking: draft_roadmap phasing
+
+mckinsey_resources_to_request:
+  - PE value creation roadmap templates
+  - Prior GM&S implementation roadmap examples (100-day + Year 1)
+  - Feasibility scoring rubric from Procurement/Pricing BC if transferable
+  - Compendium prioritization rubric once Robin/Isabella/Shreya aligned

@@ -1,0 +1,244 @@
+# Agent 05 — Value Modeling Agent
+# Source: reference/blueprints/05-value-modeling-agent.pdf
+
+meta:
+  id: agent-05
+  name: Value Modeling Agent
+  version: 0.1.0
+  status: planned
+  phase: design
+  build_priority: 4
+
+concept:
+  purpose: >
+    Size financial and operational opportunity for each improvement initiative,
+    producing model-ready business case outputs with explicit assumptions and ranges.
+  one_liner: Initiative sizing with assumptions, ranges, and sensitivity
+
+guardrails:
+  - Show assumptions explicitly — never bury them
+  - Ranges not point estimates
+  - Anchor every estimate to initiative + pain point
+  - Flag data-thin estimates for human review
+  - Never present estimate without confidence level
+
+kpis:
+  - metric: estimate_accuracy_vs_final_bc
+    target: "±20%"
+  - metric: time_to_first_value_model
+    target: "-70% vs manual"
+  - metric: assumption_coverage_rate
+    target: "95%+"
+  - metric: data_thin_estimates_human_reviewed
+    target: "100%"
+
+workflow:
+  steps:
+    - id: ingest_initiatives
+      name: Ingest Initiatives
+      engine: retrieval_layer
+    - id: pull_benchmarks
+      name: Pull Benchmarks
+      engine: benchmark_retrieval
+    - id: apply_estimation_logic
+      name: Apply Estimation Logic
+      engine: llm + financial_modeling
+    - id: sensitivity_analysis
+      name: Sensitivity Analysis
+      engine: sensitivity_engine
+    - id: human_review
+      name: Human Review
+      engine: human_review + export
+
+inputs:
+  required:
+    - key: approved_initiatives
+      type: array[Initiative]
+      from: agent-04
+    - key: fact_base_requirements
+      type: array[FactRequirement]
+      from: agent-01
+  optional:
+    - key: process_metrics
+      type: ProcessMetrics
+    - key: industry_benchmarks
+      type: array[Benchmark]
+    - key: client_financials
+      type: FinancialProxy
+
+outputs:
+  - key: per_initiative_estimates
+    type: array[ValueEstimate]
+    fields: [low, high, confidence, currency, annualized]
+  - key: assumption_documentation
+    type: array[Assumption]
+  - key: sensitivity_analysis
+    type: array[SensitivityResult]
+  - key: business_case_summaries
+    type: array[BusinessCaseSummary]
+    consumers: [agent-06]
+  - key: model_export
+    type: file
+    formats: [xlsx]
+
+integrations:
+  - system: agent-04
+    direction: read
+  - system: agent-01
+    direction: read
+  - system: internal_knowledge_base
+    direction: read
+    mckinsey_ref_needed: true
+  - system: Cleansheet AI
+    direction: read
+    optional: true
+    mckinsey_ref_needed: true
+  - system: agent-06
+    direction: write
+
+vb_calibration:
+  ground_truth_model: reference/models/survey-data-analysis-v6.xlsx
+  ground_truth_summary:
+    total_annual_impact_usd:
+      low: 9198401
+      high: 14985028
+      average: 12091715
+    by_role:
+      - role: SSR
+        fte: 188
+        hours_saved_low: 9.82
+        hours_saved_high: 17.55
+      - role: TM
+        fte: 139
+        hours_saved_low: 15.24
+        hours_saved_high: 25.40
+      - role: MTS Pod
+        fte: 73
+        hours_saved_low: 17.82
+        hours_saved_high: 25.11
+  time_allocation_source: reference/models/VB-time-allocation.xlsx
+
+estimation_methods:
+  productivity:
+    formula: FTE × weighted_salary × (hours_saved / total_hours) × offshore_discount
+    inputs_from: [survey model Inputs tab, fact_base_requirements]
+  revenue:
+    formula: volume × conversion_lift × margin
+    note: Less prominent in VB sales support study — confirm with AP
+  implementation_cost:
+    formula: engineering_days × rate + change_mgmt
+    note: Required for net ROI in BRD — not in blueprint PDF, add in planning
+
+stakeholder_review:
+  data_engineer:
+    requirements:
+      - Structured link between fact_base_requirements and model cells
+      - Version survey v6 as read-only calibration fixture
+    risks:
+      - Excel formula extraction from v6 for automated replay
+    open_questions:
+      - Replicate v6 logic in code vs export agent-filled template?
+
+  software_engineer:
+    requirements:
+      - ValueEstimate schema with initiative_id, pain_point_id, assumption_ids[]
+      - Sensitivity as parameterized ranges on top 3 assumptions per initiative
+    risks:
+      - LLM inventing FTE counts — must pull from Inputs tab or fact base
+    open_questions:
+      - Cleansheet AI API vs custom productivity model for v1?
+
+  ux_ui_engineer:
+    requirements:
+      - Assumption table editable inline with live range recalc
+      - Flag data-thin rows in red with "needs SME data" CTA
+    risks:
+      - Partners see point estimate despite range policy
+    open_questions:
+      - Dashboard chart style for stairco — match compendium?
+
+  cto:
+    requirements:
+      - Implementation cost and tech debt in business case
+      - ROI net of platform license and integration
+    risks:
+      - Gross productivity savings without implementation feasibility
+    open_questions:
+      - Engage/QOE customization cost benchmarks?
+
+  coo:
+    requirements:
+      - Pod-level rollup matches operational structure
+      - Hours saved translated to capacity redeployed vs headcount reduction
+    risks:
+      - Political sensitivity on FTE impact numbers in client readout
+    open_questions:
+      - Frame as capacity vs cost takeout in outputs?
+
+  client:
+    requirements:
+      - Assumptions use their role names and plausible volumes
+      - Ranges honest about data gaps
+    risks:
+      - Challenge on salary/FTE figures in working session
+    open_questions:
+      - Client-provided financials available for KKR phase?
+
+  partner_mckinsey:
+    requirements:
+      - Aggregate within ±20% of validated v6 model for BC calibration
+      - Methodology slide-ready: how estimates were built
+    risks:
+      - Inconsistent sizing vs original 7-week study damages credibility
+    open_questions:
+      - Which v6 tabs are ED-approved final numbers?
+
+  senior_partner_mckinsey:
+    requirements:
+      - ROI narrative supports $925K BC investment story
+    risks:
+      - Overstated firm-wide savings extrapolation from one portco
+    open_questions:
+      - Portco scaling assumptions documented separately?
+
+  em_mckinsey:
+    requirements:
+      - First model draft Day 8-10 of sprint; BA refinement Day 11-15
+    risks:
+      - Blocked on missing fact-base fields from Agent 01/02
+    open_questions:
+      - Parallel sizing while initiatives still in approval?
+
+  ap_mckinsey:
+    requirements:
+      - Pressure-test top 5 initiatives manually
+      - Align rubric for assessment/prioritization (compendium open item)
+    risks:
+      - Efficiency gains double-count across overlapping initiatives
+    open_questions:
+      - Deduplication rules for initiative overlap?
+
+  ba_mckinsey:
+    requirements:
+      - XLSX export matches v6 structure for copy-paste into final model
+      - Assumption log one row per assumption with source
+    risks:
+      - Rebuilding model from scratch anyway if export wrong
+    open_questions:
+      - v6 as template shell with agent-populated cells?
+
+open_decisions:
+  - id: OD-05-001
+    question: Use Cleansheet AI for any sizing or productivity-only custom model?
+    owner: user (McKinsey internal) + AP
+    blocking: apply_estimation_logic
+  - id: OD-05-002
+    question: v6 workbook as golden output format vs simplified agent-native model?
+    owner: BA
+    blocking: model_export
+
+mckinsey_resources_to_request:
+  - Cleansheet AI applicability for sales support productivity (vs pricing/procurement BC)
+  - Firm benchmark data for shared services automation savings
+  - Standard value case Excel templates for GM&S diagnostics
+  - v6 model ED-approved final tab designation from Emmanuel's team

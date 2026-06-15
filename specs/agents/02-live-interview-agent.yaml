@@ -1,0 +1,208 @@
+# Agent 02 — Live Interview Agent
+# Source: reference/blueprints/02-live-interview-agent.pdf
+
+meta:
+  id: agent-02
+  name: Live Interview Agent
+  version: 0.1.0
+  status: planned
+  phase: diagnostic
+  build_priority: 3
+
+concept:
+  purpose: >
+    Conduct live AI-led SME interviews using the approved interview guide, capturing
+    responses and probing for depth before handing off to process mapping.
+  one_liner: Autonomous SME interviews with depth probing and structured handoff
+
+guardrails:
+  - Never lead the witness — open-ended questions only
+  - Probe for specific recent past examples, not hypotheticals
+  - Escalate to human if SME unresponsive or responses consistently thin
+  - Never fabricate or infer answers not explicitly provided
+  - Professional, consultative, adaptive tone
+
+kpis:
+  - metric: interview_completion_rate
+    target: "85%+"
+  - metric: response_depth_parity
+    target: ">=80% vs human-led"
+  - metric: follow_up_flag_accuracy
+    target: "90%+"
+  - metric: time_saved_per_cycle
+    target: "-60% vs manual"
+
+workflow:
+  steps:
+    - id: load_guide
+      name: Load Guide
+      engine: retrieval_layer
+    - id: initiate_conversation
+      name: Initiate Conversation
+      engine: llm_conversational
+    - id: ask_and_probe
+      name: Ask & Probe
+      engine: adaptive_questioning
+    - id: detect_completeness
+      name: Detect Completeness
+      engine: coverage_scoring
+    - id: summarize_and_handoff
+      name: Summarize & Hand Off
+      engine: summarization + human_review
+
+inputs:
+  required:
+    - key: approved_interview_guide
+      type: InterviewGuide
+      from: agent-01
+    - key: sme_profile
+      type: object
+      fields: [name, role, seniority, pod]
+  optional:
+    - key: interview_parameters
+      type: object
+      fields: [max_duration_minutes, channel]
+    - key: prior_interview_context
+      type: array[InterviewSummary]
+
+outputs:
+  - key: full_transcript
+    type: Transcript
+    consumers: [agent-03]
+  - key: structured_summary
+    type: InterviewSummary
+    schema_ref: schemas/interview-summary.json
+    consumers: [agent-03]
+  - key: follow_up_flags
+    type: array[FollowUpItem]
+  - key: coverage_assessment
+    type: CoverageReport
+
+integrations:
+  - system: agent-01
+    direction: read
+  - system: agent-03
+    direction: write
+  - system: communication_platform
+    direction: bidirectional
+    purpose: Chat, email, or web interview UI
+  - system: internal_knowledge_base
+    direction: read
+    mckinsey_ref_needed: true
+
+stakeholder_review:
+  data_engineer:
+    requirements:
+      - Immutable transcript storage with turn-level timestamps
+      - Link transcript segments to interview_guide question IDs
+    risks:
+      - Audio recording retention policy if voice channel added later
+    open_questions:
+      - Store raw vs redacted transcripts for client data classification?
+
+  software_engineer:
+    requirements:
+      - Streaming conversation with session timeout and resume
+      - Escalation webhook to notify human interviewer
+      - Coverage scorer as separate evaluable module
+    risks:
+      - LLM hallucinating SME answers in summary step
+    open_questions:
+      - Real-time vs async (email) interview modes in v1?
+
+  ux_ui_engineer:
+    requirements:
+      - SME-facing UI: progress indicator, plain language, mobile-friendly
+      - BA review UI: transcript + summary side-by-side with flags highlighted
+      - Clear consent and data use notice at interview start
+    risks:
+      - SMEs abandon long web sessions on mobile
+    open_questions:
+      - Branding — McKinsey vs client co-branded interview portal?
+
+  cto:
+    requirements:
+      - SSO optional for client SMEs in production deployment
+      - No client PII in logs sent to third-party without approval
+    risks:
+      - SMEs share credentials or order data in free-text responses
+    open_questions:
+      - Interview hosted on Vercel acceptable for BC with synthetic SMEs?
+
+  coo:
+    requirements:
+      - Interview duration respects frontline pod shift constraints (~30-45 min max)
+      - Schedule batch interviews without disrupting SLA-critical hours
+    risks:
+      - AI interview during peak order season rejected by operations
+    open_questions:
+      - Which pods approve AI-first vs human-first interview policy?
+
+  client:
+    requirements:
+      - Questions understandable without consulting jargon
+      - Option to request human interviewer mid-session
+    risks:
+      - Trust erosion if SME feels "talking to a bot about my job"
+    open_questions:
+      - Disclose AI interviewer upfront or position as "digital assistant"?
+
+  partner_mckinsey:
+    requirements:
+      - Thin-response escalation before transcript goes to process mapping
+      - Quality bar comparable to AP-led first interviews
+    risks:
+      - Client steerco hears "AI interviewed our team" without quality narrative
+    open_questions:
+      - Minimum human interview count per workflow for client deployment?
+
+  senior_partner_mckinsey:
+    requirements:
+      - Compliance with firm policy on AI-client interaction
+      - Scalable to 3x interview volume for portco rollout
+    risks:
+      - Regulatory/reputational if transcript used without consent
+    open_questions:
+      - Legal template for AI-led SME consent?
+
+  em_mckinsey:
+    requirements:
+      - Dashboard: interviews scheduled / in-progress / complete / escalated
+      - Parallel interviews across pods in Week 2
+    risks:
+      - Bottleneck if escalation queue not staffed
+    open_questions:
+      - BA hours allocated for escalation interviews?
+
+  ap_mckinsey:
+    requirements:
+      - Spot-check 2 interviews per pod before trusting Agent 03 input
+      - Probe depth on exceptions and workarounds captured
+    risks:
+      - Surface-level answers produce wrong process maps
+    open_questions:
+      - ED review sample size before full process mapping run?
+
+  ba_mckinsey:
+    requirements:
+      - Structured summary maps 1:1 to interview guide sections
+      - Export interview record attachable to fact pack
+    risks:
+      - Manual re-listening to audio because summary missed nuance
+    open_questions:
+      - Require SME sign-off on summary before Agent 03?
+
+open_decisions:
+  - id: OD-02-001
+    question: v1 channel — web chat only, email async, or voice?
+    owner: EM + UX
+    blocking: communication_platform build
+  - id: OD-02-002
+    question: BC uses role-play APs as SMEs — same agent config as production?
+    owner: AP
+    blocking: prompt tuning
+
+mckinsey_resources_to_request:
+  - Firm guidance on AI-conducted client/SME interviews
+  - Prior interview transcript anonymization standards
+  - Communication platform patterns from other BC efforts (Procurement/Pricing)

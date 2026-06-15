@@ -1,0 +1,138 @@
+# Stakeholder lenses applied to every agent spec and plan.
+# Each lens answers: What do they care about? What would make them block or approve?
+
+lenses:
+  data_engineer:
+    role: Data Engineer
+    cares_about:
+      - Data lineage and source traceability
+      - Schema contracts between agents
+      - Ingestion pipelines for client uploads (PDF, PPTX, XLSX)
+      - Idempotent storage, versioning, audit logs
+      - RAG chunk quality and retrieval accuracy
+    approval_criteria:
+      - Every output field maps to a source document or interview ID
+      - PII handling and retention policy defined
+      - Reproducible pipelines (same input → same structured output)
+
+  software_engineer:
+    role: Software Engineer
+    cares_about:
+      - Agent orchestration and handoff contracts
+      - API boundaries, error handling, retries
+      - Testability (unit + integration + golden fixtures)
+      - Deployment on Vercel → McKinsey platform migration path
+      - LLM prompt versioning and eval harnesses
+    approval_criteria:
+      - Typed I/O schemas between agents
+      - Human review gates implemented as state machine, not ad-hoc
+      - CI runs agent evals on reference fixtures before deploy
+
+  ux_ui_engineer:
+    role: UX / UI Engineer
+    cares_about:
+      - Human-in-the-loop review flows (approve / reject / edit)
+      - Clarity of agent status, confidence, and gaps
+      - Export UX (Word, PPT) that matches consultant workflows
+      - Accessibility and mobile for SME interview interface
+      - Progressive disclosure — ED sees summary, BA sees detail
+    approval_criteria:
+      - Review screens show diff vs prior version and source citations
+      - Empty/error states guide user to next action
+      - ≤3 clicks from dashboard to approve workflow list
+
+  cto:
+    role: CTO (Client)
+    cares_about:
+      - Tech feasibility and integration with existing stack (Engage, QOE, VOE, SAP)
+      - Security, SSO, data residency
+      - Build vs buy for agentic capabilities
+      - Phase 2 implementation path from BRD outputs
+    approval_criteria:
+      - Initiatives tagged with system dependencies and integration complexity
+      - No recommendation that bypasses existing platform investments without rationale
+      - Clear handoff artifact for engineering (BRD, not just slides)
+
+  coo:
+    role: COO (Client)
+    cares_about:
+      - Operational impact and change management
+      - Pod-level workload reduction and service levels
+      - Risk to customer experience during transformation
+      - Sequencing that doesn't break live operations
+    approval_criteria:
+      - Roadmap respects operational constraints (peak seasons, staffing)
+      - Initiatives show which pods are affected and FTE/time impact
+      - Quick wins in Horizon 1 are genuinely low-risk
+
+  client:
+    role: Client (SME / Functional Leader)
+    cares_about:
+      - Accuracy of how their team actually works
+      - Not being misrepresented in process maps
+      - Practical initiatives, not AI hype
+      - Minimal disruption to daily work
+    approval_criteria:
+      - Process maps use their terminology (TM, SSR, MTS Pod, etc.)
+      - Interview questions feel relevant, not generic
+      - They can validate outputs in <30 min per workflow
+
+  partner_mckinsey:
+    role: Partner (McKinsey)
+    cares_about:
+      - Client-ready quality and defensibility of recommendations
+      - Relationship risk — nothing goes to client without ED review
+      - Scalable playbook for other PE portcos
+      - Alignment with firm methodology (ENS, ProcessAI, value creation)
+    approval_criteria:
+      - Outputs syndicate-ready for stairco / client steering
+      - Methodology clearly differentiated from "ChatGPT wrapper"
+      - ROI narrative holds under partner challenge
+
+  senior_partner_mckinsey:
+    role: Senior Partner (McKinsey)
+    cares_about:
+      - Firm investment ROI ($925K BC + client deployment)
+      - Replication to KKR and other PE funds
+      - Brand risk and compliance
+      - Strategic narrative for GM&S × Private Capital
+    approval_criteria:
+      - 10-week → 3-week compression demonstrated with quality parity
+      - Clear path to productize as firm asset
+      - Compliance with client data and firm AI policies
+
+  em_mckinsey:
+    role: EM (McKinsey)
+    cares_about:
+      - Team velocity and workplan adherence (3-week sprint)
+      - Workstream coordination and staffing
+      - Deliverable completeness vs workplan slide 6
+      - Escalation paths when agents fail
+    approval_criteria:
+      - Daily visibility into agent run status and blockers
+      - Deliverables map 1:1 to BC workplan milestones
+      - BA/AP time freed for judgment work, not data wrangling
+
+  ap_mckinsey:
+    role: AP / ED (McKinsey)
+    cares_about:
+      - Answer quality — "would I send this to the client?"
+      - Hypothesis-led discovery, not fishing expeditions
+      - Efficient use of SME time
+      - Continuity with prior 7-week VB study
+    approval_criteria:
+      - Interview guides test specific hypotheses from compendium
+      - Process maps match known pain points (MTS intake, shop go-live rates)
+      - Value estimates within ±20% of validated model
+
+  ba_mckinsey:
+    role: BA (McKinsey)
+    cares_about:
+      - Usable first drafts that need <20% edit
+      - Source traceability for fact-checking
+      - Excel/PPT export formats they already use
+      - Clear fact-base checklist for what's still missing
+    approval_criteria:
+      - Can go from agent output to compendium-quality slide in <2 hours
+      - Assumption log complete enough to defend in working session
+      - No orphan bullets without source

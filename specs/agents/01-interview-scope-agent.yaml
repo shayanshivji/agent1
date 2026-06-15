@@ -1,0 +1,268 @@
+# Agent 01 — Interview Scope Agent
+# Source: reference/blueprints/01-interview-scope-agent.pdf
+
+meta:
+  id: agent-01
+  name: Interview Scope Agent
+  version: 0.1.0
+  status: planned  # planned | spec_review | building | testing | ready
+  phase: diagnostic
+  build_priority: 1
+
+concept:
+  purpose: >
+    Define discovery scope by pulling relevant workflows, building tailored interview
+    guides, and establishing the factual baseline needed to size processes and pain points.
+  one_liner: Scope + interview guides + fact-base for value modeling
+
+guardrails:
+  - Always require human approval of workflow list before generating interview questions
+  - Ground questions in selected workflows — no generic question banks
+  - Ingest uploaded client materials to tailor scope
+  - Map preliminary pain points from materials; do not treat as validated facts
+  - Output fact-base requirements list for Agent 05
+
+kpis:
+  - metric: time_to_scoped_guide
+    target: "-75% vs manual"
+  - metric: workflow_coverage_rate
+    target: "95%+ relevant workflows surfaced"
+  - metric: interview_guide_approval_rate
+    target: "80%+ no major rework"
+  - metric: fact_base_completeness
+    target: "90%+ fields populated for downstream sizing"
+
+workflow:
+  steps:
+    - id: ingest_context
+      name: Ingest Context
+      description: Accept company, functions, uploaded materials, hypotheses
+      engine: document_parser + retrieval_layer
+      human_gate: false
+
+    - id: pull_workflows
+      name: Pull Workflows
+      description: Surface likely workflows for function and company context
+      engine: llm + workflow_knowledge_base
+      human_gate: false
+
+    - id: human_approval
+      name: Human Approval
+      description: Present workflow list for ED/AP review before proceeding
+      engine: review_ui
+      human_gate: true
+      gate_owner: ap_ed
+      blocks: [build_interview_guide]
+
+    - id: build_interview_guide
+      name: Build Interview Guide
+      description: Generate tailored questions per workflow
+      engine: llm + prompt_templates
+      human_gate: false
+
+    - id: output_fact_base
+      name: Output Fact Base
+      description: Factual data points needed to size each workflow for value modeling
+      engine: fact_base_generator
+      human_gate: false
+
+inputs:
+  required:
+    - key: company_name
+      type: string
+      example: Varsity Brands / BSN Sports
+    - key: function_types
+      type: array[string]
+      example: [sales_support, customer_care, financial_services, mts_operations]
+    - key: client_materials
+      type: array[file]
+      formats: [pdf, pptx, xlsx, docx]
+      reference: reference/client-materials/
+  optional:
+    - key: known_hypotheses
+      type: array[string]
+    - key: interview_length_minutes
+      type: integer
+      default: 45
+    - key: sme_seniority
+      type: enum
+      values: [frontline, manager, director]
+
+outputs:
+  - key: approved_workflow_list
+    type: array[Workflow]
+    schema_ref: schemas/workflow.json
+    consumers: [agent-02, agent-03]
+  - key: interview_guides
+    type: array[InterviewGuide]
+    schema_ref: schemas/interview-guide.json
+    consumers: [agent-02]
+    export: [docx, pptx]
+  - key: preliminary_pain_points
+    type: array[PainPointHypothesis]
+    schema_ref: schemas/pain-point-hypothesis.json
+    consumers: [agent-03, agent-04]
+  - key: fact_base_requirements
+    type: array[FactRequirement]
+    schema_ref: schemas/fact-requirement.json
+    consumers: [agent-05]
+
+integrations:
+  - system: internal_knowledge_base
+    direction: read
+    purpose: Workflow libraries and prior engagement archives
+    mckinsey_ref_needed: true
+  - system: document_upload_layer
+    direction: read
+    purpose: Client presentations, SOPs, process materials
+  - system: agent-02
+    direction: write
+    purpose: Pass approved interview guide
+  - system: document_export_layer
+    direction: write
+    purpose: Word/PPT interview guide export
+    mckinsey_ref_needed: true
+
+vb_context:
+  seed_workflows:
+    - id: tm-quotes-carts
+      pod: TM
+      source: reference/client-materials/how-to-utilize-support-teams.pdf
+    - id: ssr-order-management
+      pod: SSR
+    - id: mts-shop-build
+      pod: MTS Pod
+      source: reference/decks/20260410_BSN_Phase-1-compendium.pptx
+    - id: rnr-returns-replacements
+      pod: R+R Pod
+    - id: comp-promo-orders
+      pod: Comp Pod
+    - id: fin-serv-ar-credit
+      pod: Financial Services
+  seed_hypotheses:
+    - MTS intake form incompleteness (~25%) drives rework
+    - 20-25% shops never go live — lead readiness gap
+    - Manual shop build time split (~20% item selection, ~30% inventory, ~30% artwork)
+
+stakeholder_review:
+  data_engineer:
+    requirements:
+      - Version client uploads; store parsed chunks with doc_id for RAG
+      - Workflow list schema must include pod, function, source_citations[]
+      - Fact-base requirements typed (volume, rate, FTE, cycle_time, cost)
+    risks:
+      - PPTX/XLSX parsing quality on compendium and survey model
+    open_questions:
+      - Firm standard for document ingestion — IndexAI vs custom pipeline?
+
+  software_engineer:
+    requirements:
+      - State machine: draft_workflows → pending_approval → approved → guides_generated
+      - API: POST /agents/01/runs, GET /agents/01/runs/:id, PATCH workflows/:id/approve
+      - Prompt templates versioned in repo under prompts/agent-01/
+    risks:
+      - Approval gate bypass if UI and API not aligned
+    open_questions:
+      - Auth provider for Vercel phase (McKinsey SSO later)
+
+  ux_ui_engineer:
+    requirements:
+      - Workflow approval screen: checkbox per workflow, inline edit, add/remove
+      - Show source citation per suggested workflow (which doc, which page)
+      - Preview interview guide before export; section per workflow
+    risks:
+      - ED overwhelmed by long workflow list — need prioritize/filter by pod
+    open_questions:
+      - Match existing McKinsey interview guide template layout?
+
+  cto:
+    requirements:
+      - Tag workflows with system touchpoints (Engage, QOE, VOE, TAL, SAP)
+      - Flag initiatives requiring platform changes vs process-only
+    risks:
+      - Scope creep into systems not in client's near-term roadmap
+    open_questions:
+      - JK Tech / SAP alliance constraints from compendium?
+
+  coo:
+    requirements:
+      - Scope covers all support pods affecting order flow and customer SLAs
+      - Interview plan respects peak season (Fall sports) staffing
+    risks:
+      - Missing Fin Serv / AR workflows that block order release
+    open_questions:
+      - Which pods are in-scope vs out for 3-week sprint?
+
+  client:
+    requirements:
+      - Use BSN pod names and email queues (tm, ssr, mtsbuildpod, etc.)
+      - Questions reflect actual daily tasks from support teams PDF
+    risks:
+      - SMEs reject guides that feel like generic consulting templates
+    open_questions:
+      - Role-play SMEs for BC vs real client interviews for KKR deployment?
+
+  partner_mckinsey:
+    requirements:
+      - Guides test hypotheses from prior 7-week study continuity
+      - Coverage matrix shows no critical workflow gaps before fieldwork
+    risks:
+      - Over-reliance on AI scope misses political/organizational dynamics
+    open_questions:
+      - Minimum SME count per workflow for defensibility?
+
+  senior_partner_mckinsey:
+    requirements:
+      - Methodology clearly compresses Week 1 scoping without skipping coverage
+      - Playbook reusable for next KKR portco with config change only
+    risks:
+      - Brand risk if client sees fully automated scoping without ED touch
+    open_questions:
+      - Firm AI policy on client data in external LLM during BC?
+
+  em_mckinsey:
+    requirements:
+      - Day 1-2 deliverable: approved workflow list + draft guides
+      - Visibility: which workflows pending ED approval
+    risks:
+      - Blocked downstream if ED approval delayed
+    open_questions:
+      - Parallel runs per pod vs single sequential scope?
+
+  ap_mckinsey:
+    requirements:
+      - Every workflow tied to a value-creation hypothesis
+      - Fact-base list complete enough for BA to start sizing spreadsheet
+    risks:
+      - Generic questions that don't pressure-test MTS bold vision
+    open_questions:
+      - Emmanuel's must-have workflows from original EF study?
+
+  ba_mckinsey:
+    requirements:
+      - Export to Word matches working interview guide format
+      - Fact-base as checklist with owner and source column
+    risks:
+      - Reformatting agent output takes longer than writing from scratch
+    open_questions:
+      - Link fact-base rows to survey model tabs in v6 workbook?
+
+open_decisions:
+  - id: OD-01-001
+    question: Single function scope (sales support only) or include adjacent functions?
+    owner: AP/ED
+    blocking: pull_workflows prompt design
+  - id: OD-01-002
+    question: Which McKinsey workflow library / IndexAI corpus to wire first?
+    owner: EM + user (internal McKinsey reference)
+    blocking: pull_workflows engine
+  - id: OD-01-003
+    question: Role-play SME interviews for BC vs production client SME access?
+    owner: EM
+    blocking: agent-02 design
+
+mckinsey_resources_to_request:
+  - Prior VB/KKR sales-support workflow taxonomy if exists in firm KB
+  - Standard interview guide template (Word/PPT)
+  - IndexAI or equivalent document ingestion pattern for client materials
+  - ENS discovery scope checklist for sales support diagnostics

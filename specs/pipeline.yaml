@@ -1,0 +1,162 @@
+# Agent pipeline orchestration spec
+# Source: BC Agent Blueprint Library + Accelerating Value Creation deck (Jun 2026)
+
+meta:
+  project: Agentic PE Growth Diagnostic
+  client: Varsity Brands (KKR portco)
+  engagement: Sales support diagnostic & design (3-week target)
+  blueprint_library: https://bc-agent-blueprints.apps.mckinsey.com/
+  deployment:
+    phase_1: Vercel (team access)
+    phase_2: McKinsey internal platform (SSO, compliance)
+
+phases:
+  diagnostic:
+    agents: [1, 2, 3]
+    human_led:
+      - Client follow-up interviews and workshops
+      - Shadowing for nuance not captured in AI interviews
+      - ED validation of scoped workflows and interview guides
+  design:
+    agents: [4, 5, 6]
+    human_led:
+      - Pressure-test initiatives with internal experts
+      - Reflect in-flight initiatives in value estimates
+      - Business rules and edge cases in BRD
+      - Partner sign-off on roadmap phasing
+
+agents:
+  - id: agent-01
+    order: 1
+    name: Interview Scope Agent
+    spec_file: agents/01-interview-scope-agent.yaml
+    plan_file: planning/01-interview-scope-agent-plan.md
+    downstream: [agent-02, agent-05]
+
+  - id: agent-02
+    order: 2
+    name: Live Interview Agent
+    spec_file: agents/02-live-interview-agent.yaml
+    plan_file: planning/02-live-interview-agent-plan.md
+    upstream: [agent-01]
+    downstream: [agent-03]
+
+  - id: agent-03
+    order: 3
+    name: Current-State Process Mapping Agent
+    spec_file: agents/03-current-state-process-mapping-agent.yaml
+    plan_file: planning/03-current-state-process-mapping-agent-plan.md
+    upstream: [agent-02]
+    downstream: [agent-04]
+
+  - id: agent-04
+    order: 4
+    name: Future-State Workflow Mapping Agent
+    spec_file: agents/04-future-state-workflow-agent.yaml
+    plan_file: planning/04-future-state-workflow-agent-plan.md
+    upstream: [agent-03]
+    downstream: [agent-05, agent-06]
+
+  - id: agent-05
+    order: 5
+    name: Value Modeling Agent
+    spec_file: agents/05-value-modeling-agent.yaml
+    plan_file: planning/05-value-modeling-agent-plan.md
+    upstream: [agent-01, agent-04]
+    downstream: [agent-06]
+
+  - id: agent-06
+    order: 6
+    name: Execution Roadmap Agent
+    spec_file: agents/06-execution-roadmap-agent.yaml
+    plan_file: planning/06-execution-roadmap-agent-plan.md
+    upstream: [agent-04, agent-05]
+    downstream: []
+
+human_review_gates:
+  - after: agent-01
+    gate: workflow_list_approval
+    owner: AP/ED
+    blocks: agent-02, agent-01-step-4
+
+  - after: agent-02
+    gate: interview_quality_review
+    owner: BA
+    blocks: agent-03
+    condition: optional_if_coverage_score >= 0.85
+
+  - after: agent-03
+    gate: process_map_validation
+    owner: AP + Client SME
+    blocks: agent-04
+
+  - after: agent-04
+    gate: initiative_approval
+    owner: AP/ED
+    blocks: agent-05, agent-06-step-1
+
+  - after: agent-05
+    gate: value_estimate_review
+    owner: BA + AP
+    blocks: agent-06
+
+  - after: agent-06
+    gate: roadmap_signoff
+    owner: Partner
+    blocks: client_delivery
+
+build_order:
+  # Spec and prototype sequence (dependencies first)
+  - agent-01  # No upstream dependency; can use reference materials immediately
+  - agent-03  # Can prototype against existing process maps while Agent 2 is built
+  - agent-02  # Requires Agent 1 output + interview UI
+  - agent-05  # Can calibrate against survey-data-analysis-v6.xlsx
+  - agent-04  # Requires Agent 3 outputs
+  - agent-06  # Requires Agents 4 + 5
+
+mckinsey_integrations:
+  required:
+    - name: ProcessAI
+      used_by: [agent-03, agent-04]
+      status: needs_internal_reference
+      ask: ProcessAI API/docs, sample VB process map outputs, integration pattern from prior BC
+
+  recommended:
+    - name: Internal knowledge base
+      used_by: [agent-01, agent-02, agent-05, agent-06]
+      status: needs_internal_reference
+      ask: Workflow libraries, prior PE sales-support engagements, benchmark data
+
+    - name: Cleansheet AI
+      used_by: [agent-05]
+      status: optional
+      ask: When to use vs custom value model for support-function productivity
+
+    - name: IndexAI
+      used_by: [agent-01, agent-02]
+      status: optional
+      ask: Document retrieval over client corpus — firm standard vs custom RAG
+
+    - name: Document export layer
+      used_by: all
+      status: needs_internal_reference
+      ask: Firm-approved PPT/Word templates for diagnostic deliverables
+
+deliverables_mapping:
+  # BC workplan slide 6 → agent outputs
+  - deliverable: Mutually-agreed calendar and approach
+    primary_agent: agent-01
+  - deliverable: ProcessAI-powered current-state process maps
+    primary_agent: agent-03
+  - deliverable: GenAI-generated improvement initiatives (3 horizons)
+    primary_agent: agent-04
+  - deliverable: AI mapping of levers to pain points
+    primary_agent: agent-04
+  - deliverable: Opportunity sizing and prioritization by pod
+    primary_agent: agent-05
+  - deliverable: Tech dependency assessment
+    primary_agent: agent-04
+  - deliverable: GenAI BRD for Horizon 1 initiatives
+    primary_agent: agent-04
+  - deliverable: Phased execution roadmap
+    primary_agent: agent-06
