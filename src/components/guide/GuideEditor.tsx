@@ -56,7 +56,7 @@ export function GuideEditor() {
     return (
       <div className="section-card p-12 text-center">
         <div className="max-w-md mx-auto">
-          <h2 className="text-lg font-semibold text-[var(--mck-navy)] mb-2">
+          <h2 className="text-lg font-semibold text-gradient mb-2">
             No guide yet
           </h2>
           <p className="text-sm text-[var(--text-muted)]">
@@ -73,7 +73,7 @@ export function GuideEditor() {
     <div>
       <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
         <div>
-          <h2 className="text-xl font-semibold text-[var(--mck-navy)]">
+          <h2 className="text-xl font-semibold text-[var(--text)]">
             {guide.workflowName}
           </h2>
           <p className="text-sm text-[var(--text-muted)] mt-1">
@@ -87,7 +87,7 @@ export function GuideEditor() {
               e.target.value as "draft" | "in_review" | "validated",
             )
           }
-          className="text-sm border border-[var(--border)] rounded-md px-3 py-1.5 bg-white"
+          className="field-input text-sm w-auto"
         >
           <option value="draft">Draft</option>
           <option value="in_review">In review</option>
@@ -102,7 +102,7 @@ export function GuideEditor() {
       </div>
 
       {regenError && (
-        <div className="flex items-center gap-2 text-sm text-red-700 bg-red-50 border border-red-200 rounded-md px-4 py-3 mb-4">
+        <div className="error-banner flex items-center gap-2 mb-4">
           <AlertCircle className="h-4 w-4 shrink-0" />
           {regenError}
         </div>

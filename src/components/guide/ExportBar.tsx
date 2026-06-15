@@ -31,15 +31,13 @@ export function ExportBar() {
 
   return (
     <div className="border-t border-[var(--border)] pt-4 mt-6">
-      {exportError && (
-        <p className="text-xs text-red-600 mb-3">{exportError}</p>
-      )}
+      {exportError && <p className="error-banner text-xs mb-3">{exportError}</p>}
       <div className="flex flex-wrap items-center gap-2">
         <button
           type="button"
           onClick={() => handleExport("md", () => downloadMarkdown(guide))}
           disabled={!!exporting}
-          className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium bg-[var(--mck-navy)] text-white rounded-md hover:opacity-90 disabled:opacity-60"
+          className="btn-primary text-sm py-2"
         >
           <Download className="h-4 w-4" />
           Markdown
@@ -49,7 +47,7 @@ export function ExportBar() {
           type="button"
           onClick={() => handleExport("docx", () => downloadDocx(guide))}
           disabled={!!exporting}
-          className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium border border-[var(--border-strong)] rounded-md hover:bg-[var(--bg)] disabled:opacity-60"
+          className="btn-secondary"
         >
           <FileType className="h-4 w-4" />
           {exporting === "docx" ? "Exporting…" : "Word (.docx)"}
@@ -59,7 +57,7 @@ export function ExportBar() {
           type="button"
           onClick={() => handleExport("pdf", () => downloadPdf(guide))}
           disabled={!!exporting}
-          className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium border border-[var(--border-strong)] rounded-md hover:bg-[var(--bg)] disabled:opacity-60"
+          className="btn-secondary"
         >
           <FileText className="h-4 w-4" />
           PDF (print)
@@ -68,7 +66,7 @@ export function ExportBar() {
         <button
           type="button"
           onClick={() => saveVersion()}
-          className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium border border-[var(--border-strong)] rounded-md hover:bg-[var(--bg)] ml-auto"
+          className="btn-secondary ml-auto"
         >
           <Save className="h-4 w-4" />
           Save version
@@ -80,7 +78,7 @@ export function ExportBar() {
             onChange={(e) => {
               if (e.target.value) loadVersion(e.target.value);
             }}
-            className="text-sm border border-[var(--border)] rounded-md px-2 py-1.5 bg-white"
+            className="field-input text-sm w-auto"
           >
             <option value="">Load version…</option>
             {versions.map((v) => (

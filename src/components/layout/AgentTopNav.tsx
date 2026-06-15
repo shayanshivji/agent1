@@ -8,48 +8,30 @@ export function AgentTopNav() {
   const pathname = usePathname();
 
   return (
-    <nav
-      className="bg-white border-b border-[var(--border)]"
-      aria-label="Agent navigation"
-    >
+    <nav className="agent-nav" aria-label="Agent navigation">
       <div className="max-w-[1600px] mx-auto px-4">
-        <div className="flex items-center gap-1 overflow-x-auto py-2 scrollbar-thin">
+        <div className="flex items-center gap-1 overflow-x-auto py-2.5">
           {AGENT_ROSTER.map((agent) => {
             const active =
               pathname === agent.href || pathname?.startsWith(`${agent.href}/`);
-            const disabled = agent.status !== "live";
 
             return (
               <Link
                 key={agent.slug}
                 href={agent.href}
-                className={`shrink-0 flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors ${
-                  active
-                    ? "bg-[var(--mck-navy)] text-white font-medium"
-                    : disabled
-                      ? "text-[var(--text-muted)] hover:bg-[var(--bg)]"
-                      : "text-[var(--text)] hover:bg-[var(--bg)]"
-                }`}
+                className={`agent-nav-link ${active ? "agent-nav-link-active" : ""}`}
               >
-                <span className="text-[10px] font-semibold opacity-70">
-                  {agent.id}
+                <span className="text-[10px] font-mono font-semibold text-[var(--accent)]">
+                  {String(agent.id).padStart(2, "0")}
                 </span>
                 <span>{agent.shortName}</span>
                 {agent.status === "live" && (
-                  <span
-                    className={`text-[9px] uppercase tracking-wide px-1.5 py-0.5 rounded ${
-                      active
-                        ? "bg-white/20 text-white"
-                        : "bg-emerald-50 text-emerald-700"
-                    }`}
-                  >
+                  <span className={active ? "badge-live bg-white/10 border-white/20 text-white" : "badge-live"}>
                     Live
                   </span>
                 )}
                 {agent.status === "planned" && !active && (
-                  <span className="text-[9px] uppercase tracking-wide text-[var(--text-muted)]">
-                    Soon
-                  </span>
+                  <span className="badge-soon">Soon</span>
                 )}
               </Link>
             );

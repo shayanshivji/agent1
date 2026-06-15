@@ -29,10 +29,10 @@ export function WorkflowStepper({ currentStep, hasGuide }: WorkflowStepperProps)
               <span
                 className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-semibold ${
                   done
-                    ? "bg-[var(--accent)] text-white"
+                    ? "bg-[var(--accent)] text-[#06080f] shadow-[0_0_12px_var(--accent-glow)]"
                     : active
-                      ? "bg-[var(--mck-navy)] text-white"
-                      : "bg-[var(--bg)] text-[var(--text-muted)] border border-[var(--border)]"
+                      ? "bg-gradient-to-br from-[var(--accent)] to-[var(--accent-secondary)] text-[#06080f]"
+                      : "bg-[rgba(6,8,15,0.6)] text-[var(--text-muted)] border border-[var(--border)]"
                 }`}
               >
                 {done && step.id < currentStep ? "✓" : step.id}
@@ -40,7 +40,7 @@ export function WorkflowStepper({ currentStep, hasGuide }: WorkflowStepperProps)
               <span
                 className={`text-sm hidden sm:inline ${
                   active || done
-                    ? "font-medium text-[var(--mck-navy)]"
+                    ? "font-medium text-[var(--accent)]"
                     : "text-[var(--text-muted)]"
                 }`}
               >

@@ -30,14 +30,14 @@ export function SectionCard({
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between gap-3 px-5 py-4 text-left hover:bg-[var(--bg)]/50 transition-colors"
+        className="w-full flex items-center justify-between gap-3 px-5 py-4 text-left hover:bg-[rgba(0,212,255,0.04)] transition-colors"
       >
         <div className="flex items-center gap-3 min-w-0">
-          <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-[var(--bg)] text-xs font-semibold text-[var(--text-muted)]">
+          <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-[var(--accent-soft)] border border-[var(--border)] text-xs font-mono font-semibold text-[var(--accent)]">
             {index + 1}
           </span>
           <div className="min-w-0">
-            <h3 className="text-sm font-semibold text-[var(--mck-navy)] truncate">
+            <h3 className="text-sm font-semibold text-[var(--text)] truncate">
               {section.title}
             </h3>
             {!open && section.content && (

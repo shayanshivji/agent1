@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Cpu } from "lucide-react";
 
 interface PlatformHeaderProps {
   compact?: boolean;
@@ -8,19 +9,25 @@ export function PlatformHeader({ compact }: PlatformHeaderProps) {
   return (
     <header className="consulting-header">
       <div className="max-w-[1600px] mx-auto px-4 py-3 flex items-center justify-between gap-4">
-        <Link href="/" className="group">
-          <p className="text-[10px] uppercase tracking-widest text-white/50 group-hover:text-white/70">
-            Blue Currency · Agent Platform
-          </p>
-          <p
-            className={`font-semibold text-white ${compact ? "text-sm" : "text-base"}`}
-          >
-            PE Growth Diagnostic
-          </p>
+        <Link href="/" className="group flex items-center gap-3">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-[var(--accent)] to-[var(--accent-secondary)] shadow-[0_0_20px_var(--accent-glow)]">
+            <Cpu className="h-4 w-4 text-[#06080f]" />
+          </div>
+          <div>
+            <p className="text-[10px] uppercase tracking-[0.2em] text-[var(--accent)] group-hover:text-[var(--text)] transition-colors">
+              Blue Currency · Agent OS
+            </p>
+            <p
+              className={`font-semibold text-gradient ${compact ? "text-sm" : "text-base"}`}
+            >
+              PE Growth Diagnostic
+            </p>
+          </div>
         </Link>
-        <p className="text-xs text-white/50 hidden sm:block">
-          Modular agents · combinable codebase
-        </p>
+        <div className="hidden sm:flex items-center gap-2 text-xs text-[var(--text-muted)]">
+          <span className="h-1.5 w-1.5 rounded-full bg-[var(--success)] animate-pulse" />
+          7-agent modular pipeline
+        </div>
       </div>
     </header>
   );

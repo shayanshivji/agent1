@@ -49,8 +49,8 @@ export function ConfigPanel({ onGenerate, isGenerating }: ConfigPanelProps) {
 
   return (
     <div className="section-card overflow-hidden">
-      <div className="px-4 py-3 bg-[var(--bg)] border-b border-[var(--border)]">
-        <h2 className="text-sm font-semibold text-[var(--mck-navy)]">
+      <div className="px-4 py-3 section-card-header">
+        <h2 className="text-sm font-semibold text-[var(--text)]">
           Engagement context
         </h2>
         <p className="text-xs text-[var(--text-muted)] mt-0.5">
@@ -99,7 +99,7 @@ export function ConfigPanel({ onGenerate, isGenerating }: ConfigPanelProps) {
             ))}
           </select>
           {isBsn ? (
-            <p className="text-xs text-emerald-700 mt-1.5">
+            <p className="text-xs text-emerald-400 mt-1.5">
               BSN-specific workflow & role catalog loaded
             </p>
           ) : (
@@ -180,7 +180,7 @@ export function ConfigPanel({ onGenerate, isGenerating }: ConfigPanelProps) {
             type="button"
             onClick={onGenerate}
             disabled={isGenerating}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-[var(--mck-navy)] text-white text-sm font-semibold rounded-md hover:opacity-90 disabled:opacity-60 lg:hidden"
+            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 btn-primary lg:hidden"
           >
             {isGenerating ? (
               <Loader2 className="h-4 w-4 animate-spin" />

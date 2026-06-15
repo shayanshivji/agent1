@@ -39,8 +39,8 @@ export function SourcePanel() {
 
   return (
     <div className="section-card overflow-hidden">
-      <div className="px-4 py-3 bg-[var(--bg)] border-b border-[var(--border)]">
-        <h2 className="text-sm font-semibold text-[var(--mck-navy)]">
+      <div className="px-4 py-3 section-card-header">
+        <h2 className="text-sm font-semibold text-[var(--text)]">
           Source context
         </h2>
         <p className="text-xs text-[var(--text-muted)] mt-0.5">
@@ -87,7 +87,7 @@ export function SourcePanel() {
           {sources.map((s) => (
             <div
               key={s.id}
-              className="border border-[var(--border)] rounded-md p-3 bg-[var(--bg)]"
+              className="border border-[var(--border)] rounded-md p-3 bg-[rgba(6,8,15,0.5)]"
             >
               <div className="flex items-start justify-between gap-2">
                 <div>

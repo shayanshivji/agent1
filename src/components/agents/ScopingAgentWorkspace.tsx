@@ -83,10 +83,10 @@ export function ScopingAgentWorkspace() {
 
   return (
     <>
-      <div className="bg-[var(--bg)] border-b border-[var(--border)]">
+      <div className="toolbar-strip">
         <div className="max-w-[1600px] mx-auto px-6 py-4 flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h1 className="text-lg font-semibold text-[var(--mck-navy)]">
+            <h1 className="text-lg font-semibold text-gradient">
               Scoping Agent
             </h1>
             <p className="text-sm text-[var(--text-muted)]">
@@ -96,17 +96,15 @@ export function ScopingAgentWorkspace() {
           <div className="flex items-center gap-3">
             {llmEnabled !== null && (
               <span
-                className={`text-xs px-2.5 py-1 rounded-full border ${
-                  llmEnabled
-                    ? "bg-emerald-50 text-emerald-700 border-emerald-200"
-                    : "bg-amber-50 text-amber-800 border-amber-200"
-                }`}
+                className={
+                  llmEnabled ? "badge-mode-llm" : "badge-mode-template"
+                }
               >
                 {llmEnabled ? "LLM mode" : "Template mode"}
               </span>
             )}
             {lastGenerationMode && guide && (
-              <span className="text-xs px-2.5 py-1 rounded-full bg-white border border-[var(--border)] text-[var(--text-muted)]">
+              <span className="text-xs px-2.5 py-1 rounded-full border border-[var(--border)] text-[var(--text-muted)]">
                 Last: {lastGenerationMode}
               </span>
             )}
@@ -114,7 +112,7 @@ export function ScopingAgentWorkspace() {
               type="button"
               onClick={handleGenerate}
               disabled={isGenerating}
-              className="inline-flex items-center gap-2 px-5 py-2 bg-[var(--mck-navy)] text-white text-sm font-semibold rounded-md hover:opacity-90 disabled:opacity-60"
+              className="btn-primary"
             >
               {isGenerating ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -131,11 +129,7 @@ export function ScopingAgentWorkspace() {
       </div>
 
       <main className="flex-1 max-w-[1600px] mx-auto w-full px-6 py-6">
-        {error && (
-          <div className="mb-4 text-sm text-red-700 bg-red-50 border border-red-200 rounded-md px-4 py-3">
-            {error}
-          </div>
-        )}
+        {error && <div className="mb-4 error-banner">{error}</div>}
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <aside className="lg:col-span-3 space-y-4 lg:sticky lg:top-6 lg:self-start">
