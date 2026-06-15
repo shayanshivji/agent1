@@ -22,34 +22,30 @@ interface UpstreamHandoffBarProps {
 
 export function UpstreamHandoffBar({ agentSlug, onApplied }: UpstreamHandoffBarProps) {
   const [dismissed, setDismissed] = useState(false);
-  const {
-    savedSessions,
-    activeSessionId,
-    setActiveSession,
-    declineUpstream,
-    clearDeclinedUpstream,
-    isUpstreamDeclined,
-  } = usePlatformSessionsStore();
+  const savedSessions = usePlatformSessionsStore((s) => s.savedSessions) ?? [];
+  const activeSessionId = usePlatformSessionsStore((s) => s.activeSessionId);
+  const setActiveSession = usePlatformSessionsStore((s) => s.setActiveSession);
+  const declineUpstream = usePlatformSessionsStore((s) => s.declineUpstream);
+  const clearDeclinedUpstream = usePlatformSessionsStore((s) => s.clearDeclinedUpstream);
+  const isUpstreamDeclined = usePlatformSessionsStore((s) => s.isUpstreamDeclined);
 
   const liveScopingGuide = useGuideStore((s) => s.guide);
-  const liveScopingCtx = useGuideStore((s) => ({
-    companyName: s.companyName,
-    industryId: s.industryId,
-    functionId: s.functionId,
-    workflowId: s.workflowId,
-    roleId: s.roleId,
-    level: s.level,
-    customNotes: s.customNotes,
-  }));
+  const liveScopingCompanyName = useGuideStore((s) => s.companyName);
+  const liveScopingIndustryId = useGuideStore((s) => s.industryId);
+  const liveScopingFunctionId = useGuideStore((s) => s.functionId);
+  const liveScopingWorkflowId = useGuideStore((s) => s.workflowId);
+  const liveScopingRoleId = useGuideStore((s) => s.roleId);
+  const liveScopingLevel = useGuideStore((s) => s.level);
+  const liveScopingCustomNotes = useGuideStore((s) => s.customNotes);
 
   const upstreamSlug = UPSTREAM_AGENT[agentSlug];
   if (!upstreamSlug || dismissed) return null;
 
   const active = savedSessions.find((s) => s.id === activeSessionId);
-  const sessionsWithUpstream = savedSessions.filter((s) => s.outputs[upstreamSlug]);
+  const sessionsWithUpstream = savedSessions.filter((s) => s.outputs?.[upstreamSlug]);
   const hasLiveScoping = upstreamSlug === "scoping" && liveScopingGuide;
 
-  const hasActiveUpstream = active?.outputs[upstreamSlug];
+  const hasActiveUpstream = active?.outputs?.[upstreamSlug];
   const declined = isUpstreamDeclined(agentSlug);
 
   if (!hasActiveUpstream && sessionsWithUpstream.length === 0 && !hasLiveScoping) return null;
@@ -77,7 +73,13 @@ export function UpstreamHandoffBar({ agentSlug, onApplied }: UpstreamHandoffBarP
     clearDeclinedUpstream(agentSlug);
     applyScopingToInterview({
       savedAt: new Date().toISOString(),
-      ...liveScopingCtx,
+      companyName: liveScopingCompanyName,
+      industryId: liveScopingIndustryId,
+      functionId: liveScopingFunctionId,
+      workflowId: liveScopingWorkflowId,
+      roleId: liveScopingRoleId,
+      level: liveScopingLevel,
+      customNotes: liveScopingCustomNotes,
       guide: liveScopingGuide,
     });
     onApplied?.();

@@ -31,7 +31,6 @@ import {
   syncQuestionStatusFromTurns,
 } from "@/lib/pipeline/guide-handoff";
 import { pickDefaultRoleId, resolveWorkflows } from "@/data/catalog";
-import { useGuideStore } from "@/store/guide-store";
 
 interface InterviewStore extends EngagementContext {
   workflowId: string;
@@ -177,7 +176,9 @@ export const useInterviewStore = create<InterviewStore>()(
       },
 
       importGuideFromScoping: (force = false) => {
-        const scoping = useGuideStore.getState();
+        // Lazy import avoids circular dependency with guide-store at module init.
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
+        const scoping = require("@/store/guide-store").useGuideStore.getState();
         const guide = scoping.guide;
         if (!guide) return false;
         if (!force && get().linkedGuideId === guide.id && get().guideQuestions.length > 0) {

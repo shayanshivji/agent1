@@ -1,21 +1,43 @@
-import { toPipelineHandoff } from "@/lib/process-map/logic";
-import { extractQuestionsFromGuide, guideToHandoffPayload } from "@/lib/pipeline/guide-handoff";
-import { useGuideStore } from "@/store/guide-store";
-import { useInterviewStore } from "@/store/interview-execution-store";
-import { useProcessMapStore } from "@/store/process-map-store";
-import { useInitiativeStore } from "@/store/initiative-store";
 import type {
   AgentSessionOutputs,
   PlatformAgentSlug,
   SavedEngagement,
   ScopingSessionOutput,
 } from "@/types/platform-session";
+import { extractQuestionsFromGuide, guideToHandoffPayload } from "@/lib/pipeline/guide-handoff";
+import type { InterviewGuide } from "@/types/guide";
+
+/** Lazy store access avoids circular import crashes in the client bundle. */
+function getGuideStore() {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  return require("@/store/guide-store").useGuideStore as typeof import("@/store/guide-store").useGuideStore;
+}
+
+function getInterviewStore() {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  return require("@/store/interview-execution-store").useInterviewStore as typeof import("@/store/interview-execution-store").useInterviewStore;
+}
+
+function getProcessMapStore() {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  return require("@/store/process-map-store").useProcessMapStore as typeof import("@/store/process-map-store").useProcessMapStore;
+}
+
+function getInitiativeStore() {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  return require("@/store/initiative-store").useInitiativeStore as typeof import("@/store/initiative-store").useInitiativeStore;
+}
+
+function getProcessMapLogic() {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  return require("@/lib/process-map/logic") as typeof import("@/lib/process-map/logic");
+}
 
 export function captureAgentSnapshot(slug: PlatformAgentSlug): Partial<AgentSessionOutputs> {
   const now = new Date().toISOString();
 
   if (slug === "scoping") {
-    const s = useGuideStore.getState();
+    const s = getGuideStore().getState();
     const output: ScopingSessionOutput = {
       savedAt: now,
       companyName: s.companyName,
@@ -31,7 +53,7 @@ export function captureAgentSnapshot(slug: PlatformAgentSlug): Partial<AgentSess
   }
 
   if (slug === "live-interview") {
-    const s = useInterviewStore.getState();
+    const s = getInterviewStore().getState();
     return {
       "live-interview": {
         savedAt: now,
@@ -48,7 +70,7 @@ export function captureAgentSnapshot(slug: PlatformAgentSlug): Partial<AgentSess
   }
 
   if (slug === "process-mapping") {
-    const s = useProcessMapStore.getState();
+    const s = getProcessMapStore().getState();
     return {
       "process-mapping": {
         savedAt: now,
@@ -59,7 +81,7 @@ export function captureAgentSnapshot(slug: PlatformAgentSlug): Partial<AgentSess
     };
   }
 
-  const s = useInitiativeStore.getState();
+  const s = getInitiativeStore().getState();
   return {
     "improvement-initiatives": {
       savedAt: now,
@@ -71,7 +93,7 @@ export function captureAgentSnapshot(slug: PlatformAgentSlug): Partial<AgentSess
 }
 
 export function applyScopingToInterview(scoping: ScopingSessionOutput) {
-  const interview = useInterviewStore.getState();
+  const interview = getInterviewStore().getState();
   interview.setCompanyName(scoping.companyName);
   interview.setIndustryId(scoping.industryId);
   interview.setFunctionId(scoping.functionId);
@@ -81,7 +103,7 @@ export function applyScopingToInterview(scoping: ScopingSessionOutput) {
 
   if (scoping.guide) {
     const questions = extractQuestionsFromGuide(scoping.guide);
-    useInterviewStore.setState({
+    getInterviewStore().setState({
       guidePayload: guideToHandoffPayload(scoping.guide),
       guideQuestions: questions,
       linkedGuideId: scoping.guide.id,
@@ -91,8 +113,24 @@ export function applyScopingToInterview(scoping: ScopingSessionOutput) {
   }
 }
 
+export function applyScopingGuide(guide: InterviewGuide, ctx: {
+  companyName: string;
+  industryId: string;
+  functionId: string;
+  workflowId: string;
+  roleId: string;
+  customNotes: string;
+}) {
+  applyScopingToInterview({
+    savedAt: new Date().toISOString(),
+    ...ctx,
+    level: "deep_dive",
+    guide,
+  });
+}
+
 export function applyInterviewToProcessMap(output: NonNullable<AgentSessionOutputs["live-interview"]>) {
-  const store = useProcessMapStore.getState();
+  const store = getProcessMapStore().getState();
   if (output.document) {
     store.setCompanyName(output.document.companyName ?? store.companyName);
     store.setWorkflowId(output.document.workflowId);
@@ -129,7 +167,8 @@ export function applyInterviewToProcessMap(output: NonNullable<AgentSessionOutpu
 }
 
 export function applyProcessMapToInitiatives(output: NonNullable<AgentSessionOutputs["process-mapping"]>) {
-  const store = useInitiativeStore.getState();
+  const { toPipelineHandoff } = getProcessMapLogic();
+  const store = getInitiativeStore().getState();
   store.setWorkflowId(output.workflowId);
   if (output.document) {
     store.setPipelinePayload(JSON.stringify(toPipelineHandoff(output.document), null, 2));
@@ -151,7 +190,7 @@ export function applyUpstreamForAgent(slug: PlatformAgentSlug, session: SavedEng
   }
   if (slug === "process-mapping" && session.outputs.scoping && !session.outputs["live-interview"]) {
     const scoping = session.outputs.scoping;
-    const store = useProcessMapStore.getState();
+    const store = getProcessMapStore().getState();
     store.setCompanyName(scoping.companyName);
     store.setIndustryId(scoping.industryId);
     store.setFunctionId(scoping.functionId);
@@ -169,10 +208,26 @@ export function applyUpstreamForAgent(slug: PlatformAgentSlug, session: SavedEng
 }
 
 export function getSessionSummary(session: SavedEngagement): string {
-  const parts: string[] = [session.companyName];
+  const parts: string[] = [session.companyName || "Engagement"];
   if (session.outputs.scoping?.guide) parts.push("Guide");
   if (session.outputs["live-interview"]?.document) parts.push("Interview");
   if (session.outputs["process-mapping"]?.document) parts.push("Process map");
   if (session.outputs["improvement-initiatives"]?.document) parts.push("Initiatives");
   return parts.join(" · ");
+}
+
+export function readLiveScopingGuide(): InterviewGuide | null {
+  return getGuideStore().getState().guide;
+}
+
+export function readLiveScopingContext() {
+  const s = getGuideStore().getState();
+  return {
+    companyName: s.companyName,
+    industryId: s.industryId,
+    functionId: s.functionId,
+    workflowId: s.workflowId,
+    roleId: s.roleId,
+    customNotes: s.customNotes,
+  };
 }

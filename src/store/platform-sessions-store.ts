@@ -4,7 +4,12 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { v4 as uuidv4 } from "uuid";
 import type { PlatformAgentSlug, SavedEngagement } from "@/types/platform-session";
-import { captureAgentSnapshot } from "@/lib/platform/agent-snapshots";
+
+function captureSnapshot(slug: PlatformAgentSlug) {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { captureAgentSnapshot } = require("@/lib/platform/agent-snapshots") as typeof import("@/lib/platform/agent-snapshots");
+  return captureAgentSnapshot(slug);
+}
 
 interface PlatformSessionsStore {
   savedSessions: SavedEngagement[];
@@ -51,7 +56,7 @@ export const usePlatformSessionsStore = create<PlatformSessionsStore>()(
       },
 
       saveToSession: (sessionId, slug) => {
-        const snapshot = captureAgentSnapshot(slug);
+        const snapshot = captureSnapshot(slug);
         const scoping = snapshot.scoping;
         set((s) => ({
           savedSessions: s.savedSessions.map((session) => {
@@ -114,6 +119,19 @@ export const usePlatformSessionsStore = create<PlatformSessionsStore>()(
         return Boolean(activeSessionId && declinedUpstream[agentSlug] === activeSessionId);
       },
     }),
-    { name: "platform-saved-sessions" },
+    {
+      name: "platform-saved-sessions",
+      merge: (persisted, current) => {
+        const p = (persisted ?? {}) as Partial<PlatformSessionsStore>;
+        return {
+          ...current,
+          ...p,
+          savedSessions: Array.isArray(p.savedSessions) ? p.savedSessions : [],
+          activeSessionId: typeof p.activeSessionId === "string" ? p.activeSessionId : null,
+          declinedUpstream:
+            p.declinedUpstream && typeof p.declinedUpstream === "object" ? p.declinedUpstream : {},
+        };
+      },
+    },
   ),
 );

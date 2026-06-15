@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import Link from "next/link";
 import {
   BookmarkPlus,
@@ -28,7 +28,7 @@ interface WorkspaceToolbarProps {
   hasWork?: boolean;
   llmEnabled?: boolean | null;
   lastMode?: string | null;
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
 export function WorkspaceToolbar({
@@ -95,15 +95,13 @@ export function WorkspaceToolbar({
 function SavedSessionsMenu({ agentSlug }: { agentSlug: PlatformAgentSlug }) {
   const [open, setOpen] = useState(false);
   const [newName, setNewName] = useState("");
-  const {
-    savedSessions,
-    activeSessionId,
-    createSession,
-    saveToActiveSession,
-    saveToSession,
-    deleteSession,
-    setActiveSession,
-  } = usePlatformSessionsStore();
+  const savedSessions = usePlatformSessionsStore((s) => s.savedSessions) ?? [];
+  const activeSessionId = usePlatformSessionsStore((s) => s.activeSessionId);
+  const createSession = usePlatformSessionsStore((s) => s.createSession);
+  const saveToActiveSession = usePlatformSessionsStore((s) => s.saveToActiveSession);
+  const saveToSession = usePlatformSessionsStore((s) => s.saveToSession);
+  const deleteSession = usePlatformSessionsStore((s) => s.deleteSession);
+  const setActiveSession = usePlatformSessionsStore((s) => s.setActiveSession);
 
   const active = savedSessions.find((s) => s.id === activeSessionId);
 
