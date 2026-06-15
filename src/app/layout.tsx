@@ -6,8 +6,9 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Interview Guide Agent | BSN Diagnostic",
-  description: "Agent 1 — Interview guide creation for BSN Sports sales support diagnostic",
+  title: "PE Growth Diagnostic | Agent Platform",
+  description:
+    "Modular agent platform for BSN / PE growth diagnostics — scoping, interviews, process mapping, and more.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

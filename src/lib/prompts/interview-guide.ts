@@ -79,7 +79,9 @@ Return JSON:
 }
 
 Required section ids (all must be present):
-objective, role_snapshot, known_facts, need_to_confirm, primary_questions, follow_up_probes, pain_points_to_test, systems_references, evidence_to_capture, likely_outputs, dependencies_handoffs, red_flags, closeout
+objective, role_snapshot, known_facts, need_to_confirm, primary_questions, follow_up_probes, pain_points_to_test, systems_references, evidence_to_capture, fact_base_sizing, likely_outputs, dependencies_handoffs, red_flags, closeout
+
+fact_base_sizing must list specific quantifiable fields to collect for value modeling: % time on workflow, volume/week, cycle time, rework rate, FTE allocation, cost per transaction where applicable.
 
 primary_questions and follow_up_probes should have 6-10 bullets each.
 pain_points_to_test should reference compendium-style hypotheses where relevant.`;
@@ -201,6 +203,20 @@ export function templateGuide(input: {
           "Weekly volume",
           "Rework rate or % incomplete intake",
           "Screenshots or queue names if offered",
+        ],
+      },
+      {
+        id: "fact_base_sizing",
+        title: "Fact-base & value sizing",
+        content: "Data requirements for downstream value model (survey v6 / initiative sizing):",
+        bullets: [
+          "% of role time spent on this workflow (self-reported + manager estimate)",
+          "Transactions or cases per week",
+          "Average handle time per case",
+          "Rework / exception rate (%)",
+          "Headcount or FTE dedicated to this workflow",
+          "Cost drivers: overtime, vendor fees, credit memos, etc.",
+          "Seasonality (e.g. Fall peak impact on volume)",
         ],
       },
       {

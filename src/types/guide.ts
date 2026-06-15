@@ -10,6 +10,7 @@ export type GuideSectionId =
   | "pain_points_to_test"
   | "systems_references"
   | "evidence_to_capture"
+  | "fact_base_sizing"
   | "likely_outputs"
   | "dependencies_handoffs"
   | "red_flags"
@@ -31,6 +32,7 @@ export const GUIDE_SECTIONS: GuideSectionDefinition[] = [
   { id: "pain_points_to_test", title: "Pain points to test", description: "Specific friction to explore" },
   { id: "systems_references", title: "Systems & process references", description: "Tools, queues, handoffs to ask about" },
   { id: "evidence_to_capture", title: "Evidence to capture", description: "Data, examples, metrics to collect" },
+  { id: "fact_base_sizing", title: "Fact-base & value sizing", description: "Fields needed for downstream value model and initiative sizing" },
   { id: "likely_outputs", title: "Likely outputs", description: "What this interview should produce" },
   { id: "dependencies_handoffs", title: "Dependencies & handoffs", description: "Upstream/downstream roles" },
   { id: "red_flags", title: "Red flags & contradictions", description: "Listen for inconsistencies" },
