@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Loader2, RotateCcw } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { ConfigPanel } from "@/components/guide/ConfigPanel";
 import { GuideContextPanel } from "@/components/guide/GuideContextPanel";
 import { GuideEditor } from "@/components/guide/GuideEditor";
 import { SourcePanel } from "@/components/guide/SourcePanel";
-import { WorkspaceBackLink } from "@/components/layout/WorkspaceBackLink";
+import { WorkspaceToolbar } from "@/components/workspace/WorkspaceToolbar";
 import {
   DEFAULT_WORKSPACE_STAGES,
   WorkspaceStageStepper,
@@ -134,39 +134,19 @@ export function ScopingAgentWorkspace() {
 
   return (
     <>
-      <div className="toolbar-strip">
-        <div className="max-w-[1600px] mx-auto px-6 py-4 flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <WorkspaceBackLink slug="scoping" label="Scoping Agent" />
-            <h1 className="text-lg font-semibold text-gradient mt-2">Scoping Agent</h1>
-            <p className="text-sm text-[var(--text-muted)]">
-              Interview guides + fact-base requirements for value sizing
-            </p>
-          </div>
-          <div className="flex items-center gap-3">
-            {llmEnabled !== null && (
-              <span className={llmEnabled ? "badge-mode-llm" : "badge-mode-template"}>
-                {llmEnabled ? "LLM mode" : "Template mode"}
-              </span>
-            )}
-            {lastGenerationMode && guide && stage === 3 && (
-              <span className="text-xs px-2.5 py-1 rounded-full border border-[var(--border)] text-[var(--text-muted)]">
-                Last: {lastGenerationMode}
-              </span>
-            )}
-            {stage === 3 && (
-              <button
-                type="button"
-                onClick={handleClear}
-                disabled={isGenerating || !hasWork}
-                className="btn-secondary"
-              >
-                <RotateCcw className="h-4 w-4" />
-                Clear & start over
-              </button>
-            )}
-          </div>
-        </div>
+      <WorkspaceToolbar
+        agentSlug="scoping"
+        backSlug="scoping"
+        backLabel="Scoping Agent"
+        title="Scoping Agent"
+        subtitle="Interview guides + fact-base requirements for value sizing"
+        onClear={handleClear}
+        isGenerating={isGenerating}
+        hasWork={hasWork}
+        llmEnabled={llmEnabled}
+        lastMode={lastGenerationMode && guide ? lastGenerationMode : null}
+      />
+      <div className="toolbar-strip border-t-0 pt-0">
         <div className="max-w-[1600px] mx-auto px-6 pb-4">
           <WorkspaceStageStepper
             steps={DEFAULT_WORKSPACE_STAGES}

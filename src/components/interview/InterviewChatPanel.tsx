@@ -47,21 +47,20 @@ export function InterviewChatPanel() {
     ? computeGuideCoverage(guideQuestions)
     : document?.coverage.score ?? 0;
 
-  const handleTranscript = useCallback(function handleTranscript(text: string, isFinal: boolean) {
-    if (isFinal) {
-      setLiveDraft(text);
-      setLiveSpeaker("interviewee");
-    } else {
-      setLiveDraft(text);
-    }
-  }, [setLiveDraft, setLiveSpeaker]);
+  const handleTranscript = useCallback(
+    (text: string, isFinal: boolean) => {
+      if (isFinal) {
+        setLiveDraft(text);
+        setLiveSpeaker("interviewee");
+      } else {
+        setLiveDraft(text);
+      }
+    },
+    [setLiveDraft, setLiveSpeaker],
+  );
 
   const { isListening, isSupported, error: speechError, toggle: toggleMic, stop: stopMic } =
     useSpeechRecognition(handleTranscript);
-
-  useEffect(() => {
-    useInterviewStore.getState().importGuideFromScoping();
-  }, []);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -131,18 +130,9 @@ export function InterviewChatPanel() {
         </div>
       )}
 
-      {!guideQuestions.length && scopingGuide && (
-        <div className="mx-4 mt-3 px-3 py-2 rounded-md bg-yellow-500/10 border border-yellow-500/30 text-xs text-yellow-200">
-          Scoping guide found but no questions extracted.{" "}
-          <button type="button" onClick={() => importGuideFromScoping(true)} className="underline">
-            Retry import
-          </button>
-        </div>
-      )}
-
-      {!scopingGuide && !guideQuestions.length && (
+      {!guideQuestions.length && !linkedGuideId && (
         <div className="mx-4 mt-3 px-3 py-2 rounded-md bg-[var(--accent)]/5 border border-[var(--border)] text-xs text-[var(--text-muted)]">
-          No guide in Scoping Agent yet. Generate a guide in Agent 1, or paste guide JSON below.
+          No guide loaded. Use the upstream banner above, Sync guide, or paste guide JSON in context.
         </div>
       )}
 

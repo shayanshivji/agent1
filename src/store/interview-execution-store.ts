@@ -155,12 +155,7 @@ export const useInterviewStore = create<InterviewStore>()(
         set({ workflowId, document: null });
       },
       setRoleId: (roleId) => set({ roleId, document: null }),
-      setMode: (mode) => {
-        set({ mode, document: null });
-        if (mode === "live") {
-          get().importGuideFromScoping();
-        }
-      },
+      setMode: (mode) => set({ mode, document: null }),
       setInputMode: (inputMode) => set({ inputMode, document: null }),
       setStakeholderName: (stakeholderName) => set({ stakeholderName }),
       setCustomNotes: (customNotes) => set({ customNotes }),

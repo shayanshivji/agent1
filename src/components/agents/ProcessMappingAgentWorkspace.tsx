@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Loader2, RotateCcw } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { BSN_PRESET } from "@/data/engagement-context";
 import { PROCESS_MAP_DEFAULTS } from "@/lib/process-map/logic";
 import { useProcessMapStore } from "@/store/process-map-store";
@@ -16,7 +16,8 @@ import { ProcessMapImprovementsView } from "@/components/process-map/ProcessMapI
 import { ProcessStepDetailPanel } from "@/components/process-map/ProcessStepDetailPanel";
 import { ProcessMapExportBar } from "@/components/process-map/ProcessMapExportBar";
 import { RefineModal } from "@/components/process-map/RefineModal";
-import { WorkspaceBackLink } from "@/components/layout/WorkspaceBackLink";
+import { WorkspaceToolbar } from "@/components/workspace/WorkspaceToolbar";
+import { UpstreamHandoffBar } from "@/components/workspace/UpstreamHandoffBar";
 import {
   DEFAULT_WORKSPACE_STAGES,
   WorkspaceStageStepper,
@@ -140,41 +141,19 @@ export function ProcessMappingAgentWorkspace() {
 
   return (
     <>
-      <div className="toolbar-strip">
-        <div className="max-w-[1600px] mx-auto px-6 py-4 flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <WorkspaceBackLink slug="process-mapping" label="Process Mapping Agent" />
-            <h1 className="text-lg font-semibold text-gradient mt-2">
-              Current-State Process Mapping Agent
-            </h1>
-            <p className="text-sm text-[var(--text-muted)]">
-              ProcessAI-style maps from interview evidence, transcripts, and pipeline inputs
-            </p>
-          </div>
-          <div className="flex items-center gap-3">
-            {llmEnabled !== null && (
-              <span className={llmEnabled ? "badge-mode-llm" : "badge-mode-template"}>
-                {llmEnabled ? "LLM mode" : "Template mode"}
-              </span>
-            )}
-            {lastGenerationMode && document && stage === 3 && (
-              <span className="text-xs px-2.5 py-1 rounded-full border border-[var(--border)] text-[var(--text-muted)]">
-                Last: {lastGenerationMode}
-              </span>
-            )}
-            {stage === 3 && (
-              <button
-                type="button"
-                onClick={handleClear}
-                disabled={isGenerating || !hasWork}
-                className="btn-secondary"
-              >
-                <RotateCcw className="h-4 w-4" />
-                Clear & start over
-              </button>
-            )}
-          </div>
-        </div>
+      <WorkspaceToolbar
+        agentSlug="process-mapping"
+        backSlug="process-mapping"
+        backLabel="Process Mapping Agent"
+        title="Current-State Process Mapping Agent"
+        subtitle="ProcessAI-style maps from interview evidence, transcripts, and pipeline inputs"
+        onClear={handleClear}
+        isGenerating={isGenerating}
+        hasWork={hasWork}
+        llmEnabled={llmEnabled}
+        lastMode={lastGenerationMode && document ? lastGenerationMode : null}
+      />
+      <div className="toolbar-strip border-t-0 pt-0">
         <div className="max-w-[1600px] mx-auto px-6 pb-4">
           <WorkspaceStageStepper
             steps={DEFAULT_WORKSPACE_STAGES}
@@ -187,6 +166,7 @@ export function ProcessMappingAgentWorkspace() {
 
       <main className="flex-1 max-w-[1600px] mx-auto w-full px-6 py-6">
         {error && <div className="mb-4 error-banner">{error}</div>}
+        <UpstreamHandoffBar agentSlug="process-mapping" />
 
         {stage === 1 && (
           <div className="workspace-stage-panel">
