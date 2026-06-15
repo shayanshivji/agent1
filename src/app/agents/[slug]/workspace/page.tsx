@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { ScopingAgentWorkspace } from "@/components/agents/ScopingAgentWorkspace";
 import { InitiativesAgentWorkspace } from "@/components/agents/InitiativesAgentWorkspace";
+import { ProcessMappingAgentWorkspace } from "@/components/agents/ProcessMappingAgentWorkspace";
 import { getAgentBySlug } from "@/data/agent-roster";
 
 interface PageProps {
@@ -11,6 +12,7 @@ interface PageProps {
 
 const WORKSPACES: Record<string, ComponentType> = {
   scoping: ScopingAgentWorkspace,
+  "process-mapping": ProcessMappingAgentWorkspace,
   "improvement-initiatives": InitiativesAgentWorkspace,
 };
 

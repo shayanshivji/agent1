@@ -53,19 +53,22 @@ export const AGENT_LANDING: Record<string, AgentLandingContent> = {
   "process-mapping": {
     tagline: "Map the current state. Surface the pain.",
     heroSubtitle:
-      "Transform interview notes and transcripts into current-state process maps with systems, handoffs, and validated pain points.",
+      "ProcessAI-style current-state maps from interview notes, transcripts, and pipeline inputs with swimlanes, pain points, and improvement opportunities.",
     problemStatement:
       "Process knowledge lives in people's heads and slide decks, not in a structured map that initiatives and roadmaps can consume.",
     capabilities: [
-      "Current-state process maps from interview outputs",
-      "Pain point linkage to process steps",
-      "Systems and owner annotation",
-      "Pipeline JSON for Initiative Agent",
+      "Standalone or pipeline mode from Agents 1–2",
+      "Summary, swimlane process map, pain points, and improvements tabs",
+      "Inline step editing with confidence and evidence tracking",
+      "Refine with feedback on map sections",
+      "Export Markdown, CSV, and pipeline JSON for Agent 4",
     ],
-    inputs: ["Interview outputs", "Transcripts", "Existing process docs"],
-    outputs: ["Process steps", "Pain points", "Current-state map", "Pipeline JSON"],
+    inputs: ["Interview outputs", "Transcripts", "Existing process docs", "Pipeline JSON"],
+    outputs: ["Process steps", "Pain points", "Improvements", "Pipeline JSON"],
     upstreamAgents: [1, 2],
     downstreamAgents: [4, 5, 6],
+    modes: ["Standalone", "Pipeline"],
+    exportFormats: ["Markdown", "CSV", "JSON"],
   },
   "improvement-initiatives": {
     tagline: "Turn pain points into a prioritized initiative inventory.",

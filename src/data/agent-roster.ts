@@ -41,10 +41,11 @@ export const AGENT_ROSTER: AgentDefinition[] = [
     slug: "process-mapping",
     name: "Process Mapping Agent",
     shortName: "ProcessAI",
-    status: "planned",
+    status: "live",
     description:
-      "Transform interview notes and transcripts into current-state process maps with pain points.",
-    blueprintSummary: "Builds process maps from interview outputs via ProcessAI integration.",
+      "Transform interview notes and transcripts into current-state process maps with pain points, swimlanes, and pipeline handoff to initiatives.",
+    blueprintSummary:
+      "ProcessAI-style current-state mapping from interview outputs; exports pipeline JSON for Agent 4.",
     href: "/agents/process-mapping",
   },
   {
