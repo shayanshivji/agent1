@@ -30,10 +30,11 @@ export const AGENT_ROSTER: AgentDefinition[] = [
     slug: "live-interview",
     name: "Live Interview Agent",
     shortName: "Walter",
-    status: "planned",
+    status: "live",
     description:
-      "Conduct structured SME interviews with real-time probing, note capture, and handoff to process mapping.",
-    blueprintSummary: "Runs live interviews using the approved guide from Agent 1.",
+      "Execute live or transcript-based SME interviews with coverage tracking, evidence registry, and Agent 3 handoff.",
+    blueprintSummary:
+      "Interview intelligence system: extracts workflow, pain points, handoffs, and evidence for process mapping.",
     href: "/agents/live-interview",
   },
   {

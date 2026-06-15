@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { ScopingAgentWorkspace } from "@/components/agents/ScopingAgentWorkspace";
 import { InitiativesAgentWorkspace } from "@/components/agents/InitiativesAgentWorkspace";
 import { ProcessMappingAgentWorkspace } from "@/components/agents/ProcessMappingAgentWorkspace";
+import { LiveInterviewAgentWorkspace } from "@/components/agents/LiveInterviewAgentWorkspace";
 import { getAgentBySlug } from "@/data/agent-roster";
 
 interface PageProps {
@@ -12,6 +13,7 @@ interface PageProps {
 
 const WORKSPACES: Record<string, ComponentType> = {
   scoping: ScopingAgentWorkspace,
+  "live-interview": LiveInterviewAgentWorkspace,
   "process-mapping": ProcessMappingAgentWorkspace,
   "improvement-initiatives": InitiativesAgentWorkspace,
 };

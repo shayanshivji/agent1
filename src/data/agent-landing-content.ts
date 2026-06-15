@@ -36,19 +36,23 @@ export const AGENT_LANDING: Record<string, AgentLandingContent> = {
   "live-interview": {
     tagline: "Run the interview. Capture the evidence.",
     heroSubtitle:
-      "Conduct structured SME interviews with real-time probing, STAR-style follow-ups, and clean handoff to process mapping.",
+      "Interview intelligence system for live capture or transcript processing with coverage tracking, evidence registry, and Agent 3 package export.",
     problemStatement:
       "Live interviews drift, inconsistent probing, poor note capture, and insights that don't map to process steps or pain points.",
     capabilities: [
-      "Guide-driven interview flow from Agent 1",
-      "Real-time probing and note capture",
-      "Evidence tagging by process step",
-      "Structured export for Process Mapping Agent",
+      "Live interview mode with real-time follow-up suggestions",
+      "Transcript processing from notes, recordings, or meeting exports",
+      "Coverage tracking against Agent 1 guide objectives",
+      "Evidence registry with confidence scores per finding",
+      "Contradiction detection and open question tracking",
+      "Agent 3 Package export for Process Mapping Agent",
     ],
-    inputs: ["Approved interview guide", "Live transcript or notes"],
-    outputs: ["Interview notes", "Evidence snippets", "Pain point signals"],
+    inputs: ["Interview guide (Agent 1)", "Live Q&A", "Transcripts", "Notes", "Supporting docs"],
+    outputs: ["Executive summary", "Workflow steps", "Pain points", "Evidence registry", "Agent 3 Package"],
     upstreamAgents: [1],
     downstreamAgents: [3, 4],
+    modes: ["Live interview", "Transcript processing"],
+    exportFormats: ["Markdown", "CSV", "JSON", "Agent 3 Package"],
   },
   "process-mapping": {
     tagline: "Map the current state. Surface the pain.",
