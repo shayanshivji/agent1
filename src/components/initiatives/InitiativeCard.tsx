@@ -44,8 +44,8 @@ export function InitiativeCard({ initiative: raw }: InitiativeCardProps) {
             <span
               className={`text-[10px] px-1.5 py-0.5 rounded ${
                 initiative.findingType === "value_blocker"
-                  ? "bg-rose-500/15 text-rose-300"
-                  : "bg-[var(--border)] text-[var(--text-muted)]"
+                  ? "bg-rose-50 text-rose-700 border border-rose-200"
+                  : "bg-[var(--surface-muted)] text-[var(--text-muted)]"
               }`}
             >
               {FINDING_TYPE_LABELS[initiative.findingType]}
@@ -54,7 +54,7 @@ export function InitiativeCard({ initiative: raw }: InitiativeCardProps) {
               score {initiative.priorityScore}
             </span>
             {initiative.isDuplicate && (
-              <span className="text-[10px] text-amber-400">overlap</span>
+              <span className="text-[10px] text-amber-700 font-medium">overlap</span>
             )}
           </div>
           <h3 className="font-semibold text-[var(--text)]">{initiative.title}</h3>

@@ -71,7 +71,7 @@ export function InitiativeSourcesPanel() {
           {sources.map((s) => (
             <div
               key={s.id}
-              className="border border-[var(--border)] rounded-md p-3 bg-[rgba(6,8,15,0.5)]"
+              className="border border-[var(--border)] rounded-md p-3 bg-white shadow-sm"
             >
               <div className="flex items-start justify-between gap-2">
                 <div>

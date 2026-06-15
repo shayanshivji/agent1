@@ -102,8 +102,8 @@ export function ProcessStepDetailPanel() {
           </select>
         </div>
         {step.worksWell && (
-          <div className="p-2 rounded bg-emerald-500/10 border border-emerald-500/20">
-            <p className="text-[10px] font-semibold text-emerald-400 uppercase">What works well</p>
+          <div className="p-2 rounded-md bg-emerald-50 border border-emerald-200">
+            <p className="text-[10px] font-semibold text-emerald-800 uppercase">What works well</p>
             <p className="text-xs text-[var(--text-muted)] mt-0.5">{step.worksWell}</p>
           </div>
         )}
