@@ -30,6 +30,8 @@ interface WorkspaceToolbarProps {
   lastMode?: string | null;
   children?: ReactNode;
   onSessionRestored?: (hasOutput: boolean) => void;
+  /** When true, hide platform nav and session picker (project shell owns persistence). */
+  embedded?: boolean;
 }
 
 export function WorkspaceToolbar({
@@ -46,24 +48,36 @@ export function WorkspaceToolbar({
   lastMode,
   children,
   onSessionRestored,
+  embedded,
 }: WorkspaceToolbarProps) {
   return (
     <div className="toolbar-strip">
       <div className="max-w-[1600px] mx-auto px-6 py-4 flex flex-wrap items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-3 mb-1">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-1 text-[10px] text-[var(--text-muted)] hover:text-[var(--accent)]"
-            >
-              <Home className="h-3 w-3" />
-              Platform
-            </Link>
-            <span className="text-[var(--text-muted)]">/</span>
-            <WorkspaceBackLink slug={backSlug} label={backLabel} />
-          </div>
-          <h1 className="text-lg font-semibold text-gradient">{title}</h1>
-          <p className="text-sm text-[var(--text-muted)]">{subtitle}</p>
+          {!embedded && (
+            <div className="flex items-center gap-3 mb-1">
+              <Link
+                href="/"
+                className="inline-flex items-center gap-1 text-[10px] text-[var(--text-muted)] hover:text-[var(--accent)]"
+              >
+                <Home className="h-3 w-3" />
+                Platform
+              </Link>
+              <span className="text-[var(--text-muted)]">/</span>
+              <WorkspaceBackLink slug={backSlug} label={backLabel} />
+            </div>
+          )}
+          {!embedded && (
+            <>
+              <h1 className="text-lg font-semibold text-gradient">{title}</h1>
+              <p className="text-sm text-[var(--text-muted)]">{subtitle}</p>
+            </>
+          )}
+          {embedded && (
+            <p className="text-xs text-[var(--text-muted)]">
+              Outputs auto-save to this project · {subtitle}
+            </p>
+          )}
         </div>
         <div className="flex flex-wrap items-center gap-2">
           {llmEnabled !== null && llmEnabled !== undefined && (
@@ -76,7 +90,9 @@ export function WorkspaceToolbar({
               Last: {lastMode}
             </span>
           )}
-          <SavedSessionsMenu agentSlug={agentSlug} onSessionRestored={onSessionRestored} />
+          {!embedded && (
+            <SavedSessionsMenu agentSlug={agentSlug} onSessionRestored={onSessionRestored} />
+          )}
           <button
             type="button"
             onClick={onClear}

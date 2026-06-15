@@ -14,8 +14,13 @@ import {
 import { StageFooter } from "@/components/workspace/StageFooter";
 import { buildGuideFromResponse, useGuideStore } from "@/store/guide-store";
 import { BSN_PRESET } from "@/data/engagement-context";
+import { flushProjectSave } from "@/store/project-store";
 
-export function ScopingAgentWorkspace() {
+interface ScopingAgentWorkspaceProps {
+  embedded?: boolean;
+}
+
+export function ScopingAgentWorkspace({ embedded }: ScopingAgentWorkspaceProps = {}) {
   const {
     companyName,
     industryId,
@@ -49,6 +54,11 @@ export function ScopingAgentWorkspace() {
       .then((d) => setLlmEnabled(d.llmEnabled))
       .catch(() => setLlmEnabled(false));
   }, []);
+
+  useEffect(() => {
+    if (!embedded) return;
+    return () => flushProjectSave();
+  }, [embedded]);
 
   useEffect(() => {
     if (!hydrated) {
@@ -120,6 +130,7 @@ export function ScopingAgentWorkspace() {
       );
       setStage(3);
       setMaxStage(3);
+      if (embedded) flushProjectSave();
     } catch (e) {
       setError(e instanceof Error ? e.message : "Generation failed");
     } finally {
@@ -171,6 +182,7 @@ export function ScopingAgentWorkspace() {
         llmEnabled={llmEnabled}
         lastMode={lastGenerationMode && guide ? lastGenerationMode : null}
         onSessionRestored={handleSessionRestored}
+        embedded={embedded}
       />
       <div className="toolbar-strip border-t-0 pt-0">
         <div className="max-w-[1600px] mx-auto px-6 pb-4">

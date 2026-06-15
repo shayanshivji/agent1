@@ -23,8 +23,18 @@ import {
   WorkspaceStageStepper,
 } from "@/components/workspace/WorkspaceStageStepper";
 import { StageFooter } from "@/components/workspace/StageFooter";
+import type { ProcessMapTab } from "@/types/process-map";
+import { flushProjectSave } from "@/store/project-store";
 
-export function ProcessMappingAgentWorkspace() {
+interface ProcessMappingAgentWorkspaceProps {
+  embedded?: boolean;
+  initialTab?: string;
+}
+
+export function ProcessMappingAgentWorkspace({
+  embedded,
+  initialTab,
+}: ProcessMappingAgentWorkspaceProps = {}) {
   const {
     companyName,
     industryId,
@@ -45,6 +55,7 @@ export function ProcessMappingAgentWorkspace() {
     setDocument,
     setLastGenerationMode,
     reset,
+    setActiveTab,
   } = useProcessMapStore();
 
   const [stage, setStage] = useState(1);
@@ -59,6 +70,19 @@ export function ProcessMappingAgentWorkspace() {
       .then((d) => setLlmEnabled(d.llmEnabled))
       .catch(() => setLlmEnabled(false));
   }, []);
+
+  useEffect(() => {
+    if (!embedded) return;
+    return () => flushProjectSave();
+  }, [embedded]);
+
+  useEffect(() => {
+    if (!initialTab) return;
+    const tabs: ProcessMapTab[] = ["summary", "process", "pain", "improvements"];
+    if (tabs.includes(initialTab as ProcessMapTab)) {
+      setActiveTab(initialTab as ProcessMapTab);
+    }
+  }, [initialTab, setActiveTab]);
 
   useEffect(() => {
     if (!hydrated) {
@@ -147,6 +171,7 @@ export function ProcessMappingAgentWorkspace() {
       setLastGenerationMode(data.mode ?? "template");
       setStage(3);
       setMaxStage(3);
+      if (embedded) flushProjectSave();
     } catch (e) {
       setError(e instanceof Error ? e.message : "Generation failed");
     } finally {
@@ -183,6 +208,7 @@ export function ProcessMappingAgentWorkspace() {
         llmEnabled={llmEnabled}
         lastMode={lastGenerationMode && document ? lastGenerationMode : null}
         onSessionRestored={handleSessionRestored}
+        embedded={embedded}
       />
       <div className="toolbar-strip border-t-0 pt-0">
         <div className="max-w-[1600px] mx-auto px-6 pb-4">

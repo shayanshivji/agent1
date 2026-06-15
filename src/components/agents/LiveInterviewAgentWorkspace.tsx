@@ -28,8 +28,13 @@ import {
   WorkspaceStageStepper,
 } from "@/components/workspace/WorkspaceStageStepper";
 import { StageFooter } from "@/components/workspace/StageFooter";
+import { flushProjectSave } from "@/store/project-store";
 
-export function LiveInterviewAgentWorkspace() {
+interface LiveInterviewAgentWorkspaceProps {
+  embedded?: boolean;
+}
+
+export function LiveInterviewAgentWorkspace({ embedded }: LiveInterviewAgentWorkspaceProps = {}) {
   const {
     companyName,
     industryId,
@@ -67,6 +72,11 @@ export function LiveInterviewAgentWorkspace() {
       .then((d) => setLlmEnabled(d.llmEnabled))
       .catch(() => setLlmEnabled(false));
   }, []);
+
+  useEffect(() => {
+    if (!embedded) return;
+    return () => flushProjectSave();
+  }, [embedded]);
 
   useEffect(() => {
     if (!hydrated) {
@@ -151,6 +161,7 @@ export function LiveInterviewAgentWorkspace() {
       setLastGenerationMode(data.mode ?? "template");
       setStage(3);
       setMaxStage(3);
+      if (embedded) flushProjectSave();
     } catch (e) {
       setError(e instanceof Error ? e.message : "Generation failed");
     } finally {
@@ -210,6 +221,7 @@ export function LiveInterviewAgentWorkspace() {
         llmEnabled={llmEnabled}
         lastMode={lastGenerationMode && document ? lastGenerationMode : null}
         onSessionRestored={handleSessionRestored}
+        embedded={embedded}
       />
       <div className="toolbar-strip border-t-0 pt-0">
         <div className="max-w-[1600px] mx-auto px-6 pb-4">
