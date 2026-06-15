@@ -5,8 +5,11 @@ export type WorkflowStepStatus = "live" | "planned";
 export interface WorkflowStep {
   id: string;
   order: number;
+  /** Value-creation step shown in the left rail */
   label: string;
   shortLabel: string;
+  /** Agent or capability subtitle under the step name */
+  agentLabel: string;
   description: string;
   /** Agent slug when live; null for planned-only steps */
   agentSlug: PlatformAgentSlug | null;
@@ -15,13 +18,14 @@ export interface WorkflowStep {
   agentTab?: string;
 }
 
-/** Left-rail pipeline aligned to product direction + existing live agents. */
+/** Value creation steps — agents and views live within each step. */
 export const WORKFLOW_STEPS: WorkflowStep[] = [
   {
     id: "scoping",
     order: 1,
-    label: "Scoping / Interview Guide",
+    label: "Scoping",
     shortLabel: "Scoping",
+    agentLabel: "Interview guide agent",
     description: "Discovery scope, SME interview guides, fact-base requirements",
     agentSlug: "scoping",
     status: "live",
@@ -29,64 +33,50 @@ export const WORKFLOW_STEPS: WorkflowStep[] = [
   {
     id: "live-interview",
     order: 2,
-    label: "Interview Execution",
-    shortLabel: "Walter",
-    description: "Live or transcript SME interviews with evidence registry",
+    label: "SME interviews",
+    shortLabel: "Interviews",
+    agentLabel: "Walter · live & transcript capture",
+    description: "Structured SME sessions with evidence registry and guide coverage",
     agentSlug: "live-interview",
     status: "live",
   },
   {
     id: "process-mapping",
     order: 3,
-    label: "Current-State Process Mapping",
-    shortLabel: "Process map",
-    description: "Swimlanes, steps, systems, and handoffs from the fact base",
+    label: "Current state mapping & pain points",
+    shortLabel: "Current state",
+    agentLabel: "Process map + pain register",
+    description: "Swimlanes, systems, handoffs, and consolidated pain synthesis",
     agentSlug: "process-mapping",
     status: "live",
-  },
-  {
-    id: "pain-synthesis",
-    order: 4,
-    label: "Pain Point Synthesis",
-    shortLabel: "Pain points",
-    description: "Consolidated pain register with severity and evidence",
-    agentSlug: "process-mapping",
-    status: "live",
-    agentTab: "pain",
   },
   {
     id: "improvement-initiatives",
-    order: 5,
-    label: "Improvement Initiative Generation",
+    order: 4,
+    label: "Improvement initiatives",
     shortLabel: "Initiatives",
+    agentLabel: "Initiative generation agent",
     description: "Process-driven initiatives mapped to pain and value levers",
     agentSlug: "improvement-initiatives",
     status: "live",
   },
   {
     id: "value-modeling",
-    order: 6,
-    label: "Value Modeling",
+    order: 5,
+    label: "Value modeling",
     shortLabel: "Value",
+    agentLabel: "Sizing & value at stake",
     description: "Size opportunities and build the value-at-stake view",
     agentSlug: null,
     status: "planned",
   },
   {
-    id: "roadmapping",
-    order: 7,
-    label: "Horizon / Roadmap",
+    id: "roadmap",
+    order: 6,
+    label: "Roadmap & future state",
     shortLabel: "Roadmap",
-    description: "Sequence initiatives across H1–H3 with dependencies",
-    agentSlug: null,
-    status: "planned",
-  },
-  {
-    id: "future-state",
-    order: 8,
-    label: "Future State / BRD",
-    shortLabel: "Future state",
-    description: "Target-state design and business requirements for implementation",
+    agentLabel: "Horizon plan & target state",
+    description: "Sequence initiatives across horizons and define future-state requirements",
     agentSlug: null,
     status: "planned",
   },
@@ -97,8 +87,7 @@ export function getWorkflowStep(id: string): WorkflowStep | undefined {
 }
 
 export function getWorkflowStepByAgentSlug(slug: PlatformAgentSlug): WorkflowStep | undefined {
-  return WORKFLOW_STEPS.find((s) => s.agentSlug === slug && s.id === slug) ??
-    WORKFLOW_STEPS.find((s) => s.agentSlug === slug);
+  return WORKFLOW_STEPS.find((s) => s.agentSlug === slug);
 }
 
 export function workflowHref(projectId: string, step: WorkflowStep): string {

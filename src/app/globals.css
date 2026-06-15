@@ -433,6 +433,19 @@ code {
   background: var(--bg);
 }
 
+.cover-banner {
+  width: 100%;
+  height: 4.5rem;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.cover-banner-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
 .cover-action-card {
   display: block;
   padding: 1.5rem;
@@ -495,7 +508,7 @@ code {
 }
 
 .agent-workflow-rail {
-  width: 220px;
+  width: 248px;
   flex-shrink: 0;
   border-right: 1px solid var(--border);
   background: var(--surface-muted);

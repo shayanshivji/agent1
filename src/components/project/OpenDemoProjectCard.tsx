@@ -26,7 +26,8 @@ export function OpenDemoProjectCard() {
         </span>
       </div>
       <p className="text-sm text-[var(--text-muted)] mt-2 leading-relaxed">
-        Pre-loaded BSN study with all four agent outputs — no API key needed.
+        Example walkthrough of how the platform works — pre-loaded study with sample outputs across
+        all value creation steps. No API key needed.
       </p>
       <span className="inline-flex items-center gap-1 text-xs text-[var(--accent)] mt-4 font-medium">
         Open demo
