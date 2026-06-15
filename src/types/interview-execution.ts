@@ -28,6 +28,21 @@ export interface LiveTurn {
   guideQuestionId?: string;
 }
 
+/** One stakeholder interview session within a project (Walter agent). */
+export interface InterviewRun {
+  id: string;
+  label: string;
+  stakeholderName: string;
+  roleId: string;
+  mode: InterviewExecutionMode;
+  transcriptText: string;
+  liveTurns: LiveTurn[];
+  document: InterviewExecutionDocument | null;
+  guideQuestions: GuideQuestionItem[];
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface GuideQuestionItem {
   id: string;
   text: string;

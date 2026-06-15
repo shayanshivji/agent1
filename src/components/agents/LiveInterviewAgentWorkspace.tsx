@@ -9,6 +9,7 @@ import { InterviewConfigPanel } from "@/components/interview/InterviewConfigPane
 import { InterviewContextPanel } from "@/components/interview/InterviewContextPanel";
 import { InterviewSourcesPanel } from "@/components/interview/InterviewSourcesPanel";
 import { InterviewChatPanel } from "@/components/interview/InterviewChatPanel";
+import { InterviewSessionsBar } from "@/components/interview/InterviewSessionsBar";
 import { InterviewTabs } from "@/components/interview/InterviewTabs";
 import {
   InterviewTranscriptView,
@@ -236,6 +237,7 @@ export function LiveInterviewAgentWorkspace({ embedded }: LiveInterviewAgentWork
 
       <main className="flex-1 max-w-[1600px] mx-auto w-full px-6 py-6">
         {error && <div className="mb-4 error-banner">{error}</div>}
+        <InterviewSessionsBar />
         <UpstreamHandoffBar agentSlug="live-interview" onApplied={handleUpstreamApplied} />
 
         {stage === 1 && (

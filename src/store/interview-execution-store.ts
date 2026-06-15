@@ -8,6 +8,7 @@ import type { InputMode } from "@/types/initiative";
 import type {
   InterviewExecutionDocument,
   InterviewExecutionMode,
+  InterviewRun,
   InterviewTab,
   InterviewVersionEntry,
   LiveTurn,
@@ -16,6 +17,7 @@ import type {
   InterviewWorkflowStep,
   EvidenceRecord,
   GuideQuestionItem,
+  CoverageStatus,
 } from "@/types/interview-execution";
 import { BSN_PRESET, type EngagementContext } from "@/data/engagement-context";
 import {
@@ -24,6 +26,12 @@ import {
   computeCoverageFromTurns,
   parseGuidePayload,
 } from "@/lib/interview-execution/logic";
+import {
+  applyRunToFlat,
+  ensureRuns,
+  flushActiveRun,
+  withActiveRunPatch,
+} from "@/lib/interview-execution/runs";
 import {
   computeGuideCoverage,
   extractQuestionsFromGuide,
@@ -59,6 +67,8 @@ interface InterviewStore extends EngagementContext {
   isSuggesting: boolean;
   error: string | null;
   lastGenerationMode: "llm" | "template" | null;
+  interviewRuns: InterviewRun[];
+  activeRunId: string | null;
 
   setCompanyName: (v: string) => void;
   setIndustryId: (v: string) => void;
@@ -93,6 +103,10 @@ interface InterviewStore extends EngagementContext {
   updateEvidence: (id: string, patch: Partial<EvidenceRecord>) => void;
   saveVersion: (label?: string) => void;
   loadVersion: (versionId: string) => void;
+  createInterview: () => void;
+  switchInterview: (runId: string) => void;
+  deleteInterview: (runId: string) => void;
+  renameInterview: (runId: string, label: string) => void;
   getContext: () => EngagementContext;
   getAgent3Package: () => string;
   reset: () => void;
@@ -120,6 +134,8 @@ export const useInterviewStore = create<InterviewStore>()(
       isSuggesting: false,
       error: null,
       lastGenerationMode: null,
+      interviewRuns: [],
+      activeRunId: null,
 
       getContext: () => {
         const { companyName, industryId, functionId } = get();
@@ -156,21 +172,30 @@ export const useInterviewStore = create<InterviewStore>()(
       setWorkflowId: (workflowId) => {
         set({ workflowId, document: null });
       },
-      setRoleId: (roleId) => set({ roleId, document: null }),
+      setRoleId: (roleId) =>
+        set((s) => ({
+          roleId,
+          document: null,
+          ...withActiveRunPatch({ ...s, roleId, document: null }, { roleId, document: null }),
+        })),
       setMode: (mode) =>
-        set((s) =>
-          s.mode === mode
-            ? { mode }
-            : {
-                mode,
-                document: null,
-                liveTurns: [],
-                transcriptText: "",
-                liveDraft: "",
-              },
-        ),
+        set((s) => {
+          if (s.mode === mode) return { mode };
+          const patch = {
+            mode,
+            document: null,
+            liveTurns: [] as LiveTurn[],
+            transcriptText: "",
+            liveDraft: "",
+          };
+          return { ...patch, ...withActiveRunPatch({ ...s, ...patch }, patch) };
+        }),
       setInputMode: (inputMode) => set({ inputMode, document: null }),
-      setStakeholderName: (stakeholderName) => set({ stakeholderName }),
+      setStakeholderName: (stakeholderName) =>
+        set((s) => ({
+          stakeholderName,
+          ...withActiveRunPatch({ ...s, stakeholderName }, { stakeholderName }),
+        })),
       setCustomNotes: (customNotes) => set({ customNotes }),
       setGuidePayload: (guidePayload) => {
         const parsed = parseGuidePayload(guidePayload);
@@ -197,7 +222,11 @@ export const useInterviewStore = create<InterviewStore>()(
           set({ guidePayload, document: null });
         }
       },
-      setTranscriptText: (transcriptText) => set({ transcriptText }),
+      setTranscriptText: (transcriptText) =>
+        set((s) => ({
+          transcriptText,
+          ...withActiveRunPatch({ ...s, transcriptText }, { transcriptText }),
+        })),
       setActiveTab: (activeTab) => set({ activeTab }),
       setLiveDraft: (liveDraft) => set({ liveDraft }),
       setLiveSpeaker: (liveSpeaker) => set({ liveSpeaker }),
@@ -253,7 +282,12 @@ export const useInterviewStore = create<InterviewStore>()(
       removeSource: (id) =>
         set((s) => ({ sources: s.sources.filter((d) => d.id !== id), document: null })),
 
-      setDocument: (document) => set({ document, error: null }),
+      setDocument: (document) =>
+        set((s) => ({
+          document,
+          error: null,
+          ...withActiveRunPatch({ ...s, document }, { document }),
+        })),
       setGenerating: (isGenerating) => set({ isGenerating }),
       setSuggesting: (isSuggesting) => set({ isSuggesting }),
       setError: (error) => set({ error }),
@@ -262,8 +296,10 @@ export const useInterviewStore = create<InterviewStore>()(
       setReviewStatus: (reviewStatus) =>
         set((s) => {
           if (!s.document) return s;
+          const nextDocument = { ...s.document, reviewStatus, updatedAt: new Date().toISOString() };
           return {
-            document: { ...s.document, reviewStatus, updatedAt: new Date().toISOString() },
+            document: nextDocument,
+            ...withActiveRunPatch({ ...s, document: nextDocument }, { document: nextDocument }),
           };
         }),
 
@@ -307,30 +343,39 @@ export const useInterviewStore = create<InterviewStore>()(
           ? guideQuestions.filter((q) => q.status !== "pending").map((q) => q.text)
           : fallback.questionsAsked;
 
+        const topicStatus = (status: GuideQuestionItem["status"]): CoverageStatus =>
+          status === "answered" ? "covered" : status === "asked" ? "partial" : "missing";
+
+        const nextDocument: InterviewExecutionDocument | null = state.document
+          ? {
+              ...state.document,
+              liveTurns,
+              coverage: {
+                ...state.document.coverage,
+                score,
+                questionsAsked,
+                topics: guideQuestions.map((q) => ({
+                  id: q.id,
+                  name: q.text.slice(0, 80),
+                  status: topicStatus(q.status),
+                  linkedQuestion: q.text,
+                })),
+                missingTopics: guideQuestions.filter((q) => q.status === "pending").map((q) => q.text.slice(0, 60)),
+              },
+              updatedAt: new Date().toISOString(),
+            }
+          : state.document;
+
         set({
           liveTurns,
           liveDraft: "",
           pendingGuideQuestionId: state.liveSpeaker === "interviewer" ? null : state.pendingGuideQuestionId,
           guideQuestions,
-          document: state.document
-            ? {
-                ...state.document,
-                liveTurns,
-                coverage: {
-                  ...state.document.coverage,
-                  score,
-                  questionsAsked,
-                  topics: guideQuestions.map((q) => ({
-                    id: q.id,
-                    name: q.text.slice(0, 80),
-                    status: q.status === "answered" ? "covered" : q.status === "asked" ? "partial" : "missing",
-                    linkedQuestion: q.text,
-                  })),
-                  missingTopics: guideQuestions.filter((q) => q.status === "pending").map((q) => q.text.slice(0, 60)),
-                },
-                updatedAt: new Date().toISOString(),
-              }
-            : state.document,
+          document: nextDocument,
+          ...withActiveRunPatch(
+            { ...state, liveTurns, guideQuestions, document: nextDocument },
+            { liveTurns, guideQuestions, document: nextDocument },
+          ),
         });
       },
 
@@ -347,77 +392,85 @@ export const useInterviewStore = create<InterviewStore>()(
             ? guideQuestions.filter((q) => q.status !== "pending").map((q) => q.text)
             : fallback.questionsAsked;
 
+          const topicStatus = (status: GuideQuestionItem["status"]): CoverageStatus =>
+            status === "answered" ? "covered" : status === "asked" ? "partial" : "missing";
+
+          const nextDocument: InterviewExecutionDocument | null = s.document
+            ? {
+                ...s.document,
+                liveTurns,
+                coverage: {
+                  ...s.document.coverage,
+                  score,
+                  questionsAsked,
+                  topics: guideQuestions.map((q) => ({
+                    id: q.id,
+                    name: q.text.slice(0, 80),
+                    status: topicStatus(q.status),
+                    linkedQuestion: q.text,
+                  })),
+                  missingTopics: guideQuestions
+                    .filter((q) => q.status === "pending")
+                    .map((q) => q.text.slice(0, 60)),
+                },
+                updatedAt: new Date().toISOString(),
+              }
+            : s.document;
+
           return {
             liveTurns,
             guideQuestions,
-            document: s.document
-              ? {
-                  ...s.document,
-                  liveTurns,
-                  coverage: {
-                    ...s.document.coverage,
-                    score,
-                    questionsAsked,
-                    topics: guideQuestions.map((q) => ({
-                      id: q.id,
-                      name: q.text.slice(0, 80),
-                      status:
-                        q.status === "answered"
-                          ? "covered"
-                          : q.status === "asked"
-                            ? "partial"
-                            : "missing",
-                      linkedQuestion: q.text,
-                    })),
-                    missingTopics: guideQuestions
-                      .filter((q) => q.status === "pending")
-                      .map((q) => q.text.slice(0, 60)),
-                  },
-                  updatedAt: new Date().toISOString(),
-                }
-              : s.document,
+            document: nextDocument,
+            ...withActiveRunPatch(
+              { ...s, liveTurns, guideQuestions, document: nextDocument },
+              { liveTurns, guideQuestions, document: nextDocument },
+            ),
           };
         }),
 
       updatePainPoint: (id, patch) =>
         set((s) => {
           if (!s.document) return s;
+          const nextDocument = {
+            ...s.document,
+            updatedAt: new Date().toISOString(),
+            painPoints: s.document.painPoints.map((p) => (p.id === id ? { ...p, ...patch } : p)),
+          };
           return {
-            document: {
-              ...s.document,
-              updatedAt: new Date().toISOString(),
-              painPoints: s.document.painPoints.map((p) =>
-                p.id === id ? { ...p, ...patch } : p,
-              ),
-            },
+            document: nextDocument,
+            ...withActiveRunPatch({ ...s, document: nextDocument }, { document: nextDocument }),
           };
         }),
 
       updateWorkflowStep: (id, patch) =>
         set((s) => {
           if (!s.document) return s;
+          const nextDocument = {
+            ...s.document,
+            updatedAt: new Date().toISOString(),
+            workflowSteps: s.document.workflowSteps.map((step) =>
+              step.id === id ? { ...step, ...patch } : step,
+            ),
+          };
           return {
-            document: {
-              ...s.document,
-              updatedAt: new Date().toISOString(),
-              workflowSteps: s.document.workflowSteps.map((step) =>
-                step.id === id ? { ...step, ...patch } : step,
-              ),
-            },
+            document: nextDocument,
+            ...withActiveRunPatch({ ...s, document: nextDocument }, { document: nextDocument }),
           };
         }),
 
       updateEvidence: (id, patch) =>
         set((s) => {
           if (!s.document) return s;
+          const nextDocument = {
+            ...s.document,
+            updatedAt: new Date().toISOString(),
+            evidenceRegistry: s.document.evidenceRegistry.map((e) =>
+              e.id === id ? { ...e, ...patch } : e,
+            ),
+          };
           return {
-            document: {
-              ...s.document,
-              updatedAt: new Date().toISOString(),
-              evidenceRegistry: s.document.evidenceRegistry.map((e) =>
-                e.id === id ? { ...e, ...patch } : e,
-              ),
-            },
+            document: nextDocument,
+            ...withActiveRunPatch({ ...s, document: nextDocument }, { document: nextDocument }),
           };
         }),
 
@@ -434,9 +487,92 @@ export const useInterviewStore = create<InterviewStore>()(
         }),
 
       loadVersion: (versionId) => {
-        const entry = get().versions.find((v) => v.id === versionId);
-        if (entry) set({ document: entry.snapshot });
+        const state = get();
+        const entry = state.versions.find((v) => v.id === versionId);
+        if (!entry) return;
+        set({
+          document: entry.snapshot,
+          ...withActiveRunPatch({ ...state, document: entry.snapshot }, { document: entry.snapshot }),
+        });
       },
+
+      createInterview: () =>
+        set((s) => {
+          const ensured = ensureRuns(s);
+          const flushed = flushActiveRun({ ...s, ...ensured });
+          const guide = parseGuidePayload(s.guidePayload);
+          const freshQuestions = guide ? extractQuestionsFromGuide(guide) : [];
+          const now = new Date().toISOString();
+          const newRun: InterviewRun = {
+            id: uuidv4(),
+            label: `Interview ${flushed.length + 1}`,
+            stakeholderName: "",
+            roleId: s.roleId,
+            mode: s.mode,
+            transcriptText: "",
+            liveTurns: [],
+            document: null,
+            guideQuestions: freshQuestions,
+            createdAt: now,
+            updatedAt: now,
+          };
+          return {
+            ...applyRunToFlat(newRun),
+            interviewRuns: [...flushed, newRun],
+            activeRunId: newRun.id,
+            liveDraft: "",
+            liveSpeaker: "interviewer" as const,
+            pendingGuideQuestionId: null,
+            suggestedFollowUps: [],
+            error: null,
+          };
+        }),
+
+      switchInterview: (runId) =>
+        set((s) => {
+          const ensured = ensureRuns(s);
+          const flushed = flushActiveRun({ ...s, ...ensured });
+          const target = flushed.find((r) => r.id === runId);
+          if (!target) return {};
+          return {
+            ...applyRunToFlat(target),
+            interviewRuns: flushed,
+            activeRunId: runId,
+            liveDraft: "",
+            liveSpeaker: "interviewer" as const,
+            pendingGuideQuestionId: null,
+            suggestedFollowUps: [],
+            error: null,
+          };
+        }),
+
+      deleteInterview: (runId) =>
+        set((s) => {
+          const ensured = ensureRuns(s);
+          const flushed = flushActiveRun({ ...s, ...ensured });
+          if (flushed.length <= 1) return {};
+          const nextRuns = flushed.filter((r) => r.id !== runId);
+          if (runId !== s.activeRunId) return { interviewRuns: nextRuns };
+          const next = nextRuns[nextRuns.length - 1];
+          return {
+            ...applyRunToFlat(next),
+            interviewRuns: nextRuns,
+            activeRunId: next.id,
+            liveDraft: "",
+            liveSpeaker: "interviewer" as const,
+            pendingGuideQuestionId: null,
+            suggestedFollowUps: [],
+          };
+        }),
+
+      renameInterview: (runId, label) =>
+        set((s) => ({
+          interviewRuns: s.interviewRuns.map((r) =>
+            r.id === runId
+              ? { ...r, label: label.trim() || r.label, updatedAt: new Date().toISOString() }
+              : r,
+          ),
+        })),
 
       reset: () =>
         set({
@@ -448,6 +584,8 @@ export const useInterviewStore = create<InterviewStore>()(
           document: null,
           versions: [],
           activeTab: "summary",
+          interviewRuns: [],
+          activeRunId: null,
           liveTurns: [],
           liveDraft: "",
           liveSpeaker: "interviewer",
@@ -466,6 +604,14 @@ export const useInterviewStore = create<InterviewStore>()(
     {
       name: "live-interview-agent",
       partialize: (state) => omitTransient(state, [...INTERVIEW_TRANSIENT]),
+      onRehydrateStorage: () => (state) => {
+        if (!state) return;
+        if (state.interviewRuns.length === 0) {
+          const ensured = ensureRuns(state);
+          state.interviewRuns = ensured.interviewRuns;
+          state.activeRunId = ensured.activeRunId;
+        }
+      },
     },
   ),
 );

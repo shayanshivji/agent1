@@ -4,10 +4,10 @@ import { useProcessMapStore } from "@/store/process-map-store";
 import { IMPROVEMENT_BUCKET_LABELS } from "@/types/process-map";
 
 const BUCKET_COLORS: Record<string, string> = {
-  simplify: "bg-blue-500/15 text-blue-300 border-blue-500/30",
-  automate: "bg-purple-500/15 text-purple-300 border-purple-500/30",
-  digitize: "bg-cyan-500/15 text-cyan-300 border-cyan-500/30",
-  consolidate: "bg-amber-500/15 text-amber-300 border-amber-500/30",
+  simplify: "bg-blue-50 text-blue-700 border-blue-200",
+  automate: "bg-purple-50 text-purple-700 border-purple-200",
+  digitize: "bg-cyan-50 text-cyan-700 border-cyan-200",
+  consolidate: "bg-amber-50 text-amber-800 border-amber-200",
 };
 
 export function ProcessMapImprovementsView() {
@@ -46,7 +46,7 @@ export function ProcessMapImprovementsView() {
               <div className="flex items-start justify-between gap-2">
                 <h3 className="text-sm font-semibold text-[var(--text)]">{imp.title}</h3>
                 {imp.impactRange && (
-                  <span className="text-sm font-bold text-emerald-400 shrink-0">{imp.impactRange}</span>
+                  <span className="text-sm font-bold text-emerald-700 shrink-0">{imp.impactRange}</span>
                 )}
               </div>
               <p className="text-xs text-[var(--text-muted)] mt-2">{imp.description}</p>
@@ -54,7 +54,7 @@ export function ProcessMapImprovementsView() {
                 <span className={`text-[10px] px-2 py-0.5 rounded border ${BUCKET_COLORS[imp.bucket]}`}>
                   {IMPROVEMENT_BUCKET_LABELS[imp.bucket]}
                 </span>
-                <span className="text-[10px] px-2 py-0.5 rounded bg-slate-700/50 text-slate-300 uppercase">
+                <span className="text-[10px] px-2 py-0.5 rounded bg-[var(--surface-muted)] text-[var(--text-muted)] uppercase font-medium">
                   {imp.priority} priority
                 </span>
               </div>

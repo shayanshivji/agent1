@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { CheckCircle2, Circle, Lock } from "lucide-react";
+import { CheckCircle2, Circle, LayoutDashboard, Lock } from "lucide-react";
 import { WORKFLOW_STEPS, workflowHref } from "@/data/workflow-pipeline";
 import type { StudyProject } from "@/types/project";
 import type { PlatformAgentSlug } from "@/types/platform-session";
@@ -43,10 +43,28 @@ export function AgentWorkflowRail({ projectId, project }: AgentWorkflowRailProps
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const tab = searchParams.get("tab");
+  const plannedStep = searchParams.get("step");
+  const execSummaryHref = `/projects/${projectId}`;
+  const isExecSummaryActive =
+    pathname === execSummaryHref && !plannedStep;
 
   return (
     <nav className="agent-workflow-rail" aria-label="Diagnostic workflow">
       <p className="text-[10px] uppercase tracking-wider text-[var(--text-muted)] px-3 mb-3">
+        Overview
+      </p>
+      <Link
+        href={execSummaryHref}
+        className={`workflow-rail-item mb-4 ${isExecSummaryActive ? "workflow-rail-item-active" : ""}`}
+      >
+        <LayoutDashboard className="h-3.5 w-3.5 shrink-0 text-[var(--accent)]" />
+        <div className="min-w-0">
+          <p className="text-xs font-medium truncate">Executive summary</p>
+          <p className="text-[10px] text-[var(--text-muted)] truncate">Progress & key outputs</p>
+        </div>
+      </Link>
+
+      <p className="text-[10px] uppercase tracking-wider text-[var(--text-muted)] px-3 mb-3 border-t border-[var(--border)] pt-4">
         Workflow
       </p>
       <ol className="space-y-1">

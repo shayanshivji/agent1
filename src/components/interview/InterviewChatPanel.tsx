@@ -48,15 +48,10 @@ export function InterviewChatPanel() {
     : document?.coverage.score ?? 0;
 
   const handleTranscript = useCallback(
-    (text: string, isFinal: boolean) => {
-      if (isFinal) {
-        setLiveDraft(text);
-        setLiveSpeaker("interviewee");
-      } else {
-        setLiveDraft(text);
-      }
+    (text: string) => {
+      setLiveDraft(text);
     },
-    [setLiveDraft, setLiveSpeaker],
+    [setLiveDraft],
   );
 
   const { isListening, isSupported, error: speechError, toggle: toggleMic, stop: stopMic } =
@@ -107,10 +102,17 @@ export function InterviewChatPanel() {
     setLiveSpeaker(liveSpeaker === "interviewer" ? "interviewee" : "interviewer");
   }
 
-  function startIntervieweeMic() {
-    setLiveSpeaker("interviewee");
-    if (!isListening) toggleMic();
+  function toggleMicForSpeaker() {
+    if (!isSupported) return;
+    if (isListening) stopMic();
+    else toggleMic();
   }
+
+  const micTitle = isSupported
+    ? liveSpeaker === "interviewee"
+      ? "Transcribe SME answer (mic)"
+      : "Transcribe your question (mic)"
+    : "Speech recognition requires Chrome or Edge";
 
   return (
     <div className="section-card overflow-hidden">
@@ -118,7 +120,7 @@ export function InterviewChatPanel() {
         <div>
           <h2 className="text-sm font-semibold text-[var(--text)]">Live interview chat</h2>
           <p className="text-xs text-[var(--text-muted)] mt-0.5">
-            Guide questions from Scoping · transcribe interviewee answers with mic
+            Guide questions from Scoping · use the mic to transcribe questions and SME answers
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -136,7 +138,7 @@ export function InterviewChatPanel() {
       </div>
 
       {guideSource === "scoping" && linkedGuideId && (
-        <div className="mx-4 mt-3 px-3 py-2 rounded-md bg-emerald-500/10 border border-emerald-500/30 text-xs text-emerald-300">
+        <div className="mx-4 mt-3 px-3 py-2 rounded-md bg-emerald-50 border border-emerald-200 text-xs text-emerald-800">
           Loaded interview guide from Scoping Agent
           {scopingGuide ? ` · ${scopingGuide.workflowName} / ${scopingGuide.roleName}` : ""}
           {guideQuestions.length > 0 && ` · ${guideQuestions.length} questions`}
@@ -150,12 +152,11 @@ export function InterviewChatPanel() {
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-4 p-4">
-        {/* Guide questions sidebar */}
         <aside className="lg:col-span-4 mb-4 lg:mb-0">
           <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-2">
             Interview guide questions
           </p>
-          <div className="max-h-[420px] overflow-y-auto space-y-2 border border-[var(--border)] rounded-md p-2 bg-[rgba(6,8,15,0.4)]">
+          <div className="max-h-[420px] overflow-y-auto space-y-2 border border-[var(--border)] rounded-md p-2 bg-[var(--surface-muted)]">
             {guideQuestions.length === 0 && (
               <p className="text-xs text-[var(--text-muted)] italic p-2">Questions appear when guide is loaded.</p>
             )}
@@ -166,15 +167,15 @@ export function InterviewChatPanel() {
                 onClick={() => askGuideQuestion(q.id)}
                 className={`w-full text-left rounded-md p-2.5 border transition-colors ${
                   q.status === "answered"
-                    ? "border-emerald-500/40 bg-emerald-500/5"
+                    ? "border-emerald-300 bg-emerald-50"
                     : q.status === "asked"
-                      ? "border-yellow-500/40 bg-yellow-500/5"
-                      : "border-[var(--border)] hover:border-[var(--accent)]/50"
+                      ? "border-amber-300 bg-amber-50"
+                      : "border-[var(--border)] hover:border-[var(--accent)]/50 bg-white"
                 }`}
               >
                 <div className="flex items-start gap-2">
                   {q.status === "answered" ? (
-                    <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                    <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 shrink-0 mt-0.5" />
                   ) : (
                     <Circle className="h-3.5 w-3.5 text-[var(--text-muted)] shrink-0 mt-0.5" />
                   )}
@@ -188,12 +189,11 @@ export function InterviewChatPanel() {
           </div>
         </aside>
 
-        {/* Chat thread */}
         <div className="lg:col-span-8 flex flex-col min-h-[480px]">
-          <div className="flex-1 overflow-y-auto space-y-3 border border-[var(--border)] rounded-md p-3 bg-[rgba(6,8,15,0.35)] max-h-[380px]">
+          <div className="flex-1 overflow-y-auto space-y-3 border border-[var(--border)] rounded-md p-3 bg-[var(--surface-muted)] max-h-[380px]">
             {liveTurns.length === 0 && (
               <p className="text-xs text-[var(--text-muted)] italic text-center py-8">
-                Click a guide question to ask it, or type below. Use the mic to transcribe interviewee answers.
+                Click a guide question to ask it, type below, or use the mic to transcribe speech.
               </p>
             )}
             {liveTurns.map((t) => (
@@ -204,8 +204,8 @@ export function InterviewChatPanel() {
                 <div
                   className={`max-w-[85%] rounded-lg px-3 py-2 text-sm ${
                     t.speaker === "interviewer"
-                      ? "bg-[var(--accent)]/15 border border-[var(--accent)]/25 text-[var(--text)]"
-                      : "bg-slate-800/80 border border-[var(--border)] text-[var(--text)]"
+                      ? "bg-[var(--accent)]/10 border border-[var(--accent)]/25 text-[var(--text)]"
+                      : "bg-white border border-[var(--border)] text-[var(--text)]"
                   }`}
                 >
                   <div className="flex items-center justify-between gap-2 mb-1">
@@ -213,7 +213,7 @@ export function InterviewChatPanel() {
                       {t.speaker === "interviewer" ? "You" : stakeholderName || "Interviewee"}
                     </span>
                     <button type="button" onClick={() => removeLiveTurn(t.id)}>
-                      <Trash2 className="h-3 w-3 text-[var(--text-muted)] hover:text-red-400" />
+                      <Trash2 className="h-3 w-3 text-[var(--text-muted)] hover:text-red-500" />
                     </button>
                   </div>
                   <p className="leading-relaxed">{t.content}</p>
@@ -226,29 +226,48 @@ export function InterviewChatPanel() {
             <div ref={chatEndRef} />
           </div>
 
-          {/* Composer */}
           <div className="mt-3 space-y-2">
-            <div className="flex gap-2">
-              <div className="flex rounded-md border border-[var(--border)] overflow-hidden shrink-0">
+            <div className="flex flex-wrap gap-2 items-center">
+              <div className="flex rounded-md border border-[var(--border)] overflow-hidden shrink-0 bg-white">
                 <button
                   type="button"
-                  onClick={() => { stopMic(); setLiveSpeaker("interviewer"); }}
-                  className={`px-3 py-1.5 text-xs ${liveSpeaker === "interviewer" ? "bg-[var(--accent)]/20 text-[var(--accent)]" : "text-[var(--text-muted)]"}`}
+                  onClick={() => {
+                    stopMic();
+                    setLiveSpeaker("interviewer");
+                  }}
+                  className={`px-3 py-1.5 text-xs ${liveSpeaker === "interviewer" ? "bg-[var(--accent)]/15 text-[var(--accent)] font-semibold" : "text-[var(--text-muted)]"}`}
                 >
                   You
                 </button>
                 <button
                   type="button"
                   onClick={() => setLiveSpeaker("interviewee")}
-                  className={`px-3 py-1.5 text-xs border-l border-[var(--border)] ${liveSpeaker === "interviewee" ? "bg-[var(--accent)]/20 text-[var(--accent)]" : "text-[var(--text-muted)]"}`}
+                  className={`px-3 py-1.5 text-xs border-l border-[var(--border)] ${liveSpeaker === "interviewee" ? "bg-[var(--accent)]/15 text-[var(--accent)] font-semibold" : "text-[var(--text-muted)]"}`}
                 >
                   {stakeholderName || "SME"}
                 </button>
               </div>
+
+              <button
+                type="button"
+                onClick={toggleMicForSpeaker}
+                disabled={!isSupported}
+                className={`btn-secondary text-xs py-1.5 shrink-0 ${
+                  isListening ? "border-red-400 text-red-600 bg-red-50" : ""
+                } ${!isSupported ? "opacity-60 cursor-not-allowed" : ""}`}
+                title={micTitle}
+              >
+                {isListening ? <MicOff className="h-3.5 w-3.5" /> : <Mic className="h-3.5 w-3.5" />}
+                {isListening ? "Stop mic" : "Mic"}
+              </button>
+
               {isListening && (
-                <span className="flex items-center gap-1.5 text-xs text-red-400 animate-pulse">
-                  <Mic className="h-3.5 w-3.5" /> Listening…
+                <span className="flex items-center gap-1.5 text-xs text-red-600 animate-pulse">
+                  Listening…
                 </span>
+              )}
+              {!isSupported && (
+                <span className="text-[11px] text-[var(--text-muted)]">Mic needs Chrome or Edge</span>
               )}
             </div>
 
@@ -265,27 +284,17 @@ export function InterviewChatPanel() {
                 placeholder={
                   liveSpeaker === "interviewee"
                     ? "Type or use mic to capture interviewee response…"
-                    : "Type your question…"
+                    : "Type or use mic for your question…"
                 }
                 rows={2}
                 className="field-input flex-1 resize-none text-sm"
               />
-              {liveSpeaker === "interviewee" && isSupported && (
-                <button
-                  type="button"
-                  onClick={isListening ? stopMic : startIntervieweeMic}
-                  className={`btn-secondary shrink-0 ${isListening ? "border-red-500/50 text-red-400" : ""}`}
-                  title="Transcribe interviewee speech"
-                >
-                  {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
-                </button>
-              )}
               <button type="button" onClick={sendMessage} disabled={!liveDraft.trim()} className="btn-primary shrink-0 self-end">
                 <Send className="h-4 w-4" />
               </button>
             </div>
 
-            {speechError && <p className="text-xs text-red-400">{speechError}</p>}
+            {speechError && <p className="text-xs text-red-600">{speechError}</p>}
 
             <button type="button" onClick={handleSuggest} disabled={isSuggesting} className="btn-secondary w-full justify-center text-xs">
               {isSuggesting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
@@ -293,7 +302,7 @@ export function InterviewChatPanel() {
             </button>
 
             {suggestedFollowUps.length > 0 && (
-              <div className="border border-[var(--border)] rounded-md p-3">
+              <div className="border border-[var(--border)] rounded-md p-3 bg-white">
                 <p className="text-[10px] font-bold uppercase text-[var(--text-muted)] mb-2">Suggested follow-ups</p>
                 <ul className="space-y-1.5">
                   {suggestedFollowUps.map((q, i) => (

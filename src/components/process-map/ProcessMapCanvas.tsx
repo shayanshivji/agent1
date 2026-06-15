@@ -37,7 +37,7 @@ export function ProcessMapCanvas() {
             className="grid border-b border-[var(--border)]"
             style={{ gridTemplateColumns: `140px repeat(${phases.length}, 1fr)` }}
           >
-            <div className="p-2 bg-[rgba(6,8,15,0.6)]" />
+            <div className="p-2 bg-[var(--surface-muted)]" />
             {phases.map((phase) => {
               const count = document.steps.filter((s) => s.phaseId === phase.id).length;
               const painCount = document.painPoints.filter((p) => p.phaseId === phase.id).length;
@@ -49,7 +49,7 @@ export function ProcessMapCanvas() {
                     setSelectedPhaseId(selectedPhaseId === phase.id ? null : phase.id)
                   }
                   className={`p-3 text-left border-l border-[var(--border)] transition-colors ${
-                    selectedPhaseId === phase.id ? "bg-[var(--accent)]/10" : "bg-[rgba(6,8,15,0.4)]"
+                    selectedPhaseId === phase.id ? "bg-[var(--accent)]/10" : "bg-white hover:bg-[var(--surface-muted)]"
                   }`}
                 >
                   <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
@@ -104,7 +104,7 @@ export function ProcessMapCanvas() {
                             className={`text-left rounded-lg border p-2.5 transition-all ${
                               isSelected
                                 ? "border-[var(--accent)] bg-[var(--accent)]/10 shadow-sm"
-                                : "border-[var(--border)] bg-[rgba(6,8,15,0.5)] hover:border-[var(--border-strong)]"
+                                : "border-[var(--border)] bg-white hover:border-[var(--border-strong)] hover:shadow-sm"
                             }`}
                           >
                             <div className="flex items-start justify-between gap-1">
@@ -112,7 +112,7 @@ export function ProcessMapCanvas() {
                                 {step.name}
                               </p>
                               {hasPain && (
-                                <AlertTriangle className="h-3.5 w-3.5 text-yellow-400 shrink-0" />
+                                <AlertTriangle className="h-3.5 w-3.5 text-amber-500 shrink-0" />
                               )}
                             </div>
                             <p className="text-[10px] text-[var(--text-muted)] mt-1 line-clamp-2">
@@ -122,7 +122,7 @@ export function ProcessMapCanvas() {
                               {step.systems.slice(0, 2).map((sys) => (
                                 <span
                                   key={sys}
-                                  className="text-[9px] px-1.5 py-0.5 rounded bg-slate-700/50 text-slate-300"
+                                  className="text-[9px] px-1.5 py-0.5 rounded bg-[var(--surface-muted)] text-[var(--text-muted)]"
                                 >
                                   {sys}
                                 </span>

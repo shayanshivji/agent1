@@ -2,6 +2,7 @@ import type { InterviewGuide } from "@/types/guide";
 import type {
   InterviewExecutionDocument,
   GuideQuestionItem,
+  InterviewRun,
   LiveTurn,
 } from "@/types/interview-execution";
 import type { ProcessMapDocument } from "@/types/process-map";
@@ -44,6 +45,9 @@ export interface InterviewSessionOutput {
   transcriptText: string;
   liveTurns: LiveTurn[];
   document: InterviewExecutionDocument | null;
+  /** Multiple SME interviews per project; flat fields mirror the active run. */
+  interviewRuns?: InterviewRun[];
+  activeRunId?: string | null;
 }
 
 export interface ProcessMapSessionOutput {

@@ -4,7 +4,9 @@ import type { InputMode } from "@/types/initiative";
 import type {
   InterviewExecutionDocument,
   InterviewExecutionMode,
+  InterviewRun,
   LiveTurn,
+  GuideQuestionItem,
 } from "@/types/interview-execution";
 import { getInterviewSeed } from "@/data/interview-seeds";
 import { getSeedForWorkflow } from "@/data/initiative-seeds";
@@ -15,7 +17,7 @@ import type { InterviewGuide } from "@/types/guide";
 export const INTERVIEW_DEFAULTS = {
   workflowId: "nsp-handling",
   roleId: "purchasing",
-  mode: "transcript" as InterviewExecutionMode,
+  mode: "live" as InterviewExecutionMode,
   inputMode: "standalone" as InputMode,
   stakeholderName: "",
   customNotes: "",
@@ -290,4 +292,52 @@ export function computeCoverageFromTurns(
   const asked = questionsAsked.length;
   const score = guideQuestions > 0 ? Math.min(100, Math.round((asked / guideQuestions) * 100)) : Math.min(100, asked * 15);
   return { score, questionsAsked };
+}
+
+export interface InterviewRunFlatState {
+  stakeholderName: string;
+  roleId: string;
+  mode: InterviewExecutionMode;
+  transcriptText: string;
+  liveTurns: LiveTurn[];
+  document: InterviewExecutionDocument | null;
+  guideQuestions: GuideQuestionItem[];
+}
+
+export function buildInterviewRunFromFlat(
+  state: InterviewRunFlatState,
+  id: string,
+  label: string,
+  timestamps?: { createdAt: string; updatedAt: string },
+): InterviewRun {
+  const now = new Date().toISOString();
+  return {
+    id,
+    label,
+    stakeholderName: state.stakeholderName,
+    roleId: state.roleId,
+    mode: state.mode,
+    transcriptText: state.transcriptText,
+    liveTurns: state.liveTurns,
+    document: state.document,
+    guideQuestions: state.guideQuestions,
+    createdAt: timestamps?.createdAt ?? now,
+    updatedAt: timestamps?.updatedAt ?? now,
+  };
+}
+
+export function captureFlatFromRun(run: InterviewRun): InterviewRunFlatState {
+  return {
+    stakeholderName: run.stakeholderName,
+    roleId: run.roleId,
+    mode: run.mode,
+    transcriptText: run.transcriptText,
+    liveTurns: run.liveTurns,
+    document: run.document,
+    guideQuestions: run.guideQuestions,
+  };
+}
+
+export function runLabelForStakeholder(stakeholderName: string, index: number): string {
+  return stakeholderName.trim() || `Interview ${index}`;
 }

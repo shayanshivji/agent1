@@ -5,22 +5,7 @@ import { AlertTriangle, ChevronDown, ChevronUp, TrendingUp } from "lucide-react"
 import { useProcessMapStore } from "@/store/process-map-store";
 import { countBySeverity } from "@/lib/process-map/logic";
 import { IMPROVEMENT_BUCKET_LABELS } from "@/types/process-map";
-
-function SeverityBadge({ severity }: { severity: string }) {
-  const colors: Record<string, string> = {
-    critical: "bg-red-500/20 text-red-300 border-red-500/40",
-    high: "bg-orange-500/20 text-orange-300 border-orange-500/40",
-    medium: "bg-yellow-500/20 text-yellow-300 border-yellow-500/40",
-    low: "bg-slate-500/20 text-slate-300 border-slate-500/40",
-  };
-  return (
-    <span
-      className={`text-[10px] font-semibold uppercase px-2 py-0.5 rounded border ${colors[severity] ?? colors.medium}`}
-    >
-      {severity}
-    </span>
-  );
-}
+import { SeverityBadge } from "@/components/process-map/SeverityBadge";
 
 export function ProcessMapSummaryView() {
   const { document, setActiveTab } = useProcessMapStore();
@@ -78,7 +63,7 @@ export function ProcessMapSummaryView() {
         <div className="section-card overflow-hidden">
           <div className="px-4 py-3 section-card-header flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <AlertTriangle className="h-4 w-4 text-yellow-400" />
+              <AlertTriangle className="h-4 w-4 text-amber-500" />
               <h3 className="text-sm font-semibold">Top pain points</h3>
             </div>
             <button
@@ -108,7 +93,7 @@ export function ProcessMapSummaryView() {
         <div className="section-card overflow-hidden">
           <div className="px-4 py-3 section-card-header flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <TrendingUp className="h-4 w-4 text-emerald-400" />
+              <TrendingUp className="h-4 w-4 text-emerald-600" />
               <h3 className="text-sm font-semibold">Top opportunities</h3>
             </div>
             <button
@@ -125,7 +110,7 @@ export function ProcessMapSummaryView() {
                 <div className="flex items-start justify-between gap-2">
                   <p className="text-sm font-medium text-[var(--text)]">{imp.title}</p>
                   {imp.impactRange && (
-                    <span className="text-xs font-semibold text-emerald-400 shrink-0">
+                    <span className="text-xs font-semibold text-emerald-700 shrink-0">
                       {imp.impactRange}
                     </span>
                   )}
@@ -192,7 +177,7 @@ function MetricCard({
       <p className="text-[10px] uppercase tracking-wider text-[var(--text-muted)]">{label}</p>
       <p
         className={`text-3xl font-bold mt-1 ${
-          accent === "warning" ? "text-yellow-400" : accent === "success" ? "text-emerald-400" : "text-[var(--text)]"
+          accent === "warning" ? "text-amber-600" : accent === "success" ? "text-emerald-700" : "text-[var(--text)]"
         }`}
       >
         {value}

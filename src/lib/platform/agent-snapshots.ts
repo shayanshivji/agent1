@@ -13,6 +13,7 @@ import {
 import type { InterviewGuide, InterviewLevel } from "@/types/guide";
 import type { InputMode } from "@/types/initiative";
 import type { InterviewExecutionMode } from "@/types/interview-execution";
+import { applyRunToFlat, ensureRuns, flushActiveRun } from "@/lib/interview-execution/runs";
 
 /** Lazy store access avoids circular import crashes in the client bundle. */
 function getGuideStore() {
@@ -62,6 +63,8 @@ export function captureAgentSnapshot(slug: PlatformAgentSlug): Partial<AgentSess
 
   if (slug === "live-interview") {
     const s = getInterviewStore().getState();
+    const { interviewRuns, activeRunId } = ensureRuns(s);
+    const flushed = flushActiveRun({ ...s, interviewRuns, activeRunId });
     return {
       "live-interview": {
         savedAt: now,
@@ -78,6 +81,8 @@ export function captureAgentSnapshot(slug: PlatformAgentSlug): Partial<AgentSess
         transcriptText: s.transcriptText,
         liveTurns: s.liveTurns,
         document: s.document,
+        interviewRuns: flushed,
+        activeRunId,
       },
     };
   }
@@ -146,28 +151,43 @@ export function restoreAgentFromSession(
 
   if (slug === "live-interview" && session.outputs["live-interview"]) {
     const o = session.outputs["live-interview"];
+    const runs =
+      o.interviewRuns && o.interviewRuns.length > 0
+        ? o.interviewRuns
+        : undefined;
+    const activeId =
+      o.activeRunId ??
+      runs?.[0]?.id ??
+      null;
+    const activeRun =
+      runs?.find((r) => r.id === activeId) ?? runs?.[0];
+    const flat = activeRun ? applyRunToFlat(activeRun) : null;
+
     getInterviewStore().setState({
       companyName: session.companyName || o.document?.companyName || getInterviewStore().getState().companyName,
       industryId: session.industryId || getInterviewStore().getState().industryId,
       functionId: session.functionId || getInterviewStore().getState().functionId,
       workflowId: o.workflowId,
-      roleId: o.roleId,
-      mode: o.mode as InterviewExecutionMode,
+      roleId: flat?.roleId ?? o.roleId,
+      mode: (flat?.mode ?? o.mode) as InterviewExecutionMode,
       inputMode: o.inputMode ?? "pipeline",
-      stakeholderName: o.stakeholderName,
+      stakeholderName: flat?.stakeholderName ?? o.stakeholderName,
       guidePayload: o.guidePayload,
-      guideQuestions: o.guideQuestions ?? [],
+      guideQuestions: flat?.guideQuestions ?? o.guideQuestions ?? [],
       linkedGuideId: o.linkedGuideId ?? null,
       linkedGuideUpdatedAt: o.linkedGuideUpdatedAt ?? null,
       guideSource: o.guideSource ?? null,
-      transcriptText: o.transcriptText,
-      liveTurns: o.liveTurns ?? [],
-      document: o.document,
+      transcriptText: flat?.transcriptText ?? o.transcriptText,
+      liveTurns: flat?.liveTurns ?? o.liveTurns ?? [],
+      document: flat?.document ?? o.document,
+      interviewRuns: runs ?? [],
+      activeRunId: activeId,
       error: null,
       isGenerating: false,
       isSuggesting: false,
     });
-    return Boolean(o.document);
+    const hasAnyDoc = runs?.some((r) => r.document) ?? Boolean(o.document);
+    return hasAnyDoc;
   }
 
   if (slug === "process-mapping" && session.outputs["process-mapping"]) {
@@ -265,33 +285,42 @@ export function applyInterviewToProcessMap(
   output: NonNullable<AgentSessionOutputs["live-interview"]>,
 ) {
   const store = getProcessMapStore().getState();
-  if (output.document) {
-    store.setCompanyName(output.document.companyName ?? store.companyName);
-    store.setWorkflowId(output.document.workflowId);
+  const docs =
+    output.interviewRuns?.map((r) => r.document).filter(Boolean) ??
+    (output.document ? [output.document] : []);
+  const primary = docs[0];
+  if (primary) {
+    store.setCompanyName(primary.companyName ?? store.companyName);
+    store.setWorkflowId(primary.workflowId);
+    const mergedNotes = docs
+      .map((d) => d!.executiveSummary)
+      .filter(Boolean)
+      .join("\n\n---\n\n");
     const pkg = {
       sourceAgent: "live-interview" as const,
-      workflowId: output.document.workflowId,
-      workflowName: output.document.workflowName,
-      processSteps: output.document.workflowSteps.map((s) => ({
+      workflowId: primary.workflowId,
+      workflowName: primary.workflowName,
+      processSteps: primary.workflowSteps.map((s) => ({
         id: s.id,
         name: s.name,
         description: s.description,
         systems: s.systems,
         ownerRole: s.actorRole,
       })),
-      painPoints: output.document.painPoints.map((p) => ({
-        id: p.id,
-        workflowId: output.document!.workflowId,
-        processStepIds: p.processStepIds,
-        title: p.title,
-        description: p.description,
-        severity: p.severity,
-        evidenceSnippet:
-          output.document!.evidenceRegistry.find((e) => p.evidenceIds.includes(e.id))?.quote ??
-          p.description,
-      })),
-      interviewNotes: output.document.executiveSummary,
-      processMapText: output.document.executiveSummary,
+      painPoints: docs.flatMap((d) =>
+        d!.painPoints.map((p) => ({
+          id: p.id,
+          workflowId: d!.workflowId,
+          processStepIds: p.processStepIds,
+          title: p.title,
+          description: p.description,
+          severity: p.severity,
+          evidenceSnippet:
+            d!.evidenceRegistry.find((e) => p.evidenceIds.includes(e.id))?.quote ?? p.description,
+        })),
+      ),
+      interviewNotes: mergedNotes || primary.executiveSummary,
+      processMapText: mergedNotes || primary.executiveSummary,
     };
     store.setPipelinePayload(JSON.stringify(pkg, null, 2));
     store.setInputMode("pipeline");
@@ -299,7 +328,12 @@ export function applyInterviewToProcessMap(
     store.setPipelinePayload(output.guidePayload);
     store.setInputMode("pipeline");
   }
-  if (output.transcriptText) store.setPastedNotes(output.transcriptText);
+  const transcriptParts = output.interviewRuns?.map((r) => r.transcriptText).filter(Boolean) ?? [];
+  const transcript =
+    transcriptParts.length > 0
+      ? transcriptParts.join("\n\n---\n\n")
+      : output.transcriptText;
+  if (transcript) store.setPastedNotes(transcript);
 }
 
 export function applyProcessMapToInitiatives(

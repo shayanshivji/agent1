@@ -113,17 +113,15 @@ export function InterviewConfigPanel({ staged }: Props) {
             ))}
           </select>
         </div>
-        {!staged && (
-          <div>
-            <label className="field-label">Stakeholder name (optional)</label>
-            <input
-              value={stakeholderName}
-              onChange={(e) => setStakeholderName(e.target.value)}
-              placeholder="SME name for evidence attribution"
-              className="field-input"
-            />
-          </div>
-        )}
+        <div>
+          <label className="field-label">Stakeholder name for this interview</label>
+          <input
+            value={stakeholderName}
+            onChange={(e) => setStakeholderName(e.target.value)}
+            placeholder="SME name — labels this interview session and chat turns"
+            className="field-input"
+          />
+        </div>
       </div>
     </div>
   );
