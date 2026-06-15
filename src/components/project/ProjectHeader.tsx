@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Home, Save } from "lucide-react";
 import type { StudyProject } from "@/types/project";
 import { useProjectStore, flushProjectSave } from "@/store/project-store";
+import { isDemoProject } from "@/data/demo-project-seed";
 
 const STATUS_LABELS: Record<StudyProject["status"], string> = {
   discovery: "Discovery",
@@ -32,7 +33,14 @@ export function ProjectHeader({ project }: ProjectHeaderProps) {
               Projects
             </Link>
           </div>
-          <h1 className="text-lg font-semibold text-[var(--text)] truncate">{project.name}</h1>
+          <h1 className="text-lg font-semibold text-[var(--text)] truncate flex items-center gap-2">
+            <span className="truncate">{project.name}</span>
+            {isDemoProject(project.id) && (
+              <span className="text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full border border-emerald-500/30 text-emerald-400 shrink-0">
+                Demo
+              </span>
+            )}
+          </h1>
           <p className="text-xs text-[var(--text-muted)] mt-0.5">
             {project.clientName} · Last updated {new Date(project.updatedAt).toLocaleDateString()}
           </p>

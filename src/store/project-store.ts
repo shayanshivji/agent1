@@ -13,6 +13,11 @@ import {
   inferStudyStage,
   restoreProjectIntoStores,
 } from "@/lib/platform/project-persistence";
+import {
+  DEMO_PROJECT_ID,
+  ensureDemoInProjects,
+  isDemoProject,
+} from "@/data/demo-project-seed";
 
 interface ProjectStore {
   projects: StudyProject[];
@@ -22,6 +27,8 @@ interface ProjectStore {
 
   createProject: (input: CreateProjectInput) => string;
   openProject: (id: string) => void;
+  openDemoProject: () => string;
+  ensureDemoProject: () => void;
   saveActiveProject: () => void;
   deleteProject: (id: string) => void;
   updateProjectMeta: (id: string, patch: Partial<Pick<StudyProject, "name" | "clientName" | "notes" | "status">>) => void;
@@ -74,11 +81,25 @@ export const useProjectStore = create<ProjectStore>()(
         if (activeProjectId && activeProjectId !== id) {
           get().saveActiveProject();
         }
-        const project = projects.find((p) => p.id === id);
+        const ensured = ensureDemoInProjects(projects);
+        const project = ensured.find((p) => p.id === id);
         if (!project) return;
+        if (ensured !== projects) set({ projects: ensured });
         clearAllAgentStores();
         restoreProjectIntoStores(project);
         set({ activeProjectId: id, pendingFeedbackAction: null });
+      },
+
+      openDemoProject: () => {
+        get().ensureDemoProject();
+        get().openProject(DEMO_PROJECT_ID);
+        return DEMO_PROJECT_ID;
+      },
+
+      ensureDemoProject: () => {
+        const { projects } = get();
+        const ensured = ensureDemoInProjects(projects);
+        if (ensured !== projects) set({ projects: ensured });
       },
 
       saveActiveProject: () => {
@@ -109,11 +130,13 @@ export const useProjectStore = create<ProjectStore>()(
         });
       },
 
-      deleteProject: (id) =>
+      deleteProject: (id) => {
+        if (isDemoProject(id)) return;
         set((s) => ({
           projects: s.projects.filter((p) => p.id !== id),
           activeProjectId: s.activeProjectId === id ? null : s.activeProjectId,
-        })),
+        }));
+      },
 
       updateProjectMeta: (id, patch) =>
         set((s) => ({
@@ -154,10 +177,13 @@ export const useProjectStore = create<ProjectStore>()(
       name: "pe-diagnostic-projects",
       merge: (persisted, current) => {
         const p = (persisted ?? {}) as Partial<ProjectStore>;
+        const projects = ensureDemoInProjects(
+          Array.isArray(p.projects) ? p.projects : [],
+        );
         return {
           ...current,
           ...p,
-          projects: Array.isArray(p.projects) ? p.projects : [],
+          projects,
           activeProjectId: typeof p.activeProjectId === "string" ? p.activeProjectId : null,
         };
       },

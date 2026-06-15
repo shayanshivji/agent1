@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { ArrowRight, FolderOpen, Sparkles } from "lucide-react";
+import { OpenDemoProjectCard } from "@/components/project/OpenDemoProjectCard";
 
 export function CoverPage() {
   return (
@@ -51,6 +52,8 @@ export function CoverPage() {
           </div>
 
           <div className="space-y-4">
+            <OpenDemoProjectCard />
+
             <Link href="/projects/new" className="cover-action-card group">
               <div className="flex items-start justify-between gap-4">
                 <div>

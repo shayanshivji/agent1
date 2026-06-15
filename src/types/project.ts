@@ -38,6 +38,9 @@ export interface StudyProject {
   outputs: AgentSessionOutputs;
   sourceFiles: ProjectSourceFile[];
   feedbackLog: FeedbackEntry[];
+  /** Pre-loaded demo project — outputs refresh when demoSeedVersion bumps */
+  isDemo?: boolean;
+  demoSeedVersion?: number;
 }
 
 export interface CreateProjectInput {
