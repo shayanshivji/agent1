@@ -259,14 +259,23 @@ export function LiveInterviewAgentWorkspace({ embedded }: LiveInterviewAgentWork
               <h2 className="text-xl font-semibold text-[var(--text)]">Add context & capture</h2>
               <p className="text-sm text-[var(--text-muted)] mt-1">
                 {mode === "live"
-                  ? "Load Agent 1 guide, capture live Q&A, then process into structured output."
+                  ? "Capture live Q&A against the Scoping guide, add session notes, then process."
                   : "Upload transcript or paste notes, then extract structured interview intelligence."}
               </p>
             </div>
             <div className="space-y-4">
               {mode === "live" && <InterviewChatPanel />}
-              <InterviewSourcesPanel />
-              <InterviewContextPanel />
+              {mode === "live" ? (
+                <>
+                  <InterviewContextPanel />
+                  <InterviewSourcesPanel />
+                </>
+              ) : (
+                <>
+                  <InterviewSourcesPanel />
+                  <InterviewContextPanel />
+                </>
+              )}
             </div>
             {isGenerating ? (
               <div className="section-card p-12 flex flex-col items-center gap-4 mt-6">
