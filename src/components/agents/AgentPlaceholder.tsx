@@ -22,7 +22,7 @@ export function AgentPlaceholder({ agent }: AgentPlaceholderProps) {
         <p className="text-xs text-[var(--text-muted)] bg-[rgba(6,8,15,0.5)] border border-[var(--border)] rounded-lg px-4 py-3">
           {agent.blueprintSummary}
         </p>
-        {agent.id === 4 && (
+        {agent.id === 4 && agent.status !== "live" && (
           <p className="text-xs text-[var(--accent)] mt-4 font-medium">
             Next build priority — after Scoping Agent validation with Emmanuel.
           </p>

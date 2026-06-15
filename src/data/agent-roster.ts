@@ -52,10 +52,11 @@ export const AGENT_ROSTER: AgentDefinition[] = [
     slug: "improvement-initiatives",
     name: "Improvement Initiatives Agent",
     shortName: "Initiatives",
-    status: "planned",
+    status: "live",
     description:
       "Generate improvement initiatives from process maps and interview evidence with impact sizing.",
-    blueprintSummary: "Next build priority — initiatives from maps + interview notes.",
+    blueprintSummary:
+      "Process-driven initiatives tied to pain points — standalone or pipeline from Agents 1–3.",
     href: "/agents/improvement-initiatives",
   },
   {
