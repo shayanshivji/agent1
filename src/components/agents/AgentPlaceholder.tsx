@@ -24,7 +24,7 @@ export function AgentPlaceholder({ agent }: AgentPlaceholderProps) {
         </p>
         {agent.id === 4 && agent.status !== "live" && (
           <p className="text-xs text-[var(--accent)] mt-4 font-medium">
-            Next build priority — after Scoping Agent validation with Emmanuel.
+            Next build priority, after Scoping Agent validation with Emmanuel.
           </p>
         )}
       </div>

@@ -78,7 +78,7 @@ export function SourcePanel() {
         <div className="mt-4 space-y-3">
           {sources.length === 0 && (
             <p className="text-xs text-[var(--text-muted)] italic leading-relaxed">
-              No sources — guide uses BSN catalog + McKinsey frameworks only.
+              No sources, guide uses BSN catalog + McKinsey frameworks only.
               <Link href="/#how-it-works" className="text-[var(--accent)] ml-1 hover:underline">
                 Learn more
               </Link>

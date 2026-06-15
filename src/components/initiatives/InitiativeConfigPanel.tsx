@@ -77,8 +77,8 @@ export function InitiativeConfigPanel({
             onChange={(e) => setInputMode(e.target.value as InputMode)}
             className="field-input"
           >
-            <option value="standalone">Standalone — docs, notes, maps</option>
-            <option value="pipeline">Pipeline — prior agent JSON</option>
+            <option value="standalone">Standalone, docs, notes, maps</option>
+            <option value="pipeline">Pipeline, prior agent JSON</option>
           </select>
         </div>
 

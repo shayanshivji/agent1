@@ -10,7 +10,7 @@ export interface BusinessFunction {
   description: string;
 }
 
-/** BSN / Varsity Brands preset — default for current engagement. */
+/** BSN / Varsity Brands preset, default for current engagement. */
 export const BSN_PRESET = {
   companyName: "Varsity Brands / BSN Sports",
   industryId: "sports_apparel",

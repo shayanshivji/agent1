@@ -11,7 +11,7 @@ export const GENERIC_WORKFLOWS: WorkflowWithFunctions[] = [
     description: "Quote through billing, fulfillment, and cash collection.",
     typicalSystems: ["ERP", "CRM", "Billing", "Payment portal"],
     seedContext:
-      "End-to-end revenue cycle — order intake, fulfillment, invoicing, and collections handoffs.",
+      "End-to-end revenue cycle, order intake, fulfillment, invoicing, and collections handoffs.",
     functions: ["sales_support", "customer_service", "finance", "general_ops"],
   },
   {

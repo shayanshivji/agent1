@@ -201,7 +201,7 @@ export function AgentLanding({ agent }: AgentLandingProps) {
           <div className="section-card p-8 text-center agent-card-live">
             <h2 className="text-xl font-semibold text-gradient mb-2">Ready to run</h2>
             <p className="text-sm text-[var(--text-muted)] mb-6 max-w-md mx-auto">
-              Open the workspace to configure, generate, edit, and export — standalone or as
+              Open the workspace to configure, generate, edit, and export, standalone or as
               part of the diagnostic pipeline.
             </p>
             <Link href={getAgentWorkspaceHref(agent.slug)} className="btn-primary">

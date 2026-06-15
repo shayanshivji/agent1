@@ -17,9 +17,9 @@ export function inventoryToMarkdown(
   const filter = viewFilter ?? inv.viewFilter;
   const filtered = filterInitiatives(inv.initiatives, filter).map(ensureInitiativeFields);
   const lines: string[] = [
-    `# Improvement Initiatives — ${inv.workflowName}`,
+    `# Improvement Initiatives: ${inv.workflowName}`,
     "",
-    `**Company:** ${inv.companyName ?? "—"}  `,
+    `**Company:** ${inv.companyName ?? "N/A"}  `,
     `**Mode:** ${inv.inputMode} · **Filter:** ${filter}  `,
     `**Generated:** ${new Date(inv.updatedAt).toLocaleString()}`,
     "",

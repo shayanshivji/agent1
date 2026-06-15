@@ -27,7 +27,7 @@ function guideToPrintHtml(guide: InterviewGuide): string {
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>Interview Guide — ${escapeHtml(guide.workflowName)}</title>
+  <title>Interview Guide: ${escapeHtml(guide.workflowName)}</title>
   <style>
     body { font-family: Georgia, 'Times New Roman', serif; max-width: 720px; margin: 40px auto; color: #0f172a; line-height: 1.5; }
     h1 { font-size: 22px; border-bottom: 2px solid #051c2c; padding-bottom: 8px; }
@@ -40,11 +40,11 @@ function guideToPrintHtml(guide: InterviewGuide): string {
   </style>
 </head>
 <body>
-  <h1>Interview Guide — ${escapeHtml(guide.workflowName)}</h1>
+  <h1>Interview Guide: ${escapeHtml(guide.workflowName)}</h1>
   <div class="meta">
     <div><strong>Role:</strong> ${escapeHtml(guide.roleName)}</div>
     <div><strong>Level:</strong> ${escapeHtml(guide.level.replace("_", " "))}</div>
-    <div><strong>Status:</strong> ${escapeHtml(guide.reviewStatus)} — validate before field use</div>
+    <div><strong>Status:</strong> ${escapeHtml(guide.reviewStatus)}, validate before field use</div>
     ${engagement ? `<div><strong>Context:</strong> ${escapeHtml(engagement)}</div>` : ""}
     <div><strong>Generated:</strong> ${escapeHtml(new Date(guide.updatedAt).toLocaleString())}</div>
   </div>
@@ -69,7 +69,7 @@ export function downloadPdf(guide: InterviewGuide) {
   const win = window.open(url, "_blank");
   if (!win) {
     URL.revokeObjectURL(url);
-    throw new Error("Pop-up blocked — allow pop-ups to export PDF");
+    throw new Error("Pop-up blocked, allow pop-ups to export PDF");
   }
   win.addEventListener("afterprint", () => URL.revokeObjectURL(url));
 }

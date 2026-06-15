@@ -131,7 +131,7 @@ export const LEVER_LABELS: Record<LeverType, string> = {
 };
 
 export const HORIZON_LABELS: Record<Horizon, string> = {
-  H1: "H1 — Quick wins (0–6 mo)",
-  H2: "H2 — Scale (6–18 mo)",
-  H3: "H3 — Transform (18+ mo)",
+  H1: "H1: Quick wins (0-6 mo)",
+  H2: "H2: Scale (6-18 mo)",
+  H3: "H3: Transform (18+ mo)",
 };

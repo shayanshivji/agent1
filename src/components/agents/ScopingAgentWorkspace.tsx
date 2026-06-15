@@ -188,7 +188,7 @@ export function ScopingAgentWorkspace() {
                 <p className="text-xs text-[var(--text-muted)] text-center max-w-sm">
                   {llmEnabled
                     ? "BSN catalog + McKinsey frameworks + uploaded sources"
-                    : "BSN seed template — add OPENAI_API_KEY on Vercel for LLM"}
+                    : "BSN seed template, add OPENAI_API_KEY on Vercel for LLM"}
                 </p>
               </div>
             ) : (

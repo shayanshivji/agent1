@@ -13,7 +13,7 @@ import type {
   ValueType,
 } from "@/types/initiative";
 
-/** McKinsey diagnostic methodology — shared across agents, consumed by Agent 4 prompts. */
+/** McKinsey diagnostic methodology, shared across agents, consumed by Agent 4 prompts. */
 export const MCKINSEY_DIAGNOSTIC_LENSES = {
   valueAtStake: "Quantify what is realistically available (benchmark gap, sizing, triangulation)",
   operatingEffectiveness: "Explain why value leaks (process map, maturity, root causes, pain points)",
@@ -66,11 +66,11 @@ export const MCKINSEY_INITIATIVE_METHODOLOGY = `
 MCKINSEY DIAGNOSTIC METHODOLOGY (apply rigorously):
 
 TWO-LENS THINKING:
-1) Value at stake — what impact is realistically capturable (savings, growth, operational value, risk)?
-2) Operating effectiveness — why does value leak at specific process steps (root causes, maturity gaps)?
+1) Value at stake, what impact is realistically capturable (savings, growth, operational value, risk)?
+2) Operating effectiveness, why does value leak at specific process steps (root causes, maturity gaps)?
 
 INITIATIVE RULES:
-- Process-first: every initiative MUST tie to process step(s) AND pain point(s) — no orphan brainstorming
+- Process-first: every initiative MUST tie to process step(s) AND pain point(s), no orphan brainstorming
 - Distinguish value_blocker (materially prevents value capture) vs efficiency_improvement (reduces friction)
 - Classify value_type: run_rate_savings | operational_value | growth_at_stake | risk_reduction
 - Map enabler_category: process | capability | technology_data | governance | talent | kpis_reporting

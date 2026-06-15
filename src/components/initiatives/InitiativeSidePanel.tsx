@@ -102,7 +102,7 @@ export function InitiativeSidePanel() {
                 <p className="font-medium text-[var(--text)]">{pp.title}</p>
                 <p className="text-xs text-[var(--text-muted)] mt-1">{pp.description}</p>
                 <p className="text-[10px] text-[var(--accent)] mt-1">
-                  {pp.severity ?? "—"} · steps: {pp.processStepIds.join(", ")}
+                  {pp.severity ?? "n/a"} · steps: {pp.processStepIds.join(", ")}
                 </p>
               </div>
             ))}

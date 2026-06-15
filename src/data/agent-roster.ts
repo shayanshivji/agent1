@@ -11,7 +11,7 @@ export interface AgentDefinition {
   href: string;
 }
 
-/** Canonical roster — matches Agent Blueprint Library (7 agents). */
+/** Canonical roster, matches Agent Blueprint Library (7 agents). */
 export const AGENT_ROSTER: AgentDefinition[] = [
   {
     id: 1,
@@ -56,7 +56,7 @@ export const AGENT_ROSTER: AgentDefinition[] = [
     description:
       "Generate improvement initiatives from process maps and interview evidence with impact sizing.",
     blueprintSummary:
-      "Process-driven initiatives tied to pain points — standalone or pipeline from Agents 1–3.",
+      "Process-driven initiatives tied to pain points, standalone or pipeline from Agents 1–3.",
     href: "/agents/improvement-initiatives",
   },
   {

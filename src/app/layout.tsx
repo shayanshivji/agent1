@@ -8,7 +8,7 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 export const metadata: Metadata = {
   title: "PE Growth Diagnostic | Agent Platform",
   description:
-    "Modular agent platform for BSN / PE growth diagnostics — scoping, interviews, process mapping, and more.",
+    "Modular agent platform for BSN / PE growth diagnostics, scoping, interviews, process mapping, and more.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

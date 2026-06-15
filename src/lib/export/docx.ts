@@ -13,7 +13,7 @@ export async function downloadDocx(guide: InterviewGuide) {
   const children: Paragraph[] = [
     new Paragraph({
       heading: HeadingLevel.TITLE,
-      children: [new TextRun({ text: `Interview Guide — ${guide.workflowName}`, bold: true })],
+      children: [new TextRun({ text: `Interview Guide: ${guide.workflowName}`, bold: true })],
     }),
     new Paragraph({
       children: [

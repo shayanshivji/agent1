@@ -71,7 +71,7 @@ export const BSN_WORKFLOWS: Workflow[] = [
     description: "Sizing, cancellations, website support, refunds, and general customer inquiries.",
     typicalSystems: ["Engage", "Website", "Customer Care queue"],
     seedContext:
-      "Issue resolution dominates Customer Care time — order status, sizing, missed deadlines.",
+      "Issue resolution dominates Customer Care time, order status, sizing, missed deadlines.",
   },
 ];
 
@@ -113,9 +113,9 @@ export const WORKFLOW_ROLE_HINTS: Record<string, Record<string, string[]>> = {
   },
   "mts-shop-build": {
     "mts-pod": [
-      "TAL vs QOE — when each is used",
+      "TAL vs QOE, when each is used",
       "Intake completeness checklist",
-      "Shop rebuild as Traditional — triggers and rework",
+      "Shop rebuild as Traditional, triggers and rework",
       "Inventory filtering and artwork change process",
       "Shop launch blockers you've seen recently",
     ],

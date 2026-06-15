@@ -8,7 +8,7 @@ ${MCKINSEY_INITIATIVE_METHODOLOGY}
 
 RULES:
 - Every initiative MUST map to specific pain point(s) and process step(s)
-- Ground initiatives in provided process context and fact base — not industry platitudes
+- Ground initiatives in provided process context and fact base, not industry platitudes
 - Tag lever type: process_fix, ai_automation, tech_data, policy_governance, org_design
 - Assign horizon H1 (0-6mo quick wins), H2 (6-18mo scale), H3 (18+mo transform)
 - Produce 8-15 initiatives for comprehensive set
@@ -75,7 +75,7 @@ Return JSON:
     "targetMaturity": "reactive|inconsistent|institutionalized",
     "benchmarkGap": "above_peer|at_peer|below_peer|unknown",
     "executionComplexity": "low|medium|high",
-    "timingDependency": "optional — renewals, RFPs, seasonality",
+    "timingDependency": "optional, renewals, RFPs, seasonality",
     "sequencingRationale": "why this horizon and priority",
     "rootCauseTheme": "e.g. fragmented ownership, late engagement, data handoffs",
     "dependencies": ["..."],

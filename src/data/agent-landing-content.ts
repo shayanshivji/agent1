@@ -19,7 +19,7 @@ export const AGENT_LANDING: Record<string, AgentLandingContent> = {
     heroSubtitle:
       "Generate role-specific SME interview guides with McKinsey-style structure, pain points to test, and fact-base requirements for downstream value sizing.",
     problemStatement:
-      "Discovery starts scattered — notes in decks, tribal knowledge, no consistent interview structure. Teams lose weeks before the first SME conversation is properly scoped.",
+      "Discovery starts scattered, notes in decks, tribal knowledge, no consistent interview structure. Teams lose weeks before the first SME conversation is properly scoped.",
     capabilities: [
       "Workflow and role-specific interview guides (14 structured sections)",
       "BSN seed catalog or generic templates by industry and function",
@@ -38,7 +38,7 @@ export const AGENT_LANDING: Record<string, AgentLandingContent> = {
     heroSubtitle:
       "Conduct structured SME interviews with real-time probing, STAR-style follow-ups, and clean handoff to process mapping.",
     problemStatement:
-      "Live interviews drift — inconsistent probing, poor note capture, and insights that don't map to process steps or pain points.",
+      "Live interviews drift, inconsistent probing, poor note capture, and insights that don't map to process steps or pain points.",
     capabilities: [
       "Guide-driven interview flow from Agent 1",
       "Real-time probing and note capture",
@@ -55,7 +55,7 @@ export const AGENT_LANDING: Record<string, AgentLandingContent> = {
     heroSubtitle:
       "Transform interview notes and transcripts into current-state process maps with systems, handoffs, and validated pain points.",
     problemStatement:
-      "Process knowledge lives in people's heads and slide decks — not in a structured map that initiatives and roadmaps can consume.",
+      "Process knowledge lives in people's heads and slide decks, not in a structured map that initiatives and roadmaps can consume.",
     capabilities: [
       "Current-state process maps from interview outputs",
       "Pain point linkage to process steps",
@@ -70,7 +70,7 @@ export const AGENT_LANDING: Record<string, AgentLandingContent> = {
   "improvement-initiatives": {
     tagline: "Turn pain points into a prioritized initiative inventory.",
     heroSubtitle:
-      "Process-driven improvement initiatives mapped to steps and pain points — McKinsey two-lens framing, standalone or pipeline from Agents 1–3.",
+      "Process-driven improvement initiatives mapped to steps and pain points, McKinsey two-lens framing, standalone or pipeline from Agents 1–3.",
     problemStatement:
       "Brainstormed initiative lists aren't tied to process evidence, lack horizon phasing, and can't feed value modeling or roadmapping.",
     capabilities: [
@@ -90,9 +90,9 @@ export const AGENT_LANDING: Record<string, AgentLandingContent> = {
   "future-state": {
     tagline: "Design the target workflow.",
     heroSubtitle:
-      "Build future-state process maps from validated improvement opportunities — separate from initiative inventory, ready for BRD and implementation.",
+      "Build future-state process maps from validated improvement opportunities, separate from initiative inventory, ready for BRD and implementation.",
     problemStatement:
-      "Initiatives describe what to fix; future-state maps show how work should flow after change — most teams conflate the two.",
+      "Initiatives describe what to fix; future-state maps show how work should flow after change, most teams conflate the two.",
     capabilities: [
       "Target-state workflow from sized initiatives",
       "Before/after process comparison",
@@ -109,7 +109,7 @@ export const AGENT_LANDING: Record<string, AgentLandingContent> = {
     heroSubtitle:
       "Turn sized initiatives into an H1–H3 execution roadmap with dependencies, timing realism, and value realization tracking.",
     problemStatement:
-      "Flat priority lists ignore renewals, team capacity, and dependency chains — roadmaps fail in the first quarter.",
+      "Flat priority lists ignore renewals, team capacity, and dependency chains, roadmaps fail in the first quarter.",
     capabilities: [
       "H1 / H2 / H3 time-phased roadmap",
       "Dependency and timing dependency mapping",
@@ -124,7 +124,7 @@ export const AGENT_LANDING: Record<string, AgentLandingContent> = {
   "brd-drafting": {
     tagline: "Draft the requirements. Hand off to build.",
     heroSubtitle:
-      "Generate business requirements documents from approved future-state designs — implementation-ready for tech and ops teams.",
+      "Generate business requirements documents from approved future-state designs, implementation-ready for tech and ops teams.",
     problemStatement:
       "Diagnostics end in slides; implementation teams need structured BRDs with scope, acceptance criteria, and system touchpoints.",
     capabilities: [

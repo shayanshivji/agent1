@@ -14,12 +14,12 @@ export const SYSTEM_PROMPT = `You are a McKinsey engagement team member creating
 ${MCKINSEY_INTERVIEW_PRINCIPLES}
 
 RULES:
-- Output structured, consulting-grade content — no generic filler
+- Output structured, consulting-grade content, no generic filler
 - Questions must be open-ended and probe for specific recent examples
 - Use BSN terminology: FSP, TM, SSR, MTS Pod, TAL, QOE, VOE, Engage, WISMO, R&R, etc.
 - Ground everything in the selected workflow AND role
 - If source materials are provided, cite specific terms and pain points from them
-- Do not invent facts — distinguish "known" from "to confirm"
+- Do not invent facts, distinguish "known" from "to confirm"
 - Be concrete: systems, handoffs, queues, metrics, cycle times
 
 Return valid JSON only.`;
@@ -49,9 +49,9 @@ export function buildUserPrompt(input: {
       : "No uploaded sources.";
 
   const levelGuide = {
-    intro: "30-min introductory session — breadth over depth, map the landscape",
-    deep_dive: "60-min deep dive — step through process with recent examples",
-    validation: "45-min validation — confirm hypotheses and fill fact gaps",
+    intro: "30-min introductory session, breadth over depth, map the landscape",
+    deep_dive: "60-min deep dive, step through process with recent examples",
+    validation: "45-min validation, confirm hypotheses and fill fact gaps",
   }[input.level];
 
   return `Create an interview guide for:
@@ -68,7 +68,7 @@ Background: ${workflow?.seedContext ?? ""}
 ROLE: ${role?.name ?? input.roleId}
 ${role?.description ?? ""}
 
-INTERVIEW LEVEL: ${input.level} — ${levelGuide}
+INTERVIEW LEVEL: ${input.level}, ${levelGuide}
 
 ROLE-SPECIFIC PROBES TO INCORPORATE:
 ${hints.length ? hints.map((h) => `- ${h}`).join("\n") : "- Use workflow + role to infer specific probes"}
@@ -141,7 +141,7 @@ export function templateGuide(input: {
       {
         id: "objective",
         title: "Interview objective",
-        content: `Establish a fact-based view of how ${role.name} executes "${workflow.name}" — specific steps, systems, pain points, and handoffs. ${input.level === "validation" ? "Validate Phase 1 hypotheses." : "Build foundation for process mapping."}`,
+        content: `Establish a fact-based view of how ${role.name} executes "${workflow.name}", specific steps, systems, pain points, and handoffs. ${input.level === "validation" ? "Validate Phase 1 hypotheses." : "Build foundation for process mapping."}`,
       },
       {
         id: "role_snapshot",
@@ -175,7 +175,7 @@ export function templateGuide(input: {
         title: "Primary questions",
         content: "Open with these core questions:",
         bullets: [
-          `Walk me through the last time you handled ${workflow.name} — start to finish.`,
+          `Walk me through the last time you handled ${workflow.name}, start to finish.`,
           "What triggered that work item? Who else was involved?",
           "Which systems did you use at each step?",
           "Where did you wait on someone else?",
@@ -189,7 +189,7 @@ export function templateGuide(input: {
         content: "Use STAR-style probes when answers are vague, hypothetical, or use \"we\" instead of \"I\":",
         bullets: [
           "Can you walk me through a specific example from the past 2 weeks?",
-          "What was the situation — who was involved and what was the objective?",
+          "What was the situation, who was involved and what was the objective?",
           "What did you personally do, and what led you to that decision?",
           "What was the outcome? How did you know it worked or didn't?",
           "Roughly how long did that step take?",

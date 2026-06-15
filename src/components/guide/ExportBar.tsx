@@ -90,7 +90,7 @@ export function ExportBar() {
         )}
       </div>
       <p className="text-[10px] text-[var(--text-muted)] mt-2">
-        PDF opens a print dialog — choose &quot;Save as PDF&quot; in your browser.
+        PDF opens a print dialog, choose &quot;Save as PDF&quot; in your browser.
       </p>
     </div>
   );

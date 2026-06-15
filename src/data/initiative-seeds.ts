@@ -6,7 +6,7 @@ export interface WorkflowInitiativeSeed {
   painPoints: Omit<PainPoint, "workflowId">[];
 }
 
-/** BSN example seeds — not hardcoded into core framework logic. */
+/** BSN example seeds, not hardcoded into core framework logic. */
 export const BSN_INITIATIVE_SEEDS: WorkflowInitiativeSeed[] = [
   {
     workflowId: "mts-shop-build",

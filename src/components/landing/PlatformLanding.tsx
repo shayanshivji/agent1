@@ -25,12 +25,12 @@ export function PlatformLanding() {
           </div>
 
           <h1 className="text-4xl md:text-6xl font-bold text-gradient leading-[1.1] max-w-4xl">
-            Compress the McKinsey diagnostic into weeks — not months
+            Compress the McKinsey diagnostic into weeks, not months
           </h1>
           <p className="mt-6 text-lg md:text-xl text-[var(--text-muted)] max-w-2xl leading-relaxed">
             Seven modular AI agents on one platform. Scope interviews, map processes,
             generate initiatives, and hand off structured JSON to value modeling and
-            roadmapping — with human review at every step.
+            roadmapping, with human review at every step.
           </p>
 
           <div className="flex flex-wrap gap-3 mt-10">
@@ -90,7 +90,7 @@ export function PlatformLanding() {
       <section id="agents" className="max-w-6xl mx-auto px-6 py-16">
         <h2 className="text-2xl font-semibold text-[var(--text)] mb-2">Agent roster</h2>
         <p className="text-sm text-[var(--text-muted)] mb-8 max-w-xl">
-          Click any agent for a dedicated overview — capabilities, inputs, outputs, and
+          Click any agent for a dedicated overview, capabilities, inputs, outputs, and
           pipeline position.
         </p>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -137,7 +137,7 @@ export function PlatformLanding() {
             <h3 className="font-semibold text-[var(--text)] mb-2">Consulting-grade structure</h3>
             <p className="text-sm text-[var(--text-muted)] leading-relaxed">
               McKinsey two-lens framing, fact-base requirements, and export formats
-              designed for client delivery — not generic chat output.
+              designed for client delivery, not generic chat output.
             </p>
           </div>
           <div className="section-card p-6">
