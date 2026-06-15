@@ -1,20 +1,18 @@
 import type { PainPoint, ProcessStep } from "@/types/pipeline";
 import type { InitiativeViewFilter, InputMode, LeverType } from "@/types/initiative";
+import { MCKINSEY_INITIATIVE_METHODOLOGY } from "@/lib/diagnostics/mckinsey-framework";
 
 export const INITIATIVE_SYSTEM_PROMPT = `You are a McKinsey improvement initiatives specialist for operational diagnostics.
 
+${MCKINSEY_INITIATIVE_METHODOLOGY}
+
 RULES:
-- Every initiative MUST map to specific pain point(s) and process step(s) — no generic brainstorming
-- Ground initiatives in provided process context, not industry platitudes
+- Every initiative MUST map to specific pain point(s) and process step(s)
+- Ground initiatives in provided process context and fact base — not industry platitudes
 - Tag lever type: process_fix, ai_automation, tech_data, policy_governance, org_design
 - Assign horizon H1 (0-6mo quick wins), H2 (6-18mo scale), H3 (18+mo transform)
-- Mark lifecycle: new, partially_existing, or in_flight when evidence suggests
-- Flag potential duplicates or overlaps explicitly
-- Use evidence strength: high, medium, low based on source quality
-- Impact direction: high, medium, low
-- quick_win vs deeper_redesign
-- priorityScore 0-100 based on impact × actionability
 - Produce 8-15 initiatives for comprehensive set
+- Write descriptions in consulting tone: precise, evidence-linked, action-oriented
 
 Return valid JSON only.`;
 
@@ -70,6 +68,16 @@ Return JSON:
     "leverType": "process_fix|ai_automation|tech_data|policy_governance|org_design",
     "horizon": "H1|H2|H3",
     "lifecycle": "new|partially_existing|in_flight",
+    "findingType": "value_blocker|efficiency_improvement",
+    "valueType": "run_rate_savings|operational_value|growth_at_stake|risk_reduction",
+    "enablerCategory": "process|capability|technology_data|governance|talent|kpis_reporting",
+    "currentMaturity": "reactive|inconsistent|institutionalized",
+    "targetMaturity": "reactive|inconsistent|institutionalized",
+    "benchmarkGap": "above_peer|at_peer|below_peer|unknown",
+    "executionComplexity": "low|medium|high",
+    "timingDependency": "optional — renewals, RFPs, seasonality",
+    "sequencingRationale": "why this horizon and priority",
+    "rootCauseTheme": "e.g. fragmented ownership, late engagement, data handoffs",
     "dependencies": ["..."],
     "risks": ["..."],
     "impactDirection": "high|medium|low",

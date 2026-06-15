@@ -12,6 +12,14 @@ import { getSeedForWorkflow } from "@/data/initiative-seeds";
 import { getWorkflow } from "@/data/catalog";
 import type { EngagementContext } from "@/data/engagement-context";
 import { BSN_PRESET } from "@/data/engagement-context";
+import {
+  computeMcKinseyPriorityScore,
+  inferExecutionComplexity,
+  inferFindingType,
+  inferMaturity,
+  inferValueType,
+  leverToEnabler,
+} from "@/lib/diagnostics/mckinsey-framework";
 
 export function parsePipelinePayload(raw: string): UpstreamPipelinePayload | null {
   if (!raw.trim()) return null;
@@ -82,26 +90,51 @@ export function templateInitiatives(input: {
     const stepId = pp.processStepIds[0] ?? input.processSteps[0]?.id ?? "step-execute";
     const lever = LEVER_ROTATION[i % LEVER_ROTATION.length];
     const horizon = i < 2 ? "H1" : i < 4 ? "H2" : "H3";
+    const horizonTyped = horizon as "H1" | "H2" | "H3";
     const id = uuidv4();
+    const findingType = inferFindingType(pp.severity, horizonTyped);
+    const executionComplexity = inferExecutionComplexity(horizonTyped);
+    const maturity = inferMaturity(horizonTyped);
+    const lifecycle = i === 0 ? "in_flight" : "new";
+    const impactDirection = pp.severity === "high" ? "high" : "medium";
+    const evidenceStrength = pp.evidenceSnippet ? "medium" : "low";
 
     const initiative: ImprovementInitiative = {
       id,
       title: `Address: ${pp.title}`,
-      description: `Structured initiative to reduce "${pp.title}" at ${input.workflowName} step(s). ${pp.description}`,
+      description: `Structured initiative to reduce "${pp.title}" at ${input.workflowName} step(s). Root cause: ${pp.description}. Phased as ${horizon} based on near-term value impact and execution complexity.`,
       processStepIds: pp.processStepIds.length ? pp.processStepIds : [stepId],
       painPointIds: [pp.id],
       leverType: lever,
-      horizon: horizon as "H1" | "H2" | "H3",
-      lifecycle: i === 0 ? "in_flight" : "new",
+      horizon: horizonTyped,
+      lifecycle,
       dependencies: i > 0 ? ["Prioritize intake quality baseline"] : [],
       risks: ["SME adoption", "Peak season capacity constraints"],
-      impactDirection: pp.severity === "high" ? "high" : "medium",
-      evidenceStrength: pp.evidenceSnippet ? "medium" : "low",
+      impactDirection,
+      evidenceStrength,
       quickWinType: horizon === "H1" ? "quick_win" : "deeper_redesign",
       sourceReferences: pp.sourceDocument ? [pp.sourceDocument] : ["BSN seed / user context"],
-      priorityScore: pp.severity === "high" ? 85 - i * 5 : 70 - i * 5,
+      priorityScore: computeMcKinseyPriorityScore({
+        impactDirection,
+        evidenceStrength,
+        findingType,
+        executionComplexity,
+        lifecycle,
+        isDuplicate: false,
+        horizon: horizonTyped,
+      }),
       isDuplicate: false,
       order: i,
+      findingType,
+      valueType: inferValueType(lever, findingType),
+      enablerCategory: leverToEnabler(lever),
+      currentMaturity: maturity.current,
+      targetMaturity: maturity.target,
+      benchmarkGap: "unknown",
+      executionComplexity,
+      timingDependency: horizon === "H1" ? "Near-term quick win window" : undefined,
+      sequencingRationale: `Targets ${findingType === "value_blocker" ? "value blocker" : "efficiency"} at process step with ${pp.severity ?? "medium"} severity pain point.`,
+      rootCauseTheme: pp.title,
     };
 
     initiatives.push(initiative);
@@ -141,6 +174,9 @@ export function filterInitiatives(
   switch (filter) {
     case "top_priorities":
       list = list.filter((i) => i.priorityScore >= 75 && !i.isDuplicate);
+      break;
+    case "value_blockers":
+      list = list.filter((i) => i.findingType === "value_blocker" && !i.isDuplicate);
       break;
     case "ai_automation":
       list = list.filter((i) => i.leverType === "ai_automation");

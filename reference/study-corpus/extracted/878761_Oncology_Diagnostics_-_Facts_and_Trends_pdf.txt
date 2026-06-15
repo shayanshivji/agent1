@@ -1,0 +1,1807 @@
+CONFIDENTIAL AND PROPRIETARY
+Any use of this material without specific permission of McKinsey & Company 
+is strictly prohibited
+Knowledge document | April 2020
+Oncology 
+diagnostics: 
+facts and trends
+McKinsey & Company 2
+Read Me First
+What this document is
+An overview of the oncology 
+molecular diagnostics landscape 
+and trends going forward
+Includes information on molecular 
+oncology diagnostics’ role in 
+personalized healthcare, major 
+players in oncology diagnostics, 
+and oncology diagnostics 
+stakeholder engagement 
+What this document is not 
+A roadmap on how to 
+commercialize oncology 
+diagnostics
+A client-shareable primer – please 
+get ED approval before sharing
+Who it is for
+CSTs helping pharma and biotech 
+clients understand the role of 
+molecular diagnostics in oncology
+Knowledge teams seeking to 
+obtain a quick understanding of 
+the oncology diagnostics 
+landscape and trends 
+
+McKinsey & Company 3
+Whom to contact for more information
+Jonathan Usuka
+Southern California
+Senior Expert
+Andreas Lehmann 
+Zurich
+Engagement Manager
+Gloria Wu
+San Francisco
+Associate
+Laura Furstenthal
+San Francisco
+Senior Partner
+
+McKinsey & Company 4
+Content overview
+Why diagnostics are a 
+centerpiece to 
+realizing personalized 
+healthcare in Oncology
+Biomarkers and diagnostics are 
+becoming increasingly relevant 
+within Oncology
+Diagnostic-enabled, targeted 
+therapies allow to deliver the 
+right therapy to the right patients 
+who are most likely to benefit
+Tumor-agnostic therapies are 
+advancing fast, further driving the 
+need for diagnostics to inform 
+treatment selection
+Key trends in oncology 
+diagnostics today and 
+in the future
+For Solid Tumors, the key area of 
+application for diagnostics will 
+likely remain in treatment decision 
+support; with an increasingly 
+complex offer of targeted 
+therapies, diagnostics that can 
+simultaneously test for a broad 
+range of biomarkers (e.g., NGS) 
+will become the leading method
+Within Hematology, the emerging 
+focus area is in disease 
+monitoring through measuring of 
+MRD, where liquid biopsy will play 
+an increasing role complementing 
+bone marrow biopsy
+How oncology players 
+are positioning 
+themselves
+Roche, Novartis, J&J and 
+BMS/Celgene are making the 
+boldest bets in diagnostic-
+enabled, personalized oncology 
+through partnerships with various 
+ecosystem players; most players 
+focus on development of 
+companion diagnostics related to 
+known biomarkers, with less 
+strategic investment into 
+biomarker data acquisition
+Playbook on how to 
+engage with 
+stakeholders
+Unique concerns of patients, 
+providers, payers, pathologists 
+& labs should guide how 
+biotechs engage with them on 
+diagnostics to address to 
+achieve better outcomes, 
+better patient experience and 
+lower overall cost
+McKinsey & Company 5
+Contents Importance of diagnostics in oncology
+Key trends impacting oncology diagnostics 
+Competitive ecosystem
+How to engage with stakeholders
+McKinsey & Company 6
+The number of oncology drugs with biomarkers specified on label is 
+on the rise, driving demand for diagnostics
+17E 19E
+4.1
+18E 20E 21E 22E
+3.0
+3.4
+3.8
+4.5 4.8+10% p.a.
+A
+B
+C
+1
+9
+18 22
+34
+59
+1995 2014 20192000 2006 2010
+1.4 per   
+year
+4.1 per  
+year
+SOURCE: FDA; Profound Market Intelligence Companion Diagnostics report 2016; DRG IVD Market report 2017; National Human Genome Research Institute, 
+Evaluate Pharma, FDA website
+Oncology drugs with biomarker on label
+Cumulative # of FDA approved drugs
+Cancer biomarker market is rapidly growing, projected to reach ~$20 
+billion in 2022 from ~$11 billion in 2017, driven by 
+Lower sequencing cost
+Increasing diagnostic applications of biomarkers in oncology
+Paradigm shift from multiple tests, each with one answer, to one test with 
+multiple answers
+"Biomarkers are hugely important: If you can use biomarkers to 
+pick patients highly likely to respond, you can expedite the 
+clinical development process. In addition, biomarkers can help 
+doctors and patients decide which therapy to use for niche 
+indications”
+Oncologist in melanoma, AMC
+Companion Diagnostics WW market size
+USD $B
+McKinsey & Company 7
+Diagnostic-enabled, targeted therapies help deliver better outcomes 
+and a better patient experience... 
+Overall survival for 805 patients with NSCLC demonstrating that 
+treatment with matched targeted therapy yields superior outcomes.1
+1. For the 131 patients who received a targeted therapy at some time during their treatment, the median overall survival was 31.8 months. Of f the 482 patients 
+who received cytotoxic chemotherapy, the median overall survival was 12.7 months and was 5.1 months for the 192 patients who received only supportive 
+care (p < 0.001)
+Key drivers of improved clinical outcomes
+Diagnostics enable tailoring of individualized treatment regimen 
+based on specific biomarkers leading to improved response 
+rates and reduced toxicity 
+Disease monitoring allows for earlier detection of treatment 
+response and evidence-based adaptation of treatment regimen 
+(i.e. fewer wasted lines of therapy)
+Screening and early diagnosis through new testing methods 
+(e.g., liquid biopsy) allow for cancer prevention, earlier cancer 
+detection and increased overall survival due to earlier start of 
+therapy
+Biomarker testing is the key to not wasting money 
+and not giving patients toxic treatments
+Director, Cancer Immunotherapy, AMC 
+SOURCE: Gutierrez et al, Clin Lung Cancer (2017)
+MORE INFORMATION IN APPENDIX
+Genomic Profiling of Advanced NSCLC in Community Setting
+Median 
+overall 
+survival 
+12.7 
+months
+Median 
+overall 
+survival 
+31.8 
+months
+McKinsey & Company 8
+…while they could help reduce overall cost to 
+the healthcare system
+SOURCE: Null Kogan et al., American Journey of Managed Care, Delivering on the Value Proposition of Precision Medicine: The View From Healthcare Payers, 
+April 2018; Charles River Associates, The benefits of personalized medicine to patients, society and healthcare systems, July 2018
+MORE INFORMATION IN APPENDIX
+Cost factors Savings generated
+Cost offsets due to reductions in the 
+use of unnecessary interventions or 
+to more efficient use of resources
+Reduction in productivity loss and 
+remuneration received during sick 
+leaves
+Reduction of costs of cancer treatment 
+in health facilities through a decrease 
+in hospital stays (e.g., vs 
+chemotherapies)
+Targeted use of drugs leads to higher 
+prices on a per patient basis due to 
+“rare disease” like pricing
+Targeted therapies require more 
+extensive genetic testing to 
+determine suitability and dosage 
+intensity, and potentially screening out 
+of patients who would not benefit from 
+the drug
+Reliable data on 
+overall cost impact 
+of targeted therapies 
+is still limited – need 
+for further 
+investigation and 
+real world data to 
+generate more 
+conclusive insights
+Key drivers of impact on healthcare cost
+McKinsey & Company 9
+In the future, tumor-agnostic therapies could become the new 
+normal, placing diagnostics at the core of treatment selection
+Source: Park, Jay JH, et al. "Systematic review of basket trials, umbrella trials, and platform trials: a landscape analysis of master protocols“, Trials 20.1 (2019): 
+1-10; Looney et al., “Tumour-agnostic therapies”, in: Nature (2020)
+10
+50
+0
+20
+30
+40
+18112010 12 13 14 15 16 17 2019
+Recently approved tumor-agnostic therapies (i.e. Rozlytrek and Vitrakvi) increasingly rely on NGS-based diagnostics (e.g., FoundationOne CDx)
+Keytruda’s only FDA approved CDx is IHC based; however, Merck and Foundation Medicine announced a collaboration to develop a tumor-agnostic MSI CDx
+Number of (biomarker based) basket 
+trials 
+Cumulative
+2017
+FDA grants accelerated approval to 
+Keytruda for unresectable or 
+metastatic solid tumors with genetic 
+biomarkers: MSI-H or dMMR
+This is the first approval based on 
+biomarker vs. indications (e.g. 
+breast cancer)
+Basket trials test how well a new drugs works in 
+patients with different types of cancer that all 
+have the same biomarker, hence they are a good
+leading indicator for tumor-agnostic therapies
+2018 Approval for NTRK fusion-
+positive solid tumors
+2019
+Approval for NTRK fusion-
+positive solid tumors
+Tumor-agnostic therapy approvals
+TRK – phase I/II
+ALK, ROS1 and TRK – phase I/II
+Repotrectinib (Turning Point Tx)
+FGFR – phase I/II
+Debio1347 (Debiopharm)
+RET – phase I/II
+Pralsetinib (Blueprint)
+RET – phase I/II
+Selitrectinib (Bayer)
+Selpercatinib (Eli Lilly)
+Pipeline examples (not exhaustive)
+McKinsey & Company 10
+Contents Importance of diagnostics in oncology
+Key trends impacting oncology diagnostics 
+Competitive ecosystem
+How to engage with stakeholders
+McKinsey & Company 11
+The application of diagnostics in Oncology will expand and have a 
+different focus in solid tumors and in hematology
+PREVENTIVE 
+SCREENING DIAGNOSIS TREATMENT 
+SELECTION
+DISEASE 
+MONITORING
+REMISSION/ 
+CURE
+END OF LIFE
+1
+2
+Focus: serial monitoring of patients in remission for risk 
+of relapse to more rapidly administer the next line of 
+treatment
+Solid tumors
+Hematology
+Focus: biomarker testing to support 
+optimal treatment selection for individual 
+patients
+Solid tumorsFrom
+To
+Early Detection Disease Monitoring
+Main application areas Emerging application areas
+
+McKinsey & Company 12
+The oncology biomarker landscape in solid tumors is 
+becoming increasingly complex, with Lung leading the way
+Paclitaxel
+Carboplatin
+Paclitaxel
+Carboplatin
+EGFR
+ALK
+ROS1
+1. NSCLC: Non Small Cell Lung Cancer
+2. Recommended biomarkers tests by NCCN guideline 2020 .
+3. Selected biomarkers for illustrative purposes based on commonly used mutigene prognostic signature tests (ie. OncotypeDX, University of Michigan Dept of 
+Pathology NGS panels)
+Multiple solid 
+tumors are going 
+through the 
+biomarker evolution
+Today2:
+KRAS, RAS, BRAF, 
+HER2, MSI-H/dMMR
+Future3:
+NTRK, EGFR, HER2, AKT, MEK, 
+ROS1, ALK
+Breast Cancer CRC
+More targeted therapies are approved with additional 
+biomarkers to dictate treatment, requiring diagnostics that can 
+test a wide panel of biomarkers simultaneously
+10 years from now
+Today
+20 years ago 
+All NSCLC1 patients are treated the same 
+based on anatomic location of tumor
+EGFR
+PIK3 
+NaPi3b
+MET
+KRASALK
+ROS1
+TIGIT
+Paclitaxel
+Carboplatin
+Tiragolumab
+RAF Inhibitor 
+(GDC-5573)
+Multiple biomarkers guide therapeutic options for 
+NSCLC
+ILLUSTRATIVE
+Today2:
+HER2, ER, PR, PD-L1, 
+BRCA1/2 
+Future3:
+PIK3CA, NTRK, MSI-H/dMMR, P53, 
+AKT, KRAS, TIGIT, MEK, ROS1 
+1. Solid tumors
+McKinsey & Company 13
+A look beyond FDA approved biomarkers to all actionable 
+biomarkers shows the paradigm shift is already happening
+1. Solid tumors
+8
+32
+7
+13
+4
+6
+24
+12
+2 4
+5
+22
+12
+Clinical evidenceFDA approved
+3
+Biological 
+evidence
+Standard of care
+2
+Total actionable 
+biomarkers
+Standard of 
+care biomarker 
+recommend-
+ded by the 
+NCCN or other 
+expert panels 
+predictive of 
+response or 
+resistance to an 
+FDA-approved 
+drug in this 
+indication
+Compelling 
+clinical 
+evidence 
+supports the 
+biomarker as 
+being predictive 
+of response or 
+resistance to a 
+drug in this 
+indication
+FDA-
+recognized
+biomarker 
+predictive of 
+response to an 
+FDA-approved 
+drug in this 
+indication
+Compelling 
+biological 
+evidence 
+supports the 
+biomarker as 
+being predictive 
+of response to 
+a drug
+CRC
+SOURCE: MSKCC OncoKB project
+Number of actionable biomarkers based on levels of evidence Definition of actionable biomarkers 
+NSCLC
+Breast Cancer
+FDA 
+approved
+Standard of 
+care
+Clinical 
+evidence
+Biological 
+evidence
+McKinsey & Company 14
+To make testing streamlined, diagnostics able to simultaneously test 
+for a broad range of biomarkers will become the leading method
+1. Solid tumors
+1. Minimal Residual Disease
+SOURCE: Press release, McKinsey analysis
+ILLUSTRATIVE EXAMPLE FOR NSCLC1
+Many targeted therapies with a broad range of 
+biomarkers dictate treatment and disease 
+monitoring
+TOFROM
+Multiple biomarkers guide therapeutic options for NSCLC
+70 cancer 
+related genes 
+(including 
+EGFR, ALK, 
+ROS). Capacity 
+to test for TMB 
+and MSI
+NGS
+VENTANA ALK 
+(D5F3) CDx
+Assay
+cobas® EGFR 
+Mutation Test v2
+ROS1 FISH test 
+(no CDx yet)
+PCR
+IHC
+FISH
+EGFR
+ALK
+ROS1
+Foundation-One
+with broad 
+indications
+EGFR
+ALK
+ROS1
+EGFR
+PIK3 
+NaPi3b
+Met
+KrasALK
+ROS1
+Diagnostic test Test method Biomarker
+Targeted NSCLC 
+therapy
+Biopsy 
+method
+Tissue 
+biopsy
+Tissue 
+biopsy
+Tissue 
+biopsy
+BiomarkerTest methodDiagnostic test
+Biopsy
+method
+Tissue 
+biopsy
+or
+Liquid 
+biopsy
+One comprehensive test result including all relevant biomarkers informing 
+physicians for suitable therapeutic decisions
+Three independent test must be ordered, received, and, interpreted by 
+physicians for treatment decisions
+McKinsey & Company 15
+Among existing testing methodologies we expect NGS to 
+continue to grow in importance due to its versatility
+1. Solid tumors
+1. Based on 2020 Medicare reimbursement schedule
+Biomarker 
+target type
+Number of 
+biomarkers in 
+one test
+Liquid biopsy 
+compatible Turnaround Time
+Diagnostic 
+methodology Cost1 Key trends
+NGS is the emerging winner in detecting 
+DNA/RNA. Current barriers include higher 
+cost and long turnaround time, however 
+the technology is maturing rapidly and 
+catching up with PCR and FISH in cost 
+and time
+Description
+High
+>1,000 
+genes Med
+Small sample 
+quantity is required Slow
+7-14 days >$3000
+High
+Nonspecific sequencing of 
+all DNA/RNANGS
+Low
+<10 genes
+Low
+Tumor tissues or 
+cells are required Fast
+<7 days
+FISH
+<$ 200
+Low
+Detecting presence of 
+known DNA/ RNA 
+sequences
+Med
+<100 
+genes Med
+Small sample 
+quantity is required Fast
+<7 days
+PCR
+<$2000
+Med
+Targeted sequencing of 
+DNA/RNA
+DNA/
+RNA
+IHC will continue to be the gold standard
+to detect biomarkers at the protein level 
+because proteomics technology is not yet 
+mature 
+Med
+<10 
+proteins Low
+Tumor tissues or 
+cells are required Fast
+<7 days
+IHC
+<$ 200
+Low
+Detecting known 
+protein/peptide
+Protein / 
+peptide
+Flow cytometry is routinely used in 
+hematology diagnostics but has high 
+technical barrier to be applied in solid 
+tumors
+Low
+<10 cell 
+markers Low
+Heme tumor cells 
+from marrow are 
+required
+Fast
+<7 days
+Flow cytometry
+<$ 200
+Low
+Detecting malignant cells 
+by surface markers
+Cell
+See Appendix for overview 
+of different NGS platforms 
+SOURCE: 2020 Clinical Laboratory Fee Schedule, Labcorp.com, foundationmedicine.com
+McKinsey & Company 16
+There are three main factors that drive administration of a given 
+testing methodology for an indication or therapy
+SOURCE: The 2019 Genentech Oncology Trend Report, Genentech, p. 48-49
+Testing 
+rates
+23
+1
+3 Guideline recommendation
+32-35% of oncologists who decide to administer a given test do so because 
+it is recommended in guidelines
+2 Reimbursement coverage
+Denial of prior authorization by the payer, insufficient reimbursement and 
+patient OOP burden are among the most frequent reasons for oncologists 
+not to administer a biomarker test
+1 Approval of the test as a companion diagnostic
+Up to 48% of oncologists who administer a specific biomarker test do so 
+because the therapy requires it as a companion diagnostic
+1. Solid tumors
+McKinsey & Company 17
+More oncology practices will offer NGS, with tests 
+performed increasingly in-house 
+1. Solid tumors
+SOURCE: 2019 Genentech Oncology Trend Report
+5 105
+20
+5
+34
+13
+In house Outsource
+2
+20
+Don’t offer 
+NGS tests
+4
+16
+64
+8 8
+14 12
+16
+27
+9
+In house
+2
+Outsource
+3
+38
+Don’t offer 
+NGS tests
+48
+15
+Location of NGS testing
+% of respondents (oncology practice managers), N=205
+Community Hospital Academic
+Today In 3 years
+NGS testing location trend
+Oncology practices want to move 
+NGS testing to in-house within 
+the 3 years
+Community and hospital practices 
+will see the most significant shift 
+from outsource NGS to in-house
+In-house NGS testing may 
+significantly decrease turnaround 
+time
+McKinsey & Company 18
+Liquid biopsy is an emerging technology that supports DNA/ RNA analysis 
+based on blood samples and can be applied along the patient journey
+1. Solid tumors
+SOURCE: Literature search; analyst reports
+Liquid biopsy diagnostic process 
+Blood draw
+ctDNA/RNA, ctCells or exomes 
+found in the blood stream can be 
+isolated in the blood sample 
+DNA detection
+Next generation sequencing or 
+microarray to sequence the cell 
+free DNA sample 
+Analysis 
+Bioinformatics software is used to 
+identify variants or foreign DNA  
+depending on the application and 
+predict clinical impact for patient
+Machine learning can be applied 
+here to more accurately and 
+quickly identify genetic variants 
+Ecosystem overview
+Most liquid biopsy companies today are focused on treatment decision support
+Activities in both early diagnosis and disease monitoring are dependent on new engineering 
+advances to improve sensitivity and specificity levels, and on improved economics to reduce 
+budget impact
+No revenue or
+not disclosed
+0
+10,000+
+1,000
+100
+(Pharma partners)
+Early diagnosis Disease monitoringTreatment selection
+Revenue
+USD Mn
+McKinsey & Company 19
+Liquid biopsy will gain importance in supplementing 
+traditional tissue biopsy to inform solid tumor treatment selection
+1. Solid tumors
+1. Includes both diagnostic test costs and procedural costs (ie. tissue biopsy vs blood draw)
+Liquid 
+biopsy
+Traditional 
+tissue 
+biopsy
+Title Cost1 Invasiveness
+Ongoing 
+monitoring
+Compatible for all 
+tumor locations
+Tumor histology 
+grading
+Applications 
+across tumor 
+types
+Simple procedures 
+(ie. blood draw) with 
+lower cost   
+Non-invasive 
+procedures limiting 
+complications
+Repeat testing 
+possible to allow 
+response monitoring
+Tumor location 
+independent sampling
+Not possible to 
+visualize tumor 
+histology
+Not all tumor types 
+shed circulating cells 
+or DNA/RNA detected 
+by liquid biopsy
+Complex procedures 
+(ie. surgical biopsy) 
+with higher cost   
+Highly invasive 
+procedures with 
+potential 
+complications
+Repeat testing not 
+possible allowing only 
+initial diagnosis
+Certain tumor 
+locations (e.g., 
+pancreas) difficult to 
+access; can miss 
+heterogeneity in 
+tumor
+Gold standard in initial 
+tumor diagnosis and 
+grading based on 
+histology
+All solid tumors are 
+possible to be 
+diagnosed with tissue 
+biopsy
+Key takeaway
+Liquid biopsy is not yet broadly used but has many advantages over tissue biopsy and will expand substantially in applications 
+Traditional tissue biopsy is the current gold standard and will remain important for initial solid tumor diagnosis and histology grading
+AdvantageousRequired for initial diagnosis confirmation
+McKinsey & Company 20
+In hematology diagnostics, there is a growing focus on disease 
+monitoring versus treatment selection support
+2. Hematology
+Main application areas Emerging application areas
+PREVENTIVE 
+SCREENING DIAGNOSIS TREATMENT 
+SELECTION
+DISEASE 
+MONITORING
+REMISSION/ 
+CURE
+END OF LIFE
+Rapid expansion of diagnostics used for disease monitoring
+Disease monitoring based on Minimal Residual Disease (MRD) already established in 
+ALL and MM, expanding to further indications incl. CLL – MRD enables more accurate 
+prognosis and improved treatment management
+Slower expansion of diagnostics used for treatment selection
+Fewer cDx-enabled biomarkers linked to MoA targets than in solid tumors, currently limited to 
+specific indications (CML and AML) - e.g., BCR-ABL, IDH2 
+Majority of testing done to detect prognostic biomarkers (e.g., (Del)17p/TP53), i.e. biomarkers 
+which are not directly linked to therapy MoA targets – unlike for HER2, ALK, etc. in solid tumors
+McKinsey & Company 21
+The focus will be on rapid expansion of non-invasive MRD 
+monitoring for more hematology indications
+2. Hematology
+SOURCE: Literature search; analyst reports
+Details on next pages
+Status quo
+Testing 
+methodology
+Flow cytometry, FISH, PCR, IHC are all widely used methods 
+Biopsy 
+methodology
+Highly invasive bone marrow and tissue biopsy predominate. 
+Limited use of liquid biopsy
+Diagnostic 
+testing 
+landscape
+Initial treatment selection: established prognostic biomarkers 
+that predict treatment responses (e.g., (Del)17p/TP53) are used 
+clinically and in trials. Some targeted therapies (e.g., Tasigna
+against BCR-ABL, Idhifa against IDH2) with CDx
+Disease monitoring: MRD testing established in select 
+indications (e.g., ALL and MM)
+From
+Traditional methods in diagnosis, treatment selection 
+and disease monitoring
+To
+Forward looking
+NGS, and next generation flow cytometry (NGF) will become 
+widely used; PCR, IHC, FISH will continue to play a role
+Increased focus on non-invasive liquid biopsy while bone 
+marrow and tissue biopsy remain the gold standard for initial 
+diagnosis
+Initial treatment selection: steady increase in use of 
+prognostic biomarkers to better predict treatment responses. 
+Some increase in targeted therapies with CDx
+Disease monitoring: rapid expansion in MRD indications. 
+Advancement in testing methodology (i.e., NGS and NGF) and 
+biopsy methodology (i.e., liquid biopsy) will enable wide clinical 
+adaptation of MRD use
+Broad range of prognostic biomarkers predicting 
+treatment responses and non-invasive disease 
+monitoring via MRD testing
+McKinsey & Company 22
+MRD negativity is an emerging treatment objective, 
+with both NGS and NGF being used as testing methods
+2. Hematology
+Details on next page
+Source: Oliva, Stefania, et al. "Clinical Applications and Future Directions of Minimal Residual Disease Testing in Multiple Myeloma." Frontiers in Oncology 10 (2020). Romano, 
+Alessandra, et al. "The minimal residual disease within the bone marrow of Multiple Myeloma: caveats, clinical significance and future perspectives." Frontiers in oncology 9 (2019): 699.
+Currently, sensitivity in detecting MRD using peripheral blood is very low compared to bone marrow biopsy. However, possible 
+technical advances could overcome the low sensitivity barrier to make liquid biopsy feasible
+MRD refers to the small amount of cancer cells that remain in patients after treatment. These cells cause no physical symptoms and are not 
+detectable by traditional methods. Measuring MRD is important to monitor disease and determine treatment choice. In addition,MRD is an 
+emerging endpoint in clinical trials to detect disease response with higher sensitivity
+Use cases 
+NGF requires fresh samples, 
+on-site analysis and strong in-
+house expertise. This method is 
+the most accessible to major 
+academic medical centers
+NGS testing for MRD is 
+available as a commercial send-
+out test (ClonoSeq) that can be 
+done in all clinical settings 
+Level of in-
+house expertise 
+required 
+Compatibility with 
+non-invasive 
+liquid biopsy
+Turnaround 
+time Cost
+Testing 
+method
+Potential to use liquid 
+biopsy while status quo 
+is bone marrow biopsy
+1 week, send 
+out test
+~$15001-2 million cells 
+Potential to use liquid 
+biopsy while status quo 
+is bone marrow biopsy
+<1 day, 
+performed in-
+house at 
+provider 
+~$30010 million cells 
+Quantity of 
+biopsy sample 
+needed Sensitivity
+HighMed Fast LowNGF High Med Yes
+LowMed Slow HighNGS Low High No
+Fresh
+sample
+needed
+McKinsey & Company 23
+Applications of liquid biopsy will likely broaden for MRD 
+monitoring, but bone marrow biopsy is here to stay
+2. Hematology
+1. Includes both diagnostic test costs and procedural costs (ie. tissue biopsy vs blood draw)
+Title
+Liquid 
+biopsy 
+(peripheral 
+blood)
+Bone 
+marrow 
+biopsy
+Cost1 Invasiveness
+Application for 
+disease monitoringTechnical maturity
+Application for 
+initial diagnosis
+Simple procedures (blood 
+draw) with low cost   
+Non-invasive procedures 
+limiting complications
+Repeat testing possible 
+to allow continued 
+response monitoring
+Low sensitivity in 
+measuring MRD with 
+current technology
+Not sensitive enough for 
+initial diagnosis
+AdvantageousRequired for initial diagnosis
+Key takeaway
+Liquid biopsy is not yet broadly used due to technical limitations; future technical advances may expand its applications in MRD significantly  
+Traditional  bone marrow biopsy will likely remain the gold standard for initial hematology diagnosis
+Complex procedures that 
+are performed by 
+specialist with higher cost   
+Highly invasive 
+procedures with potential 
+complications
+Repeat testing increases 
+complication rates and 
+compromises patient 
+comfort
+Most sensitive way to 
+measure MRD
+Gold standard in initial 
+diagnosis
+McKinsey & Company 24
+Emerging ecosystem players are predominantly focused on DNA/
+RNA sequencing and technologies with multiplexing capabilities
+High multiplex capacity Liquid biopsy compatibleStatus quo technology
+1. Pitchbook analysis. 2017 to Feb 2020
+Example companies – not exhaustive
+Key takeaways
+Evolution of cancer 
+diagnostics is led by 
+multiple sequencing 
+based technologies
+with large number of 
+emerging companies 
+Emerging technologies 
+differentiate from status 
+quo by high 
+multiplexing capacity
+and compatibilty with 
+liquid biopsy sampling
+Cell-free DNAGenomic DNA NGS
+Exosome profiling
+DNA microarray
+Immuno ProfilingmicroRNA
+Circ.Tumor Cell
+NGS enabled technologies
+MS proteomicsProtein array
+Protein / 
+peptide
+Cell
+DNA/RNA PCR
+FISH
+IHC
+Flow cytometry
+62
+34
+25
+$649MM
+$498MM
+$167MM
+Status quo 
+and 
+commoditized Growing, emerging, and exploratory 
+VC 
+deal 
+count1
+Biomarker 
+target 
+type
+VC total 
+invest-
+ments1
+McKinsey & Company 25
+As a result of these trends, the use of biomarker data has exploded, 
+creating a need for advanced analytics solutions
+Data Ingestion & 
+Integration Insight generation
+Biomarker data 
+acquisition
+Link and integrate biomarker 
+and clinical data across 
+multiple sources, clean up 
+and annotate to create data 
+ready for structured analysis 
+to enable insight and 
+metadata generation
+Deliver high quality analysis-
+ready data to stakeholders 
+(for treatment decision 
+making and research
+Biomarker 
+data value 
+chain
+Generate or gain access to 
+biomarker and clinical data
+Examples
+Integration of oncology data 
+from a variety of sources, 
+including Real World Data, 
+clinical data from different 
+providers, and biomarker data
+Recommendation of 
+treatment options to 
+oncologists based on 
+analyzed biomarker data
+Generation of new biomarker 
+data via providing biomarker 
+testing kits such as the 
+TempusxT
+McKinsey & Company 26
+This has given rise to companies disrupting with new business models, 
+some focusing on preclinical discovery, others on clinical applications
+Pre-clinical 
+biomarker 
+discovery and 
+translational 
+research
+Clinical 
+applications 
+and 
+development
+Biomarker data acquisition
+Biomarker data curation 
+and linkage Insight generation
+Deep dive on select companies in appendix Not exhaustive
+McKinsey & Company 27
+Contents Importance of diagnostics in oncology
+Key trends impacting oncology diagnostics 
+Competitive ecosystem
+How to engage with stakeholders
+McKinsey & Company 28Source: PharmaProjects, EvaluatePharma
+1997 2001 2005 2007 2011 20151999 2003 2009 2013 2017
+Herceptin KadcylaPerjetaTykerb
+Zelboraf Tafinlar Braftovi
+Yervoy Tremelimumab
+2019
+Keytruda Opdivo
+Tecentriq Durvalumab
+Avelumab
+Tyvyt
+Libtayo
+Rituxan GazyvaArzerraZevalin Bexxar Ocrevus
+Trazimera
+Kanijinti
+OntruzantHerzumaOgivri Nerlynx
+Gleevec SprycelTasigna Bosulif Iclusig Supect
+Xalkori Zykadia , Alecensa LorbrenaAlunbrig Rozlytrek
+Mekinist Cotellic SelumetinibMektovi
+Lynparza Veliparib Zejula TalzennaRubraca
+Iressa Erbitux  Tarceva Vectibix PortrazzaCaprelsa AfatinibCitoprot-P Conmana Olita Tab PyrotinibTagrisso
+Avastin Zaltrap CyramzaMacugen Lucentis Dilazep Inlyta Cometriq Lenvima Cabometyx Fotivda Focus V Elunate Beovu
+HER2
+B-RAF
+CTLA-4
+CD-20
+BCR-ABL
+ALK
+MEK1/2
+PARP
+EGFR
+VEGF
+PD-1/
+PD-L1
+CD19 CAR-T Kymriah Yescarta Liso-cel
+Increased innovation on targeted therapies is narrowing timelines 
+between competitive launches for specific biomarkers
+McKinsey & Company 29
+Pharma companies are expanding their investments into 
+diagnostic-enabled therapies (1/2)
+Source: Evaluate pipeline database; company websites; analyst reports; 
+In-market portfolio
+ 2022-25
+Pipeline includes all investigated biomarkers – may not represent final label
+2020-21 
+HRAS
+BRAF, PD1
+PD-L1
+Ph
+LAG-3, PD-L1
+BRIP, BRCA, CDK12, CHEK1/2, 
+FANCA/D2/L,NBN, RAD51
+ER, HER2
+ALK, EGFR, PD-L1, CTLA-4, 
+HLA-A2
+ER, PR, HER2
+PIK3CA, AKT, PTEN
+Tipifarnib
+PDR001
+ADU-S100
+ABL001
+Relatlimab
+Zejula
+CC-486
+Tremelimumab
+GPC-3Codrituzumab
+Ipatasertib
+PD-L1Atezolizumab
+n/a
+GM-CSF
+FGFR4, KLB
+TP53
+ER, PR, HER2, BRAF
+FGFR
+ER, PR, HER2
+BRAF, KRAS
+PD-L1
+PD-L1
+BCMA
+CD19
+CXCR4
+BCMA
+HER2
+PD-L1
+MSI
+PIK3CA
+PTEN
+CG0070
+FGF401
+MBG-453
+MCS-110
+TKI258
+IMP701
+WNT974
+Urelumab
+Tarzifyx
+bb21217
+JWCAR029
+Ulocuplumab
+Orva-cel
+RG6171
+Tiragolumab
+Atezolizumab
+GDC-0077
+Ipatasertib
+
+McKinsey & Company 30
+Pharma companies are expanding their investments into 
+diagnostic-enabled therapies (2/2)
+SOURCE: Evaluate pipeline database; company websites; analyst reports; 
+Nirogacestat Notch
+PF-04518600 ER/PR/HER2, PD-L1, TIL, 
+CD4, CD8
+PB272 IV HER2
+Defactinib INK4a, KRAS, TP53
+PF-05082566 ER/PR/HER2, PD-L1, TIL, 
+CD4, CD8, HPV16
+Tremelimumab ALK, EGFR, PD-L1, 
+CTLA-4, HLA-A2
+Crenolanib FLT3, MPO
+In-market portfolio 2020-21 2022-25
+Tremelimumab ALK, EGFR, PD-L1, 
+CTLA-4, HLA-A2
+Monalizumab HLA-E
+CDX-3379 HER3
+Adavosertib CA-125, TP53
+Capivasertib AKT, ER/PR/HER2, PIK3CA
+AZD4547 FGFR
+AZD3759 EGFR
+Tremelimumab ALK, EGFR, PD-L1, 
+CTLA-4, HLA-A2
+CXD101 HR23B
+Savolitinib EGFR, MET
+Zemfirza ER/PR
+AMG 510 KRASRilotumumab MET
+Ganitumab IGF
+Pipeline includes all investigated biomarkers – may not represent final label
+Adavosertib CA-125, TP53
+Derazatinib FGFR
+MK-1454 PD-L1
+n/a
+McKinsey & Company 31
+Majority of partnerships focus 
+on applications of AI and 
+machine learning to accelerate 
+drug discovery and to 
+improve clinical decision 
+support, linked to cDx for 
+existing therapies or therapies 
+in trial and known biomarkers
+Among top oncology players, Roche, Novartis, J&J and BMS have 
+made the most strategic investments in data analytics
+Not exhaustive
+Biomarker data 
+acquisition
+Biomarker data 
+curation and linkage
+ Insight generation
+
+McKinsey & Company 32
+Pharma companies are partnering to strengthen their capabilities 
+in liquid biopsy
+(Early pioneering R&D alliance on 
+circulating tumor cell biopsy started 
+in 2011)
+Not exhaustive
+Preventive screen-
+ing & diagnosis Treatment selection
+ Disease monitoring
+Other industry players are 
+largely focusing liquid biopsy 
+partnerships on development 
+of companion diagnostics to 
+support treatment selection 
+for solid tumors
+BMS is making first forays into 
+early cancer detection through 
+it’s partnership with Grail
+
+McKinsey & Company 33
+Pharma companies have taken on a range of operating models to 
+pursue their biomarker and diagnostics efforts
+Roche
+Standalone diagnostic business
+Acquired Foundation Medicine
+Tx/Dx co-development model e.g., 
+Ventana integrated in projects even 
+in pre-clinical stage
+Partnering at early stages to 
+assess new tech
+Astra Zeneca
+Personalized Healthcare 
+organization reporting to iMED
+Biotech Unit
+Acquisition of Definiens to 
+strengthen IHC analysis for 
+immuno-oncology
+Extensive partnerships (e.g., 
+Illumina for NGS, Oxford Cancer 
+Biomarkers)
+Pfizer
+Partnerships with Siemens 
+Healthcare Diagnostics and 
+Myriad to develop companion 
+diagnostics
+Alliance with Foundation Medicine
+and Thermo-Fisher on NGS
+Alliance with Guardant Health on 
+liquid biopsy to support multiple 
+clinical programs with the 
+Guardant360 assay
+Fully in-house model Lean Center-of-Excellence model Partnership model
+McKinsey & Company 34
+Amid rising costs, payers are starting to tie precision oncology to 
+value-based care, prompting recent ecosystem partnerships
+SOURCE: Press releases; Managedcaremag.com
+Harvard Pilgrim will cover the 
+costs of non-invasive pre-natal 
+genetic testing for younger 
+women with average-risk 
+pregnancies, using Illumina’s tech
+Tests able to detect genetic 
+abnormalities and may replace 
+existing screening expenses, 
+ideally keeping costs relatively 
+level
+Should Harvard Pilgrim’s 
+spending exceed current 
+benchmarks, Illumina will cover 
+the difference
+“Transform Oncology Care”, precision oncology 
+management program designed to improve 
+patient outcomes and lower costs via:
+ Utilization of genomic testing results based 
+Tempus’ broad-panel gene sequencing tests to 
+expedite treatment decision-making
+ Matching eligible patients to clinical trials
+ Granting automatic prior authorization 
+approval for therapeutic regimens aligned with 
+NCCN guidelines 
+Enables payers to use value-based contracts, and 
+is made available to other health plans (e.g, Aetna 
+planning to roll it out with participating Aetna 
+provider networks in 12 US states in 2020)
+2019
+Examples of recent partnerships addressing costKey payer investments to manage cost 
+impact of precision oncology
+Innovative value-based payment contracts, e.g.
+Shared-risk arrangments
+Screening to enable early diagnosis
+Infrastructure for precision medicine data collection, 
+sharing, and storage, e.g.
+Platforms that enhance data harmonization and 
+accessibility 
+Tools that link financial and clinical data to better assess 
+the value of specific tests / therapies based on clinical 
+effectiveness and cost
+Data analytics to extract insights from clinical and 
+claims data, e.g.
+Optimal treatment selection based on genomic profiles
+Automated evidence-based coverage decisions
+Predictive analytics to assess genetic claim trends (e.g., 
+overbilling)
+McKinsey & Company 35
+Contents Importance of diagnostics in oncology
+Key trends impacting oncology diagnostics 
+Competitive ecosystem
+How to engage with stakeholders
+McKinsey & Company 36
+Stakeholders’ key concerns should guide how pharma companies 
+engage with them on diagnostics
+Payers
+Patient outcomes
+Cost effectiveness
+Approval and guideline recommendations
+Patients
+Clinical outcomes
+Insurance coverage and cost
+Access to targeted therapy
+Data privacy
+Providers
+Patient outcomes
+Approval and guideline recommendations
+Insurance coverage
+Ease of use (ie. turnaround time, 
+integrated clinical insights)
+Research opportunities
+Labs
+Approval and guideline recommendation
+Test accuracy (i.e. specificity, sensitivity)
+Insurance coverage
+Ease of use (i.e. difficulty running/ 
+sending out the test)
+Biomarker and outcomes data, research 
+opportunities
+McKinsey & Company 37
+Patients 
+Clinical outcomes
+Ability of diagnostic-enabled targeted treatment to improve clinical outcomes, incl. response rates, overall survival, safety, 
+side-effects, etc
+Ability of diagnostics to support disease monitoring to improve therapy management (e.g., liquid biopsy)
+Ability to conduct screening, early diagnosis and support cancer prevention
+Screening, prevention and early detection
+Ability to conduct screening (e.g., through liquid biopsy), early diagnosis and support cancer prevention
+Convenience, ease of administration
+Rapid turnaround times, ability to test broad panel of biomarkers at once (e.g., with NGS)
+Minimal invasiveness of diagnostic method (e.g., with liquid biopsy)
+Insurance coverage
+Insurance coverage of therapy and cDx
+Out-of-pocket burden for patient
+Data privacy
+Control over health data (e.g., biomarker and outcomes data)
+Data analytics improving future patient outcomes
+Patient associations / advocacy 
+groups
+Individual patients (via patient 
+education)
+Foundations
+Subcategory Key topics of interest to engage on
+McKinsey & Company 38
+Providers
+Subcategory
+Community hospitals
+Integrated services
+Academic medical centers
+HCPs
+Key topics of interest to engage on
+Patient outcomes (all)
+Ability of diagnostic-enabled targeted treatment to improve clinical outcomes, incl. response rates, overall survival, toxicity,etc
+Ability of diagnostics to support disease monitoring to improve therapy management (e.g., liquid biopsy)
+Insurance coverage (all)
+Insurance coverage of therapy and cDx
+Out-of-pocket burden for patient
+Approval & guideline recommendations (all)
+FDA approval as cDx
+Recommendation of testing method and specific cDx in NCCN guideline
+Ease of use (all)
+Turnaround time, integrated clinical insights, etc
+Cost impact (esp. community & integrated services, HCPs less)
+Cost impact of biomarker testing / cDx, and potentially screening out of patients who would not benefit from specific 
+treatments
+Cost savings due to reduction of unnecessary interventions, adverse events
+Research & development opportunity (esp. academic medical centers)
+Participation in clinical trials
+Clinical use of new biomarkers and testing methods (e.g., NGS panel, liquid biopsy)
+McKinsey & Company 39
+Payers
+Commercial insurance (incl. 
+employer ASOs)
+Integrated commercial plans
+Public insurance (CMS)
+Subcategory Key topics of interest to engage on
+Patient outcomes and early detection
+Ability of diagnostic-enabled targeted treatment to improve clinical outcomes, incl. response rates, overall survival, toxicity,etc
+Ability of diagnostics to support disease monitoring to improve therapy management (e.g., liquid biopsy)
+Ability to conduct screening, early diagnosis and support cancer prevention
+Cost impact
+Per-patient price of targeted therapies and overall budget impact
+Cost impact of biomarker testing / cDx, and potentially screening out of patients who would not benefit from specific 
+treatments
+Cost savings due to reduction of unnecessary interventions, adverse events
+Reduction of associated healthcare costs (e.g., more efficient use of hospital resources, reduction in productivity loss)
+Approval & guideline recommendations
+FDA approval as cDx
+Recommendation of testing method and specific cDx in NCCN guideline
+McKinsey & Company 40
+Pathologists and laboratories 
+Hospital labs
+Full service commercial labs
+Specialty & esoteric labs
+Subcategory Key topics of interest to engage on
+Insurance coverage
+Insurance coverage of cDx
+Approval & guideline recommendations
+FDA approval as cDx
+Recommendation of testing method and specific cDx in NCCN guideline
+Ease of use & education
+Difficulty in running/sending out the test, results read-out, etc
+Education on test usage and reimbursement
+Research opportunity & access to data 
+Access to biomarker data, outcomes data
+Testing quality & accuracy
+Specificity
+Sensitivity
+McKinsey & Company 41
+APPENDIX
+McKinsey & Company 42
+Early incorporation of precision medicine tools like NGS into treatment 
+decisions may improve outcomes of patients with advanced cancer
+Cancer Diagnosed
+Standard Treatment Initiated
+Molecular Tumor Board Case Review
+Molecular Test Ordered
+Molecular Tumor Board Review/
+Recommendation
+Therapy Decision
+Retrospective analysis of precision medicine 
+outcomes in one region of Intermountain 
+Healthcare’s delivery system
+Outcomes and total costs of advanced, refractory 
+cancer patients were compared between 
+standard chemotherapy (or supportive care) and 
+genomic testing + targeted precision medicine
+Source: Haslem DS, et al. J Oncol Pract. 2017;13:e108-e119. 
+22.9 weeks
+$4665
+12.0 weeks
+$5000
+Average progression-free survival 
+Costs per progression-free week1
+1. Calculated for subgroup of 44 patients, 22 in each cohort.
+Precision Medicine (n=36)Standard of Care (n=36)
+McKinsey & Company 43
+Published studies have identified economic rationale 
+in support of NGS
+Haslem et. al. 
+2017
+Patients who received NGS testing and targeted therapy had better outcomesthan those who did not receive 
+NGS and associated targeted therapies.  Costs per week of PFS were similar for the two groupswhether the 
+patient received NGS or not, but outcomes (PFS) were improved.
+Reitsma et.al. 
+2019
+An analysis of 20 patients who enrolled in phase I clinical trials following NGS testing showed that clinical trial 
+enrollment may have resulted in an estimated $25,000 per-patient potential cost savings accrued to the 
+payer, by diversion of drug costs to the trial sponsor.
+Pennel et.al. 
+2019
+Upfront NGS testing for all relevant molecular targets in NSCLC is less costly than sequential / exclusionary 
+single-gene testing strategies. Upfront NGS testing also results in the largest number of patients with targetable 
+genetic alterations being identified in the shortest period of time.
+Stuten et.al. 
+2019
+NGS is expected to be moderately cost effectivecompared with single marker genomic testing in patients with 
+aNSCLC.  Efforts to increase the proportion of patients who receive targeted therapies would improve the cost 
+effectiveness of NGS, assuming that incremental costs and outcomes of targeted treatments remain unchanged
+Study Conclusion
+McKinsey & Company 44
+Overview of NGS-enabled cancer diagnostic platforms
+SOURCE: Avila, Monica, and Funda Meric-Bernstam. "Next-generation sequencing for the general cancer patient." Clinical advances in hematology & oncology: 
+H&O 17.8 (2019): 447-454. 
+1. Copy number alterations
+2. Microsatelite instability
+3. Tumor mutational burden
+No. of Genes 
+Assessed Biopsy method
+Analysis Type (Tumor, 
+Tumor vs Normal)
+DNA 
+seq
+FDA 
+approval
+RNA 
+seq MSI2 TMB3 CNA1 
+Gene 
+fusion
+70 Liquid biopsy PlasmaFoundationOne Liquid 
+(Foundation Medicine)
+76 Liquid biopsy PlasmaGuardant360 (Guardant)
+87-500 Tissue biopsy: >20% tumor TumorStrataNGS (Strata)
+144 Tissue biopsy: 10 slides, 
+samples with small amount of 
+tumor are accepted 
+TumorOmniSeq Comprehensive 
+(LabCorp, OmniSeq)
+161 Tissue biopsy: 1 H&E, 20 
+unstained slides and >20% tumor
+Tumor or tumor vs normalOncomine Comprehensive 
+Assay (ThermoFisher)
+324 Tissue biopsy: 10 slides and 
+>20% tumor
+TumorFoundationOne CDx
+(Foundation Medicine)
+468 Tissue biopsy Tumor vs normalMSK IMPACT (MSKCC)
+592 Tissue biopsy: 10 slides and 
+>20% tumor
+TumorCaris CDx (Caris Life 
+Sciences)
+596 Tissue biopsy: 10 slides Tumor vs normalTempusXT (Tempus)
+>20000 genes Tissue biopsy: 10% unstained 
+and >25% tumor
+Tumor vs normalGPS Cancer (NantOmics)
+Platform 
+(Manufacturer)
+McKinsey & Company 45
+In oncology, liquid biopsies enable therapy selection and 
+monitoring with increasing test sensitivity enabling screening 
+applications 
+Source: McKinsey expert interviews
+Uses ultra-deep sequencing 
+approach to increase sensitivity for 
+early stage screening 
+Moonshot, scientifically unproven 
+approach only pursued by GRAIL 
+today
+Screening Diagnosis Prognosis/
+Therapy selection Monitoring
+N/A because cfDNA doesn’t reveal 
+tumor tissue source 
+Limited tissue volume
+Detecting tumor heterogeneity
+Tracking progression
+Not exhaustive
+Selects cancer treatment based on 
+unique tumor properties 
+Monitors therapeutic response or 
+remission
+Predicts risk of developing cancer Identifies presence, location, and 
+type of cancer
+Definition
+Biopsy, microscopy, histology Imaging (e.g. MRI, PET, CT, etc)Imaging (e.g. MRI, PET, CT, etc) Biopsy, microscopy, histologyTraditional 
+approach
+Company 
+examples
+Unmet need met by 
+liquid biopsy
+Oncology treatment flow 
+McKinsey & Company 46
+Liquid biopsy companies play across different segments of the 
+value chain
+Source: GenomeWeb, company websites, McKinsey expert interviews, SILA
+Traditional players Innovative players
+Test innovation and design Test development Test execution
+Manufacturers
+Oncology
+Infectious disease
+Not exhaustive
+Pharma
+Academic institutions
+Manufacturers, such as Illumina, have 
+expanded across the value chain into test 
+execution, particularly in neo-natal testing
+1
+Labcorp acquired Sequenom in 2016 for 
+~$300M, moving into neo-natal testing 
+2
+In 2014, Roche acquired Ariosa, and 
+offers array based pre-natal testing with a 
+lower cost base
+3
+Diagnostic labs
+Neo-natal
+1
+1
+2
+2
+3
+McKinsey & Company 47
+Companies are developing novel and defensible technologies for 
+testing methods and sequencing approaches to create
+sustainable value
+Source: McKinsey expert interviews
+Example companiesDescription
+Innovative testing methods can improve the accuracy or 
+clinical power of a test
+Recent approaches involve enrichment for analytes and 
+testing of novel analytes
+Ability to patent new technology makes these players 
+defensible and able to capture sustainable value 
+Improvements to NGS platforms that enhance sensitivity, 
+decrease turn-around time, or decrease cost 
+These innovations are IP protected creating more 
+sustainable advantage
+Grail employs a unique ultra-deep NGS method 
+enabling detection of trace amounts of tumor 
+DNA for cancer screening
+Performs blood and urine liquid biopsy tests, 
+currently for lung and prostate cancer, with an 
+exosomal RNA-based platform 
+Enrichment of circulating tumor cells (CTCs) to 
+increase the amount of target material improving 
+the sensitivity of the test
+Focuses on DNA methylation-based diagnosis
+Sustainable 
+advantage
+Innovative data analysis pipelines can improve accuracy 
+and clinical insights from tests
+Short-term value as low barrier to entry, algorithms are 
+difficult to protect, and publicly available approaches exists 
+Guardant focuses on engineering and 
+bioinformatics as part of their value proposition 
+Bioinformatics/
+Processing 
+Use a microarray-based approach, rather than NGS, which 
+enables a lower cost base
+This approach is not defensible, just lowers costs
+Roche/Ariosa pre-natal tests cost 60% less than 
+Natera NGS-based tests for the same markers
+DNA detection 
+approach
+Test 
+methodology
+McKinsey & Company 48
+Despite a current lack of willingness to pay, liquid biopsy has 
+potential for growth as technologies start to get FDA approval and 
+larger players move into the space
+Source: McKinsey experts, press search, industry expert interviews  
+Headwind/
+tailwind Trend
+Sequencing platform manufacturers, such as Illumina, have expanded across the 
+value chain into test execution, particularly in neo-natal testing 
+This trend could continue in other therapeutic areas (oncology, infectious disease) 
+Manufacturers 
+moving across 
+value chain
+Providers are hesitant to prescribe and payors are not willing to cover tests at current 
+price points given limited understanding and validation of clinical impact  
+Particularly for infectious disease where current methods are low cost and clinically 
+effective today, there is little interest to pay for an expensive NGS-based test which 
+adds unclear additional clinical value 
+— E.g. Karius offers tests for $2000
+Willingness to 
+pay
+Recent 
+approvals 
+FDA granted first liquid biopsy approval to the Roche Cobas EGFR Mutation Test v2 
+in June 2016 
+ Companion diagnostic for the non-small cell lung cancer (NSCLC) therapy, Tarceva
+Potential for other therapies to get approved; however, population studies, clinical 
+trials and approvals do take time 
+Description
+McKinsey & Company 49
+Overview of select leaders in biomarker data value chain
+1. The Cancer Genome Atlas
+Partnerships 
+and other 
+relationships 
+(not exhaustive)
+Acquired by Roche in 2018. 
+Partnerships with Natera, 
+Illumina, Bayer 
+Leidos Biomedical 
+Research collaboration to 
+structure follow-up clinical 
+data for TCGA1 submission 
+Multi-year agreement with 
+AstraZeneca to develop li-
+quid biopsy CDx tests sup-
+porting oncology portfolio
+Acquired by Roche in 2018. 
+Partnerships with academic 
+and community oncology 
+practices, Pfizer, and BMS
+Open source platform 
+maintained by MSKCC
+Use cases for 
+PharmaCos
+Discovery: biomarker 
+discovery
+Clinical development: trial 
+recruitment, label 
+expansion, and synthetic 
+control arm
+Discovery: Biomarker 
+identification
+Clinical development: 
+Trial recruitment
+On-market: HEOR
+Discovery: biomarker 
+discovery
+Clinical development: trail 
+recruitment, label 
+expansion
+Clinical development: trial 
+recruitment, label 
+expansion, and synthetic 
+control arm
+Discovery: biomarker 
+discovery 
+Company 
+description
+Provide cancer genomic 
+test kits and downstream 
+insight generation to aid 
+clinical decision making 
+and research  
+Analytics-focused to link 
+genomics and clinical data 
+to generate research and 
+clinical insights 
+Liquid biopsy-focused 
+cancer genomics testing. 
+Also curate and generate 
+insight for clinical and 
+research purposes 
+Real world data analytics 
+platform to connect cancer 
+centers to share clinical 
+data
+Online platform to help 
+researchers to easily 
+access and curate public 
+cancer genomics data
+Data type Genomics Clinical and genomics Genomics Clinical Genomics
+Data 
+capabilities
+Data generation (NGS)  
+and curation
+Analytics (e.g., insight 
+generation from data)
+Data generation (NGS) and 
+curation (clinical)
+Analytics (e.g., cohort 
+comparison)
+Data generation (NGS) Data accession and 
+curation
+Analytics (e.g., insight 
+generation from data)
+Data accessor and curator 
+(NGS)
+Data ingestion, integration 
+and access
+McKinsey & Company 50
+The popularity of partnerships with Foundation Medicine has 
+demonstrated the power biomarker data
+Potential use case for integrated 
+health analytics datasets
+Discovery
+Translational
+Commercial
+Target identification and 
+validation
+Identifying biomarkers
+Retrospective research to 
+optimize trial design
+Accelerated patient 
+recruitment1
+Real world patient cohort
+Real world evidence for safety
+Molecular signature to 
+measure responses
+AZ
+Mirati
+H3 Biomedicine
+Novartis
+Agios
+AZ
+Eisai
+Clovis
+Sanofi
+March 2017
+June, 2016
+December, 2015
+February, 2015
+January, 2014
+April, 2013
+Nov, 2012
+October, 2012
+August, 2012
+January, 2012
+Collaboration to identify predictive biomarkers across tumor mutational burden and 
+microsatellite instability primarily for IO
+Agreement to develop the novel companion diagnostic assay for Lynparza and 
+in oncology
+Partnership to develop companion diagnostic test for glesatinib
+Collaboration for precision medicines discovery in oncology
+Align the genomic profile of individual patient's cancer with clinical trial enrollment 
+criteria and clinical outcome analysis
+Identify tumor genomic alterations to identify which patients are most likely to 
+respond to Agios’ IDH1 and IDH2
+Identify cancer-related tumor genes that may predict a person’s response or 
+resistance to targeted medicines 
+Identify specific genomic mutations in each patient's tumor to use for patient 
+stratification 
+Develop IVD to identify biomarkers to select cancer patients mostly likely to respond to 
+rucaparib
+BMS
+Identify genetic biomarkers and potential companion diagnostics for select Sanofi 
+oncology drug candidates 
+Major pharma deals with FMI in the past 5 years
+Target identification and validation

@@ -13,6 +13,7 @@ import { Loader2, RotateCcw, Sparkles } from "lucide-react";
 const VIEW_FILTERS: { value: InitiativeViewFilter; label: string }[] = [
   { value: "comprehensive", label: "Comprehensive set" },
   { value: "top_priorities", label: "Top priorities only" },
+  { value: "value_blockers", label: "Value blockers only" },
   { value: "ai_automation", label: "AI / automation levers" },
   { value: "process_redesign", label: "Process redesign levers" },
   { value: "horizon_h1", label: "Horizon H1 only" },
@@ -64,7 +65,7 @@ export function InitiativeConfigPanel({
       <div className="px-4 py-3 section-card-header">
         <h2 className="text-sm font-semibold text-[var(--text)]">Configuration</h2>
         <p className="text-xs text-[var(--text-muted)] mt-0.5">
-          Standalone or pipeline mode
+          McKinsey two-lens: value at stake + operating effectiveness
         </p>
       </div>
 

@@ -1,0 +1,1181 @@
+CONFIDENTIAL AND PROPRIETARY
+Any use of this material without specific permission of McKinsey & Company is strictly 
+prohibited
+October, 2023
+Holistic diagnostics of 
+the wagon operator
+McKinsey & Company 2
+For additional 
+information, 
+reach out to 
+the team
+Aidana Baudynbay
+Consultant, Almaty
+Victor Savenok
+Consultant, Almaty
+Darkhan Aimaganov
+Data Scientist, Almaty
+Akbota Aigozhiyeva
+Consultant, Almaty
+Andrey Voronin
+Consultant, Almaty
+Anton Maximenko
+Partner, Almaty
+Uliana Loginova
+Partner, Milan
+Dmitry Oleynik
+Associate Partner, Doha
+Operational excellence
+Key contact
+Dispatch (proprietary IT tool) deployment
+Commercial excellence
+Organizational maturtity
+McKinsey & Company 3
+Introduction to this document
+What is included in 
+this document?
+ The following components are included in this document:
+— Framework for holistic diagnostic
+— List of analysis and sample best practices across elements of the 
+framework
+— List of quick wins across elements of the framework
+Who might use this 
+document?
+ This document can be used by teams serving wagon operators in the 
+emerging markets
+ For additional information and guidance please reach out to the team
+What is this 
+document about?
+ This document provides an approach for conducting holistic diagnostics of 
+the wagon operator
+ Findings are based on the engagement conducted in Central Asia
+McKinsey & Company 4
+What the document is and 
+what it is not
+What this document is What this document is not
+ An exhaustive portfolio of deep dives for every client 
+situation
+ A rulebook and everything you will need for a wagon 
+operator holistic diagnostics: all analysis need team’s 
+judgement to tailor approach to the specific client 
+context
+An approach to conducting a holistic diagnostics of wagon 
+operator:
+ Framework and approximate timing
+ List of analysis to be conducted
+ Sample best practices across elements of the framework
+ List of “quick wins” across elements of the framework
+McKinsey & Company 5
+Proposed framework for holistic diagnostic includes three elements
+1
+2
+3
+Commercial 
+excellence
+Organizational 
+maturity
+ What’s the current state of business processes?
+ How does the org chart look like?
+ How does performance management system look 
+like?
+Operational 
+excellence
+ How does client’s EBITDA depend on the operational drivers?
+ Which operational drivers have the largest financial impact on 
+the EBITDA? 
+ What markets do we serve?
+ Who are our key clients?
+ What’s our value proposition to clients?
+McKinsey & Company 6
+Diagnostic of each element consisted of three stages
+Current state analysis
+Identification of priority 
+areas/ activities for 
+further development
+Full potential estimate
+1 2 3
+Stage
+ Gather data subject to the 
+check list
+ Conduct key analysis and 
+prioritize deep dives
+ Conduct internal and 
+external benchmarking 
+controlling for comparability
+ Develop and align the list of 
+“quick wins” (with expected 
+impact) subject to client’s 
+context
+Activity
+~2 weeks ~1,5 weeks ~1,5 weeksDuration
+McKinsey & Company 7
+Contents
+Commercial excellence
+Operational excellence
+Organizational maturity
+Actions plan
+McKinsey & Company 8
+As part of the 
+commercial 
+excellence 
+assessment, we’ve 
+answered three 
+questions
+What do we sell? Which markets do we serve? 1
+Who do we sell to? Who are our clients and why?2
+How do we sell? How do we conduct business 
+activities with clients? 
+3
+
+McKinsey & Company 9
+1. We prioritized 5 cargo groups based on the number of factors
+0.5 411 39
+2.3 02 1
+2.1 23 4
+1.5 34 2
+1.3 45 10
+4.7 46 2
+2.5 107 8
+1.7 148 8
+1.5 09 1
+2.8 911 11
+CAGR, %
+Share in 
+client’s 
+EBITDA, %
+Share in 
+client’s 
+departures, %
+Profitability per wagon, 
+$Share, %
+1.1 010
+Coal
+Iron ore
+Non-ferrous ore
+Oil and petroleum products
+Construction cargo
+Grain
+Ferrous metals
+Chemicals and soda
+Cement
+Metalware
+Fertilizers 0
+39
+10
+8
+8
+7
+3
+3
+3
+3
+1
+1
+Client 
+competencies
+x Priority cargo groups
+McKinsey & Company 10
+Node 11
+1. For every priority cargo group cargo flows were analyzed
+-  Country 1 (Station 6)
+X7
+ Country 1 (Station 6)X6
+ Country 2 (Station 2)
+X8
+ Country 1 (Station 5)
+ Country 4 (Station 1)
+ Country 3 (Station 3)
+X9  Country 1 (Station 5)
+X10  Country 1 (Station 5)
+X5
+ Country 1 (Station 6)
+ Country 2 (Station 6)
+X3
+ Country 1 (Station 6)
+ Country 2 (Station 6)
+X4
+ Country 1 (Station 6)
+ Country 2 (Station 6)
+X1
+ Country 1 (Station 1) 
+ Country 2 (Station 1)
+ Country 3 (Station 1)
+-  Country 1 (Station 4)
+-  Country 1 (Station 1)
+-  Country 1 (Station 2)
+-  Country 1 (Station 2)
+-  Country 1 (Station 1)
+Node 9; Node 10 9%
+7%
+Node 7, Node 8 24%Node 1; Node 2; Node 3 55%
+X2
+ Country 3 (Station 2)
+ Country 1 (Station 3)
+Operator’s share in client’s shipments XX% Share of exports through node
+Client A
+Client B
+Client C
+Client D
+Client E
+Client F
+Client G
+Client A
+Client B
+Client C
+Client A
+Client B
+Client C
+Client A
+Client B
+Client C
+Client D
+Export across destinations and clients, mln tonnes
+-
+ Country 1 (Station 7)
+ Country 5 (Station 1)
+Node 4 6%
+Node 5 1%
+Node 6 1%
+Example for coal
+
+McKinsey & Company 11
+2. For the top destination clients were prioritized based on a 
+number of factors
+Ease of 
+entry from 
+competition 
+perspective
+Service 
+contracts 
+feasibility
+Volume 
+volatility
+Synergies 
+with current 
+cargo base
+Share in 
+client, 
+mln tonnes
+Margin, $ 
+per wagon 
+per day
+Volume, 
+mln tonnes
+Volume 
+increase 
+potential
+Freight 
+type
+Low High Stable High- X10X1 LowExport
+Low Low Seasonal Low- X11X2 LowDomestic
+High High Stable Low- X15X6 HighExport
+High High Stable Low- X16X7 HighDomestic
+Low Low Seasonal LowX9 X13X4 LowDomestic
+Medium High Stable HighX8 X12X3 HighExport
+High Low Stable High- X14X5 HighExport
+Client 
+priorityClient
+Client A
+Client B
+Client C
+Client D
+Departure 
+node
+A
+B
+C
+Factor
+Not a prioritySecond priorityTop priority
+McKinsey & Company 12
+3. Example: There are three fundamental components of business 
+interactions with clients
+Value propositionClient segmentation Organizational support
+Effective sales development based on 
+customer segmentation requires a number 
+of systemic changes in the organization:
+ Internal processes – search and 
+attraction of clients, S&OP, service 
+delivery, etc.
+ Org chart – separation of commercial 
+department, logistics and S&OP
+Performance management – top-down 
+goal setting across segments, factor 
+analysis of the results and clear link to the 
+incentives system
+Value proposition usually consists of two 
+elements:
+ Service parameters – guaranteed 
+supply of wagons, individual price-
+setting or standard rate, different 
+payment options, requests response 
+rate, etc.
+ Service model – dedicated manager, 
+access to automated self-service tools 
+(personal account), fleet update 
+(dislocation, dispatch support), 
+personal analytics, integration with 
+client’s system, etc.
+Client segmentation is aimed at 
+maximum monetization of the client 
+base
+In best practices two client segments are 
+specified: 
+ Anchor – large profitable clients 
+accounting for 60-70% of cargo base
+ Optimizer – clients used to optimize 
+logistics for anchor clients
+Additionally, often high potential (HiPo) 
+segment is specified, which is the key 
+source of future cargo base growth
+Based on the operator’s context other 
+client segments might be determined 
+(based on volume, seasonality, 
+profitability, etc.)
+Operators should design distinctive value 
+proposition for each segment
+
+McKinsey & Company 13
+3. Example: in best practices there are up to five client segments
+Type DescriptionSegment Goals
+Retaining customers to ensure the number of 
+shipments required to optimize logistics of 
+anchor clients
+Large and stable clients that improve 
+profitability of anchor clients through 
+empty run minimization
+Optimizer
+Development of long-term partnership with 
+clients to:
+ Keep large wallet share
+ Further increase wallet share
+Large, stable, strategically important 
+clients ensuring the stability of the cargo 
+base with operator’s high wallet share
+AnchorKey
+Building long-term partnerships based on 
+identifying customer needs for rapid share 
+growth
+Large strategically important customers 
+with operator’s current low wallet share, 
+but growth potential
+High Potential (HiPo)
+Signing long-term contracts to secure 
+predictable demand
+Mid-sized clients:
+ Profitable and/or
+ Stable volumes to optimize empty runs
+Stable 
+Demand buffer: utilization of excess capacity of 
+wagons (if any) and/or improving EBITDA 
+across the fleet
+Medium/small-sized profitable clients with 
+significant volatility of profitability, irregular 
+demand
+Residual
+McKinsey & Company 14
+3. Example: value proposition depends on the client segment
+Value proposition Pricing and contract terms Service levelSegment Sales development tools
+ Standardized with a wide 
+range of options
+ Long-term contracts
+ Guaranteed supply
+ Option to provide excess 
+capacity
+ Fixed rates and standardized 
+formula-based rates
+ Individual payment terms
+ One manager per several 
+clients
+ Consideration of requests on 
+top of guaranteed supply 
+within 1 day
+ Regular basic analytics
+ Dispatch support
+Stable  Client development programs
+ Simplified analytical tools
+ Product offering menu
+ Individual (subject to client’s 
+need)
+ Long-term service contracts
+ Guaranteed supply 
+ Securing excess capacity 
+(purchase, rent, etc.)
+ Fixed rates or individual 
+formula-based rates
+ Individual payment terms
+ Dedicated teams
+ Priority consideration of 
+applications on top of 
+guaranteed supply
+ Personal analytics
+ Dispatch support
+Key and HiPo  Client development programs
+ Detailed analytical tools
+ A set of client-specific tools
+ Standardized with a limited 
+range of options
+ Short-term standard 
+contracts 
+ Absence of guaranteed 
+supply or excess capacity 
+ Fixed offer rate
+ Standard payment terms
+ Shared sales team and call 
+center for all clients from the 
+segment
+ Consideration of requests 
+within 1 day
+ Basic analytics
+Residual  Segment development program
+ Automated tools
+ Simplified product offering menu
+McKinsey & Company 15
+Contents
+Commercial excellence
+Operational excellence
+Organizational maturity
+Actions plan
+McKinsey & Company 16
+As part of the 
+operational 
+excellence 
+assessment, we’ve 
+answered two 
+questions
+What’s the value 
+creation process?
+What financial and operational 
+factors determine EBITDA? 
+1
+What should we focus 
+on?
+Which factors have the largest 
+impact on EBITDA?
+2
+
+McKinsey & Company 17
+Turnover and empty run have the largest impact on EBITDA
+EBITTA,
+$
+XXХХ%
+Delta to market rate, 
+$ / wagon / day
+XXXX%
+Loading, 
+days
+XXXX%
+Loaded run, days
+XXXX%
+Unloading, 
+days
+XXXX%
+Empty run, days
+XXXX%
+Market rate, 
+$ / wagon / day
+XXXX%Rental  income, 
+$ mln
+XXХХ%
+Income from 
+operating, 
+$ mln
+XXХХ%
+Rate, $ / wagon / day
+XXXX%
+Empty run costs,
+$ mln
+XXXX%
+Loaded run costs, 
+$ mln
+XXXX%
+Revenue, $ mln
+XXХХ%
+Rented wagon days, 
+mln days
+XXXX%
+Rate, $ / wagon / day
+XXXX%
+SG&A costs, 
+$ mln
+XXХХ%
+Maintenance costs, 
+$ mln
+XXХХ%
+XX
+Rental cost,
+$ mln
+XX%
+Working fleet, 
+thousands
+XXXX%
+Wagon turnover, days
+XXXX%
+Empty run, 
+%
+XXXX%
+Share of departures in 
+group, %
+XXXX%
+Wagon days, mln days
+XXXX%
+Rate, $ / wagon / day
+XXXX%
+Wagon days, 
+mln days
+XXХХ%
+Average rented fleet, 
+thousands
+XXXX%
+Rented fleet, 
+thousands
+XXXX%
+Fleet, 
+thousand
+XXXX%
+Non-working fleet 
+coefficient, %
+XXXX%
+Segment, км
+XXXX%
+Speed,
+km / day
+XXXX%
+Segment, км
+XXXX%
+Speed, 
+km / day
+XXXX%
+Maintenance, #.
+XXXX%
+Duration of one 
+maintenance, days
+XXXX%
+Share of departures in 
+group and routes, %
+XXXX%
+Abandoned wagons, 
+#
+XXXX%
+Share of departures in 
+group and routes, %
+XXXX%
+Duration of relocation, 
+days
+XXXX%
+Functional dependenceKey drivers Improvement vis-à-vis 2021 Deterioration vis-à-vis 2021 2022  Actual
+McKinsey & Company 18
+To assess the full potential turnover and empty run, several aspects 
+were analyzed
+First-order driver
+Empty run
+Second-order driver Example of analysis 
+Turnover 1 Historical evolution of turnover and its elements
+1.1Turnover Loading and unloading 
+operations
+Historical evolution of loading and unloading operations 
+across stations and clients
+Loaded run 1.2 Analysis of average speed across group departures
+Empty run  Analysis of average speed across group departures
+2 Historical evolution of empty run
+2.1 Empty run optimization back testing using IT tool
+McKinsey & Company 19
+1. All components of turnover are worsening year on year and are 
+25% below the benchmark
+Jan Apr Jul Oct
+Turnover, days Loaded run, 
+days
+Loading, 
+days
+Unloading, 
+days
+Empty run,
+days
+2022 2021
+Jan JulApr Oct DecJan Apr Jul Oct
+X1 Y1
+X2
+Y2
+X3
+Y3
+X4 Y4
+X5 Y5
+Х Average in 2022 Х Average in 2021 Benchmark
+111%
+EBITDA 
+Loading and unloading 
+operations reach 
+benchmarks level
+Rationale
+Impact
+1. 5,5% - integrated planning, 5,5% - optimization of sent wagons 
+McKinsey & Company 20
+1.1. Loading and unloading operations exceed normatives across 
+both key clients and overall customer base
+Loading/unloading operations, daysClient
+Normative idle 
+time, days
+Excess 
+normative, days
+X12022
+1Q 2023
+1Q 2023
+2022
+2022
+1Q 2023
+Loading, days Unloading, days
+2022
+1Q 2023
+X2 Y2
+X3 Y3
+X4 Y4
+Integrative planning
+Monitoring instruments
+Incentives system
+Initiatives
+Average across 
+all clients
+Key client #1
+Key client #2
+Key client #3
+Y1
+McKinsey & Company 21
+Example: in best practices routing is managed through 
+integrated planning
+Ensuring the implementation of shift-daily planning and assignment tasks on a continuous basis for the quality provision of 
+services, delivering of OTIF, execution of performance indicators of the fleet (terminal operations, etc.)
+Process goal
+• Processing of input data to forecast execution of plans on the horizon of the shift / day / decade and month
+• Minimizing wagon turnover by reducing the number of abandoned trains, delivering OTIF and lowering terminal operations
+• Distribution of authority and responsibility between commercial and logistics departments
+• Ensuring quality of data on availability of wagon fleet and maintenance schedule 
+Quality requirements
+Owner – logistics Participants – commercial, maintenance, economists, logisticsParticipants
+Network’s data:
+• Fleet’s dislocation
+• Conventions
+• Accounting sheets, technical 
+rejections
+Operator’s data:
+• Shipper’s / receiver’s capabilities 
+• Abandonment of the wagon
+• Fleet operation plan across directions for a shift, day, 
+decade and month
+• Routing plans, loading / unloading plans
+• Real-time data on clients’ stations situation
+Source:
+Commercial
+Commercial
+IT systems
+IT systems
+Commercial
+Inputs
+Data:
+• Forecast of wagon routing (arrival at the target station) and comments on the discrepancies vis-à-
+vis plan root causes
+• Wagon arrival time and maintenance opportunity
+Recipient:
+Logistics
+Commercial and 
+maintenance departments
+Outputs
+IT toolsInstruments
+McKinsey & Company 22
+Example: to improve planning process IT 
+instruments can be used
+Comments:
+To calculate daily balance 
+of the fleet the following 
+parameters are used:
+1. Arriving empty wagons
+2. Number of available 
+empty wagons across 
+the network
+3. Arriving loaded wagons
+4. Actual wagons unloading
+5. Wagon maintenance 
+plan
+6. Wagon unloading across 
+the network
+McKinsey & Company 23
+Example: to make change sustainable incentives system 
+should be implemented
+Performance
+management
+2
+13 Goal setting
+Performance appraisal
+Corrective
+actions
+1 Setting ambitious KPIs targets synchronized with strategy, budget, and 
+operational plan
+2 Evaluation of performance and factor analysis of deviations
+3 Development of corrective actions to achieve targets
+Responsible Frequency
+Wagon 
+turnover
+Budget actualCEO / Commercial 
+director / Logistics 
+director
+Quarterly / yearly
+Loading and 
+unloading 
+operations
+Operational 
+reporting / budget 
+actual
+Commercial director Weekly / every decade 
+/ monthly / quarterly / 
+yearly
+Wagon speed Operational 
+reporting / budget 
+actual
+Logistics director Weekly / every decade 
+/ monthly / quarterly / 
+yearly
+Coefficient of 
+station 
+provision
+Operational 
+reporting
+Logistics director Daily / weekly / every 
+decade / monthly / 
+quarterly / yearly
+OTIF Operational 
+reporting / budget 
+actual
+Logistics director Daily / weekly / every 
+decade / monthly / 
+quarterly / yearly
+Logistics director Daily / weekly / every 
+decade / monthly / 
+quarterly / yearly
+Operational 
+reporting
+Share of group 
+and route 
+departures
+Data sourceKPITypical performance management cycle
+McKinsey & Company 24
+1.2: The key lever to increase the speed of loaded and empty run is 
+to use group and route shipments
+641 20 141183 5 7 9 10 12 13 15
+Wagons in a group, #
+Loaded speed, days
+1 
+wagon
+2 83 5 9 
+wagons
+4 6
+Actual
+Potential
+Dependence of the loaded speed on the 
+number of wagons in a group on route X
+Retrospective analysis of the potential for wagons 
+departure in a group on route X
+Maximization of wagons 
+departure in a group
+Monitoring instruments
+Incentives system
+Initiatives
+5,5%
+EBITDA 
+Impact
+McKinsey & Company 25
+2. Reaching the benchmark level for a similar 
+cargo base will reduce the empty run by 25%
+Jul
+Benchmark
+Jan Feb Mar AugJunApr May Sep Oct Nov Dec
+Average
+Empty run, %
+10,11%
+EBITDA 
+Reaching the benchmark 
+level
+Rationale
+Impact
+1. 3,7% - empty run optimization, 6,4% - excess capacity utilization through sales 
+McKinsey & Company 26
+2.1 To test feasibility of benchmark based estimate of potential, we 
+used proprietary instrument
+Wagon 
+maintenance
+Actual freights
+Description of the 
+network
+Fleet dislocation
+Wagon idle time due 
+to loading and 
+unloading 
+operations
+Actual freights completed within 3 months 
+window
+Actual time spent at the station for loading / 
+unloading
+Fleet dislocation at the beginning of the back tested 
+period including destination station and expected 
+delivery date (if applicable)
+▪ Ring traffic on individual routes, taking 
+into account the specifics of wagons
+▪ Carrying out the preparation of wagons 
+at specific stations after delivering some 
+types of cargoes
+▪ Maintenance schedule
+Railway network description, including distance 
+between stations and average speed of empty 
+runs
+Key inputs Key constraints
+Actual time spent on maintenance across wagons 
+(including movement to maintenance shop, time at 
+the maintenance shop, movement out of the 
+maintenance shop)
+McKinsey & Company 27
+2.1 Optimization model indicates opportunity to decrease empty 
+run by ~20%
+Reasons for 
+discrepancies 
+vis-à-vis 
+benchmark
+Didn’t have an opportunity to 
+optimize logistics schedule –
+completed actual freights with a 
+minimal empty run across the fleet
+Didn’t have an opportunity to 
+search for additional freights –
+didn’t have data on the network
+Didn’t have an opportunity to 
+optimize maintenance schedule –
+took actual
+ModelActual
+Empty 
+run Y1X1
+Average 
+distance Y2X2
+~20%
+decrease in empty run
+McKinsey & Company 28
+Contents
+Commercial excellence
+Operational excellence
+Organizational maturity
+Actions plan
+McKinsey & Company 29
+As part of the 
+organizational 
+maturity assessment
+we’ve answered 
+three questions
+What’s the current state 
+of business processes?
+What’s the current level of 
+maturity of the key business 
+processes? 
+1
+How does the org chart 
+look like?
+How are functionality and 
+responsibility distributed across 
+the org chart? 
+2
+How does performance 
+management system 
+look like?
+What are the KPIs put in place? 3
+
+McKinsey & Company 30
+Client situation significantly differed from the best practices across 
+performance management, business processes and org structure
+Client situation Best practices
+Performance 
+management
+KPIs are defined for a number of people in the commercial department (e.g., 
+loading/unloading for the transportation department)
+EBITDA tree elements and operational drivers are cascaded top-down based on the 
+distribution of responsibility and functionality and assigned to respective employees
+The EBITDA tree and the set of key operational drivers are not explicitly defined The EBITDA tree has been developed and the operational drivers with the maximum 
+impact have been identified
+There’s monitoring of budget execution across financial  (e.g., revenues, costs, etc.) 
+and some operational parameters (e.g., freight volume)
+Monitoring and factor analysis of financial and operational drivers is conducted
+Business 
+processes
+The S&OP process is mainly based on maximization of freight’s marginal income rather 
+complex modeling of marginal income across the fleet (i.e., taking into account empty 
+runs and duration of the freight)
+The S&OP process is based on modeling cargo base scenarios with maximization of 
+marginal income for the fleet (with modeling of various opportunities for reducing empty 
+runs)
+All customer-related processes are focused on the commercial component (tariffs, 
+fines, etc.)
+Customer-related processes are focused on identifying win-win opportunities (e.g., 
+reducing duration of loading and unloading operations)
+The process of searching and attracting clients is mainly based on an "incoming" flow of 
+requests with the same offering for all customers (e.g., a standard contract, etc.)
+The process of searching and attracting clients consists of market analysis and the 
+decisions around customer segments (e.g., anchor clients, optimizers, HiPo), followed 
+by setting goals and creation of differentiated offering
+The performance management process is mainly focused on the analysis of financial 
+and high-level operational indicators (e.g., freight volume)
+Performance management process is focused on root cause analysis and corrective 
+measures development
+Org 
+structure
+The functions of planning, sales, transportation and performance management are 
+concentrated in the commercial department
+The functions of planning, sales, transportation and performance management are 
+separate and independent
+The organization is built around the fleet – maturity of the marketing function is at a 
+basic level
+The organization works in the customer-centric logic  – maturity of the marketing 
+function is at a high level
+
+McKinsey & Company 31
+1. Example: heatmap of key business process maturity
+Once per ~3 years Once per year Monthly Weekly Constant
+2 5
+ Development of strategies and value propositions across clients / segments
+ Estimate of unlimited market demand
+ Client development through client strategy implementation and focus on finding 
+additional opportunities addressing customers / segments needs
+ Informing key customers about quotas 
+and accepting requests
+ Search for clients to perform 
+optimization tasks
+Execution of plans
+ Wagon supervision
+ Ad-hoc deviations management
+6Customers and segments programs development Search and 
+attraction of clients
+Service delivery
+ Customer feedback collection
+ Development and implementation of 
+initiatives to improve operational 
+efficiency
+ New products / services development
+8 Continuous 
+improvement
+3
+ Signing long-term contracts with manufacturers and lessors of wagons
+ Adjusting the maintenance schedule of available fleet
+Formation of the fleet
+Maximization of financial result on available fleet
+ Securing quotas for key customers across segments subject to constraints and monthly 
+sales plan
+ Setting targets to sales force across segments and clients
+ Creating calendar plan (i.e.,  a guarantee to deliver a service on the horizon of ~20 days)
+4 S&OP
+1 Top-down goal setting
+Ambitious goal-setting across various horizons, including
+ Cargo base and market share
+ Target fleet size
+ Key financial and operational metrics
+Monitoring and factor analysis of the root 
+causes of deviations vis-à-vis plan and the 
+development of corrective measures
+7 Performance 
+management
+Business process maturity level
+McKinsey & Company 32
+1. Example: in best practices S&OP is a cross-functional process
+Market intelligence and inputs 
+from key clients
+Technical 
+service
+Provision of the fleet
+ Execution of maintenance plan, which 
+maximizes EBITDA across the fleet 
+Fleet maintenance plan
+OptionallyCommercial Requests collection
+ Receiving request from key clients
+ Setting goals to commercial department to find 
+additional demand from optimization clients 
+across prices and destinations
+Demand estimate
+ Estimation of obligations to key clients
+ Determination of preliminary quotas for key clients 
+based on obligations
+ Estimation of unlimited demand by destinations 
+across other customer segments
+Renting additional fleet
+ Renting the fleet  to 
+fulfill the calendar 
+plan on the terms 
+approved by S&Op
+Logistics Supply estimate
+ Forecast of the fleet size subject to maintenance 
+plans, write-offs and purchases
+ Assessment of the conditions (rates, capacity) to 
+rent wagons
+ Verification of terminal operations, speeds and 
+other restrictions across destinations
+Freight execution
+ Execution of client 
+requests based on 
+the calendar plan
+S&Op Scenario analysis
+ Modeling EBITDA scenarios for the fleet, 
+taking into account the need to fulfill the 
+requests of key customers in full
+ Determination of possible parameters of 
+optimizing freights (volumes, destinations, 
+rates)
+Price setting
+ Determination of rates across fleet types, customer 
+segments, destinations, etc.
+The final decision is 
+made at the cross-
+functional S&Op
+meeting
+In exceptional cases 
+without requests scenario 
+analysis may be revised
+From finance: 
+Quarterly goals on operational and 
+financial metrics
+McKinsey & Company 33
+2. Example: high-level org chart of the wagon operator
+Market and customer segments 
+analysis
+Commercial LogisticsS&OP Technical service Other functionsFinanceStrategy & 
+Development
+Operational 
+efficiency
+New business 
+development
+Development of new products 
+and services
+Efficiency by 
+fleet type
+Analysis and sales efficiency 
+increase by fleet type
+Attracting the fleet from the 
+market to satisfy customer 
+demand
+Collection and verification of 
+data, documents flow for 
+settlement
+Proactive sales across 
+customer segments and clientsSales
+Sales support
+Rent
+Operational 
+marketing & 
+sales efficiency
+Strategy 
+development & 
+long-term goal 
+setting
+Organization of 
+logistics by fleet 
+type
+Operational traffic 
+control
+Cross-functional 
+monthly and 
+quarterly planning 
+Pricing
+Planning and 
+organizing 
+maintenance of the 
+fleet and equipment
+HR
+Legal
+Security
+….
+Budgeting and 
+cash flow 
+management 
+Yearly and 
+quarterly goal-
+setting
+Performance 
+management 
+результатов
+Development and 
+implementation of 
+measures to 
+improve operational 
+efficiency
+Program 
+implementation 
+oversee
+CEO
+McKinsey & Company 34
+3. Example: key elements of performance management process
+KPI tree
+KPI 
+targets
+Analysis 
+of the 
+results
+Elements
+EBITDA tree is developed
+The target values of KPIs are set on the basis of ambitious goal setting and full potential assessment
+Monitoring and factor analysis of financial indicators and operational drivers is carried out
+Based on EBITDA tree operational drivers with maximum impact are identified (e.g., empty run, wagon 
+turnover, etc.)
+Responsibility for the elements of EBITDA tree and key operational drivers is assigned to the relevant 
+structural units and employees
+Achieving the KPI target values by departments ensures the achievement of the Company's target 
+values
+If the actual indicators deviate from the planned ones, corrective measures are developed
+Monitoring of the achievement of planned indicators is independent of the business and conducted by 
+finance
+1
+2
+3
+McKinsey & Company 35
+Contents
+Commercial excellence
+Operational excellence
+Organizational maturity
+Actions plan
+McKinsey & Company 36
+Key initiatives can increase EBITDA by 35% but need sales and 
+organizational efficiency as enablers
+5,5
+35,0
+5,5
+3,7
+5,5
+6,4
+8,3
+Total
+Empty run optimization
+Shift from renting to operating
+Optimization of sent wagons
+Integrated planning
+Increase in group departures
+Excess capacity utilization through sales
+Commercial excellence Organizational maturity
+1
+2
+3
+4
+5
+6
+Impact on EBITDA through 
+operational excellence, %
+McKinsey & Company 37
+To realize potential on the operational excellence side actions are
+needed
+ Segment clients
+ Design value proposition for each client segment
+ Develop strategy for client segments to increase revenues and setting goals (e.g., share of wallet, required fleet, 
+etc.) 
+ Implement scenario analysis and regular cargo base update to maximize EBITDA across the fleet
+Commercial 
+excellence
+ Set up PMO
+ Implement performance management
+— Finalize EBITDA tree
+— Kick-off collection of key financial and operational metrics with minimal lag
+— Create dashboards to monitor and discuss deviations, develop corrective actions
+ Update org chart and build capabilities
+— Spin off planning, logistics and performance management functions from commercial function to independent 
+verticals
+— Structure commercial function around client segments
+— Recruit talent to fill competencies gaps
+ Design key business processes (goal setting, S&OP and performance management)
+Organizational 
+maturity

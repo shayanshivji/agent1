@@ -5,6 +5,8 @@ import { v4 as uuidv4 } from "uuid";
 import { FileUp, Loader2, X } from "lucide-react";
 import { useInitiativeStore } from "@/store/initiative-store";
 import { filterInitiatives } from "@/lib/initiatives/logic";
+import { ensureInitiativeFields } from "@/lib/diagnostics/mckinsey-framework";
+import { FINDING_TYPE_LABELS } from "@/lib/diagnostics/mckinsey-framework";
 import { extractTextFromFile } from "@/lib/ingest/extract-text";
 import { HORIZON_LABELS, LEVER_LABELS } from "@/types/initiative";
 
@@ -55,12 +57,14 @@ export function InitiativeSidePanel() {
   }
 
   const filtered = inventory
-    ? filterInitiatives(inventory.initiatives, viewFilter)
+    ? filterInitiatives(inventory.initiatives, viewFilter).map(ensureInitiativeFields)
     : [];
 
   const byHorizon = { H1: 0, H2: 0, H3: 0 };
+  let valueBlockers = 0;
   filtered.forEach((i) => {
     byHorizon[i.horizon]++;
+    if (i.findingType === "value_blocker") valueBlockers++;
   });
 
   return (
@@ -163,6 +167,14 @@ export function InitiativeSidePanel() {
                 <span className="font-mono text-[var(--accent)]">{byHorizon[h]}</span>
               </div>
             ))}
+            {filtered.length > 0 && (
+              <div className="flex justify-between items-center border border-rose-500/30 rounded-lg px-3 py-2 bg-rose-500/5">
+                <span className="text-xs text-rose-200">
+                  {FINDING_TYPE_LABELS.value_blocker}
+                </span>
+                <span className="font-mono text-rose-300">{valueBlockers}</span>
+              </div>
+            )}
             {filtered.length > 0 && (
               <div className="mt-4 space-y-2">
                 <p className="text-xs font-semibold text-[var(--text-muted)] uppercase">

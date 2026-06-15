@@ -1,0 +1,1010 @@
+CONFIDENTIAL AND PROPRIETARY | © 2025 McKinsey & Company. 
+This material is intended solely for your internal use and any use of this material without 
+specific permission of McKinsey & Company is strictly prohibited. All rights reserved.
+Oct 2025
+Case Study
+Municipal Public 
+Finance Diagnostics
+McKinsey & Company 2
+Context and objectives of this 
+document
+Context Objectives
+This document resulted from an engagement to 
+analyze revenue and expenditure growth and 
+identify potential revenue opportunities in a major 
+US city
+As cities experience population growth and face 
+rising costs, they must grow their revenue in order 
+to maintain and improve their infrastructure, services, 
+and overall quality of life for residents
+Peer benchmarking can reveal how a given city’s 
+revenue breakdown compares to peers in major 
+revenue categories (e.g., tax, licenses and permits, 
+intergovernmental aid)
+Outside-in sizing of revenue levers leveraged by 
+peer cities can help identify potential pockets of 
+untapped opportunity
+To share the approach we used in this project, as a 
+starting place for teams serving other municipal 
+government clients on similar fiscal health topics
+To share sample analyses and tips and tricks 
+across the three analytical phases of this work:
+• Analyze historical revenues and expenditures 
+and understand growth drivers
+• Benchmark revenue levers across key 
+categories relative to peers 
+• Identify and size impact of potential revenue 
+levers
+Note this document is NOT an exhaustive set of analyses and is not intended to 
+suggest any strategic posture or drive decision making
+McKinsey & Company 3
+Cities can face various types of budgetary challenges...
+Illustrative, non-exhaustive
+Challenge
+Source: Pew Research Center, UMBC, National Governor’s Association, National League of Cities
+Insufficient 
+revenues
+Structural 
+limitations
+Growing 
+spending 
+needs/demand 
+for public 
+services
+Examples
+ Tax/policy changes may require state legislative approval
+ State-imposed caps on municipal tax rates
+ Mandatory balanced budgets
+ Tax revenue volatility (e.g., declining property tax revenues from retail & commercial 
+buildings)
+ Uncertainty in state grants and revenue sharing, including temporary pandemic era aid
+ Demographic shifts (e.g., suburbanization)
+ Anchor cities bear costs for broader MSA region (e.g., infrastructure and human 
+services)
+ Public safety and affordable housing cost increases
+ Underfunded pension liabilities
+ Inflationary cost pressures, including employee wage increases
+McKinsey & Company 4
+… and are grappling with key questions as they plan for maintaining 
+services and operations under a constrained fiscal environment
+ Key questions
+ What is the long-term fiscal outlook?
+ What are the most sustainable revenue levers available over the next 
+20 years?
+ What strategies can manage rising costs for public safety, housing, and 
+infrastructure?
+ Which programs are critical to ensuring quality of life for residents?
+ How can collaboration with state and county governments unlock 
+funding and resources?
+McKinsey & Company 5
+A municipal public finance diagnostic can be 
+structured with three components
+These overall are the steps 
+we followed for this study
+The approach outlined is 
+tailored to the specific 
+context of this study
+It is not intended to 
+represent a 
+comprehensive or 
+standard diagnostic 
+framework, and can be 
+adapted as needed
+Benchmark revenue and 
+expenditure against peers
+2
+Identify a set of peer cities based on relevant 
+characteristics and analyze how City A’s reliance on 
+different revenue sources, its expenditure mix and 
+other structural constraints compare to peers
+Analyze fiscal position and 
+main drivers of change
+1 Analyze how revenues and expenditures have 
+evolved over the past 20 years, including 
+breakdowns by revenue sources and spending 
+categories. Assess the key factors driving these 
+changes and their impact on overall fiscal health
+Consider potential revenue 
+levers
+3 Identify underutilized revenue sources and 
+quantify potential gains from aligning local rates or 
+fees with peer averages or introducing new revenue 
+instruments
+McKinsey & Company 6
+A municipal public finance diagnostic can be structured with three 
+components
+Benchmark revenue and 
+expenditure against peers
+2 Identify a set of peer cities based on relevant characteristics and analyze 
+how City A’s reliance on different revenue sources, its expenditure mix 
+and other structural constraints compare to peers 
+Analyze fiscal position and 
+main drivers of change
+1 Analyze how revenues and expenditures have evolved over the past 20 
+years, including breakdowns by revenue sources and spending categories. 
+Assess the key factors driving these changes and their impact on overall 
+fiscal health
+Consider potential revenue 
+levers
+3
+Identify underutilized revenue sources and quantify potential gains 
+from aligning local rates or fees with peer averages or introducing new 
+revenue instruments
+McKinsey & Company 7
+Sample analysis: City A expenditures have grown 
+slower than population and wage growth
+2005 2010 2015 2020 2025
+520
+540
+560
+580
+600
+620
+640
+660
+680
+700
+720
+740
+Actual general fund expenditures
+Based on City A population + average wages
+Based on MSA population + average wages
+Source: ACFRs, Budget Books, US Census, Bureau of Labor Statistics
+If City A’s General 
+Fund expenditure 
+growth had tracked 
+population and wage 
+growth, FY24 
+expenditures could 
+have been 1.5x actual 
+spending
+Per capita General 
+Fund expenditures 
+fell from FY08 to 
+FY24, even as cost 
+rose for goods, 
+services, and labor
+City A population
+Actual General Fund expenditures vs forecasts based on 
+population and average wage growth, $M 
+300K 315K 340K
+City A GF 
+expenditures 
+have grown 
+slower than 
+combined 
+effect of 
+growth in 
+wages and 
+population
+We identified population 
+growth and measures of 
+inflation (e.g., wage 
+growth) as key drivers of 
+cost and demand for public 
+services
+By comparing actual 
+expenditure growth to 
+projections based on these 
+factors, we assess how 
+closely city spending 
+has kept pace with rising 
+costs and service 
+demands and estimate 
+the potential size of 
+funding gaps
+McKinsey & Company 8
+Sample analysis: Greatest expenditure increases 
+were seen in public safety over the last 5 years
+FY19 FY24
+583
+679
+General Fund expenditures, $M
+Source: ACFRs, Moody’s Analytics, Bureau of Labor Statistics
+FY24Category
+General government
+Corrections
+Public works
+Total
+FY19
+$42 
+$68 
+$84 
+$583
+$49 
+$75 
+$92 
+$679
+Growth, 
+FY19-24
+$7 
+Parks
+Debt service
+$77 
+$91 
+$83 
+$98 
+$6 
+$7 
+$7 
+$8 
+Police
+Fire
+$102 
+$119 
+$118 
+$164 
+$16 
+$45 
+$96 
+In FY24, 80% of 
+General Fund 
+budgeted 
+expenditures 
+were wage-
+related
+We used the city ACFR 
+Statement of Revenue, 
+Expenditures and 
+Changes in Fund 
+Balance to break down 
+revenues or expenditures 
+by line item
+This analysis helped us 
+pinpoint key drivers of 
+budget growth that may 
+align with growing 
+demands for public 
+services
+McKinsey & Company 9
+Sample analysis: Three peer cities outperform 
+City A in credit rating and budget performance
+Baa1 AAA
+-800
+-600
+-400
+-200
+0
+200
+400
+600
+800
+City credit rating
+Assets – liabilities, $M 
+A
+B
+C
+D
+E F
+GH
+I
+J
+K
+Moody’s credit rating vs. FY23 net financial position
+Outperform City A
+Source: Truth in Accounting Financial State of the Cities 2025, Moody’s credit ratings
+Key measures of fiscal 
+health include net 
+liabilities and credit 
+rating
+Measuring fiscal 
+health is important to 
+understanding a city’s 
+current and future 
+financial obligations, 
+as well as their ability to 
+raise revenue in 
+financial markets
+McKinsey & Company 10
+A municipal public finance diagnostic can be structured with three 
+components
+Benchmark revenue and 
+expenditure against peers
+2 Identify a set of peer cities based on relevant characteristics and analyze 
+how City A’s reliance on different revenue sources, its expenditure mix 
+and other structural constraints compare to peers
+Analyze fiscal position and 
+main drivers of change
+1 Analyze how revenues and expenditures have evolved over the past 20 
+years, including breakdowns by revenue sources and spending categories. 
+Assess the key factors driving these changes and their impact on overall 
+fiscal health
+Consider potential revenue 
+levers
+3
+Identify underutilized revenue sources and quantify potential gains 
+from aligning local rates or fees with peer averages or introducing new 
+revenue instruments
+McKinsey & Company 11
+Sample analysis: Potential peers for City A based 
+on sample framework
+869
+612
+1,013
+1,375
+1,233
+764
+787
+1,137
+1,357
+1,375
+683
+1,508
+614
+1,358
+730
+1,217
+1,423
+City pop., 
+2023 (K)
+10%
+5%
+15%
+5%
+20%
+10%
+15%
+25%
+15%
+5%
+25%
+15%
+5%
+City B
+City C
+City D
+City E
+City F
+City G
+City H
+City I
+City J
+City K
+City L
+City M
+City N
+City O
+City P
+City Q
+City A
+5,280
+5,263
+4,923
+3,822
+6,300
+6,162
+6,378
+4,374
+2,755
+4,707
+7,459
+3,458
+5,117
+6,698
+6,171
+3,553
+7,192
+Source: US Census, National Conference of State Legislatures, Bureau of Economic Analysis, Associated Press, Ballotpedia, National League of Cities
+257
+402
+404
+283
+378
+149
+182
+346
+270
+364
+405
+209
+348
+197
+256
+394
+195 10%
+1. Cities within counties are situated within one or more counties and operate separately from county governments; independent cities are not part of a county and are treated 
+as a fully separate entity; consolidated city-counties operate as a unified government that assumes the responsibilities of both the city and county
+Peers used for sizingOther peer cities
+Republican
+Democrat
+Republican
+Republican
+Democrat
+Democrat
+Republican
+Republican
+Democrat
+Republican
+Republican
+Democrat
+Democrat
+Republican
+Democrat
+Republican
+Democrat
+MSA pop.
+, 
+2023 (K)
+State 
+legislature 
+majority
+City % of 
+MSA pop.
+Consolidated
+Consolidated
+Consolidated
+Independent
+City within county
+Independent
+City within county
+City within county
+City within county
+City within county
+City within county
+City within county
+City within county
+Consolidated
+City government 
+type1
+City within county
+City within county
+City within county
+10%
+5%
+25%
+MSA GDP, 
+2023 ($B)
+Illustrative
+We identified peers 
+using the client city’s 
+core characteristics, 
+including:
+• Population & GDP
+• City share of MSA 
+population (cost 
+burden)
+• State legislature 
+majority
+• City government type
+McKinsey & Company 12
+Sample analysis: City A’s revenue composition 
+compared to peers
+City General Fund revenues by source, FY24 actual, %
+25
+20
+24
+21
+10
+21
+22
+18
+11
+10
+12
+14
+13
+10
+9
+9
+12
+17
+11
+18
+15
+16
+26
+23
+18
+25
+20
+12
+16
+15
+11
+9
+19
+32
+25
+10
+City A
+City B
+City C
+City D
+City E
+City F
+Source: FY24 Annual Comprehensive Financial Reports by city
+1. Other/unknown may include revenues from other buckets that could not be disaggregated
+ City A’s tax 
+revenue share is 
+high (25%) relative 
+to peers
+ Licenses and 
+permits make up 
+an outsized share 
+of City A’s revenue 
+(22%), higher than 
+any other peer
+ City A receives 
+significantly 
+less charges for 
+services revenue 
+than peers
+Tax Licenses & permits/fees Fines & forfeitures Charges for services Intergovt Other/unknown1
+Examining the city’s 
+revenue breakdown by 
+source helps understand 
+which revenue levers the 
+city is more/less reliant on 
+relative to peers
+It also helps identify 
+potential vulnerabilities 
+(e.g., overreliance on a 
+more volatile revenue 
+source) and areas of 
+opportunity or 
+underperformance (e.g., 
+city gets significantly less 
+revenue from a particular 
+source)
+McKinsey & Company 13
+Sample analysis: Deep dive into one of City A’s 
+revenue sources compared to peers
+20
+13
+10
+7
+6
+3
+1
+1
+City B
+City C
+City B
+City C
+City D
+City F
+City A
+City G
+Peer cities: Average state aid as 
+portion of city revenues1 from 2018-
+2022, % 
+Source: Government Finance Database, Willamette University (aggregation of annual US Census Annual Survey of State and Local Government Finances data since 1957)
+State government support 
+varies across US cities
+• Among peer cities, City A 
+receives among the smallest 
+portions of its total funding 
+from state government
+• Among cities in the same state 
+with >100k population, City A 
+also receives the second 
+smallest portion of its total 
+funding from state government
+Based on U.S . Census data, 
+state aid for City A as a share of 
+total city revenue equivalent to 
+peer city
+1 average would imply 
+~$XM of additional revenue 
+Cities in the same state as City 
+A: Average state aid as portion of 
+city revenues1 from 2018-2022, % 
+City X
+Cify Y
+City Z
+City A
+City W
+2.0
+2.0
+1.2
+1.1
+0.7
+1. Accounts for total revenues across all funds
+1
+2
+21
+Note: US Census Annual Survey of State and Local Government Finances is reliant on survey responses from 
+municipal employees and may be subject to non-sampling error (e.g., non-response, inaccurate reporting, mistakes 
+or differences in classification)
+We conducted a focused 
+analysis of intergovernmental 
+revenue sources; specifically, 
+the share of total city revenues 
+coming from state government 
+transfers
+We compared City A’s reliance 
+on state aid to that of peer cities, 
+as well as to other municipalities 
+within the same state
+City A receiving significantly less 
+support from the state 
+government than its peers, has 
+proved an important factor 
+driving its overall fiscal 
+situation
+Peer average = 
+8%
+McKinsey & Company 14
+A municipal public finance diagnostic can be structured with three 
+components
+Benchmark revenue and 
+expenditure against peers
+2 Identify a set of peer cities based on relevant characteristics and analyze 
+how City A’s reliance on different revenue sources, its expenditure mix 
+and other structural constraints compare to peers
+Analyze fiscal position and 
+main drivers of change
+1 Analyze how revenues and expenditures have evolved over the past 20 
+years, including breakdowns by revenue sources and spending categories. 
+Assess the key factors driving these changes and their impact on overall 
+fiscal health
+Consider potential revenue 
+levers
+3
+Identify underutilized revenue sources and quantify potential gains 
+from aligning local rates or fees with peer averages or introducing new 
+revenue instruments
+McKinsey & Company 15
+Sample analysis: Major general fund revenue 
+levers in City A vs. peer cities
+We compared per capita 
+revenues across categories to 
+peer cities to identify areas of 
+opportunity and 
+underperformance in City A’s 
+revenue mobilization
+We conducted separate 
+comparisons for peers with less 
+than 20% and more than 20% of 
+their MSA’s population, since 
+City A’s relatively small share of 
+the metro area is a key factor 
+shaping its fiscal position as it 
+leads to higher service costs and 
+a smaller revenue base
+Taxes
+800
+City A
+Peers with <20%
+of MSA pop.
+Peers with >20%
+of MSA pop.
+1,100
+1,300
+-200
+Fines and forfeitures
+Examples: Parking and traffic 
+tickets
+40
+15
+5
+City A
+Peers with <20%
+of MSA pop.
+Peers with >20%
+of MSA pop.
++25
+Licenses/permits, charges 
+for services
+300
+250
+150
+City A
+Peers with <20%
+of MSA pop.
+Peers with >20%
+of MSA pop.
++50
+Intergovernmental aid
+Examples: State grant
+160
+200
+City A
+Peers with <20%
+of MSA pop.
+Peers with >20%
+of MSA pop.
+0
+-160
+Other / non-categorized
+80
+100
+80
+City A
+Peers with <20%
+of MSA pop.
+Peers with >20%
+of MSA pop.
+-20
+Major revenue levers: General fund revenue per capita in City A 
+vs peer cities ($M, 2024)
+Examples: Property tax, sales 
+tax
+Significant gap to 
+peers
+Source: FY24 Annual Comprehensive Financial Reports (ACFR) by city, US Census
+Examples: Business permit, solid 
+waste pickup
+Total general fund 
+revenue
+City A
+Peers with <20%
+of MSA pop.
+Peers with >20%
+of MSA pop.
+1,600
+2,000
+1,300
+-400
+McKinsey & Company 16
+Example levers City A could pull to 
+increase revenue
+Taxes
+• Levy a new city income tax
+• Increase the commercial property millage 
+rate
+• Increase the franchise tax on utilities
+• Levy a new tax on ticket sales at large venues
+• Increase the hotel occupancy tax
+• Increase the tax on gross receipts from 
+parking facilities within the city
+• Levy a tax on single-use plastic bags
+• Levy a tax on rideshare trips to and from the 
+airport
+• Levy a tax on real estate transfers
+• Implement congestion pricing
+• Levy a tax on freight vehicles
+• Levy a tax on rental vehicles
+Licenses, permits & fees
+• Increase building permit fees
+• Increase occupational permit fees
+• Increase alarm registration fees
+• Increase false alarm fees
+• Increase liquor license fees
+• Offer expedited plan review and business 
+licensing services for an additional fee
+• Introduce a registration fee for short-
+term rentals
+• Increase on-street parking fees during 
+peak hours
+• Increase fines for traffic offenses
+• Implement red-light and school-zone 
+speed cameras to enforce traffic violations
+These are some of the 
+possible revenue levers 
+we identified for City A
+We were interested 
+specifically on levers that 
+increased revenue in the 
+General Fund
+A sizing exercise was 
+conducted for each lever 
+to estimate its potential 
+incremental revenue 
+under different 
+scenarios (e.g., aligning 
+fees with peer averages, 
+adopting the highest rate 
+charged by peers, etc.)
+McKinsey & Company 17
+Sample analysis: Total outside-in sizing of 
+potential revenue levers by category for City A’s 
+General Fund
+Taxes Intergovt. aid Licenses, 
+permits, fees, 
+and charges 
+for services
+Fines and 
+forfeitures
+Other Unconstrained 
+revenue 
+potential
+900
+750 50 5 15 10 1,730
+Current 
+general fund 
+revenues
++830
+City A general fund revenue potential, $M/year
+% of 
+estimated 
+potential 
+additional 
+revenue
+90% 6% 1% 2%
+Note: Represents full 
+picture of sizing of 
+revenue levers from 
+peer cities, not a 
+recommendation
+Source: Sources included in detail pages and Excel sizing documentation
+Congestion pricing 
+accounts for 
+$250M of potential 
+tax revenue lever 
+sizing
+1%
+Here, we show how 
+much incremental 
+revenue we estimate 
+can be generated by 
+implementing revenue 
+levers under each 
+category as well as and 
+their overall impact
+​ 
+The numbers are based 
+on the aggregate of all 
+sizing exercises by type 
+of revenue lever
+McKinsey & Company 18
+We assessed revenue levers across 7 dimensions
+Dimension Definition Metric
+Usage in 
+peer cities
+Peer cities that employ the lever and how 
+City A compares (if lever is currently in 
+place)
+N/A
+Revenue 
+opportunity
+Incremental revenue City A could 
+potentially raise by implementing the lever
+$ of revenue
+Burden per 
+resident
+Incremental costs each City A resident 
+could incur if the lever is implemented
+$ per resident
+Burden per 
+visitor
+Incremental costs each City A visitor could 
+incur if the lever is implemented
+$ per visitor
+Externalities Whether the lever could drive potential 
+changes in behaviors with negative 
+societal impact if implemented
+N/A
+Tax base Whether the lever could drive potential 
+changes in the City A tax base if 
+implemented
+N/A
+Potential outcomes for tax base 
+assessment
+Lever could cause financial disincentives 
+to living or conducting business within 
+the city (e.g., property tax rate increases)
+Lever could cause financial incentives to 
+living or conducting business within the 
+city (e.g., property tax rate reductions)
+Potential outcomes for externality 
+assessment
+Lever could cause financial disincentives 
+to engage in behavior that has negative 
+societal impact (e.g., reduced alcohol 
+consumption)  
+Lever will have no impact
+Lever will have no impact
+McKinsey & Company 19
+Sample analysis: Sizing revenue from a parking occupancy tax
+Description: Tax levied on gross receipts of parking facilities within City A
+City B
+City C
+City D
+City E
+City F
+City A
+City G
+25.0%
+22.5%
+20.0%
+15.0%
+10.0%
+5.0%
+3.0%
+Current
+32.6
+Peer 
+average
+26.7
+Highest 
+peer
+Total
+14.8
+74.2
++$59.3M
+Source: Peer cities’ municipal codes; City A current and historical ACFRs; City A current budget;
+Assess usage in peer cities1 Gather inputs for sizing calculations 2 Estimate potential incremental 
+revenue under different scenarios3
+Parking occupancy tax, %
+City A charges one of the lowest 
+parking occupancy tax rates 
+among peers
+ Peer average: 16%
+ Highest peer: 25%
+Input
+Current tax rate
+Budgeted tax revenue 
+(current year)
+Collection rate / 
+compliance
+Implied taxable 
+activity (current year) 
+Projected tax 
+revenue
+Value
+5%
+$15M
+96%
+3%
+$300M
+$14.83M
+Source
+City A municipal code
+City A current year 
+budget
+City A current year 
+ACFR
+Calculation
+1
+​ 
+City A historical 
+ACFRs
+Calculation2 
+Calculation3 
+Tax revenue growth 
+trend
+Actual revenue 
+(current year)
+$14.4M
+Projected taxable 
+activity
+$309M Calculation4
+1. Budgeted receipts compared to actual tax receipts for the corresponding year ($14,4M/$15M = 96%)
+2. Actual parking tax revenue divided by the tax rate times the compliance rate ($14,4M/(5% x 96%) = $300M)
+3. Multiply the current year tax revenue by the parking tax revenue growth trend derived from the change in actual tax revenues of previous years ($14.4M x (1+3%)= $14.83M)
+4. Projected parking tax revenue divided by the tax rate times the compliance rate ($14,83M/(5% x 96%) = $309M)
+Scenario
+Current rate
+Peer average 
+Highest peer 
+Incremental revenue calculation
+$309M  x   5% 
+$309M  x  16%
+$309M  x  25% 
+Change in total parking tax revenue, $M
+Implementing the highest parking tax rate 
+among peers, City A can generate an 
+additional $59.3M in incremental revenue
+x 96% 
+compliance 
+rate
+McKinsey & Company 20
+Key contacts and next steps
+Elizabeth Murthy
+Partner, Atlanta
+Leadership Engagement team
+Rachel Schaff
+Director of Client Capabilities, 
+Boston
+Jonah Driggers
+Engagement Manager, Atlanta
+Jimena Madrigal
+C&I Analyst, US State & Local 
+team, San Jose
+Brandon Gilbert
+Associate, Atlanta
+Aparna Jayashankar
+Senior C&I Analyst, US State 
+& Local team, Boston
+Key contacts
+After handoff, clients could use 
+this diagnostic to:
+ Determine strategic and 
+legislative priorities
+ Optimize fiscal planning
+ Conduct impact and feasibility 
+assessments, e.g., for potential 
+revenue levers
+ Support advocacy at state and 
+county levels

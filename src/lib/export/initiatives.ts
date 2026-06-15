@@ -1,5 +1,13 @@
 import type { InitiativeInventory, InitiativeViewFilter } from "@/types/initiative";
 import { LEVER_LABELS, HORIZON_LABELS } from "@/types/initiative";
+import {
+  BENCHMARK_GAP_LABELS,
+  ENABLER_LABELS,
+  EXECUTION_COMPLEXITY_LABELS,
+  FINDING_TYPE_LABELS,
+  VALUE_TYPE_LABELS,
+} from "@/lib/diagnostics/mckinsey-framework";
+import { ensureInitiativeFields } from "@/lib/diagnostics/mckinsey-framework";
 import { filterInitiatives } from "@/lib/initiatives/logic";
 
 export function inventoryToMarkdown(
@@ -7,7 +15,7 @@ export function inventoryToMarkdown(
   viewFilter?: InitiativeViewFilter,
 ): string {
   const filter = viewFilter ?? inv.viewFilter;
-  const filtered = filterInitiatives(inv.initiatives, filter);
+  const filtered = filterInitiatives(inv.initiatives, filter).map(ensureInitiativeFields);
   const lines: string[] = [
     `# Improvement Initiatives — ${inv.workflowName}`,
     "",
@@ -29,9 +37,15 @@ export function inventoryToMarkdown(
       "",
       `- **Horizon:** ${HORIZON_LABELS[init.horizon]}`,
       `- **Lever:** ${LEVER_LABELS[init.leverType]}`,
+      `- **Finding:** ${FINDING_TYPE_LABELS[init.findingType]} · **Value type:** ${VALUE_TYPE_LABELS[init.valueType]}`,
+      `- **Enabler:** ${ENABLER_LABELS[init.enablerCategory]} · **Complexity:** ${EXECUTION_COMPLEXITY_LABELS[init.executionComplexity]}`,
+      `- **Maturity:** ${init.currentMaturity} → ${init.targetMaturity} · **Benchmark:** ${BENCHMARK_GAP_LABELS[init.benchmarkGap]}`,
       `- **Lifecycle:** ${init.lifecycle}`,
       `- **Impact:** ${init.impactDirection} · **Evidence:** ${init.evidenceStrength}`,
       `- **Priority score:** ${init.priorityScore}`,
+      init.rootCauseTheme ? `- **Root cause theme:** ${init.rootCauseTheme}` : "",
+      init.timingDependency ? `- **Timing dependency:** ${init.timingDependency}` : "",
+      init.sequencingRationale ? `- **Sequencing:** ${init.sequencingRationale}` : "",
       `- **Process steps:** ${init.processStepIds.join(", ")}`,
       `- **Pain points:** ${init.painPointIds.join(", ")}`,
       init.isDuplicate ? `- **⚠ Duplicate/overlap:** ${init.duplicateNote ?? "yes"}` : "",
@@ -57,16 +71,27 @@ export function inventoryToCsv(
   inv: InitiativeInventory,
   viewFilter?: InitiativeViewFilter,
 ): string {
-  const filtered = filterInitiatives(inv.initiatives, viewFilter ?? inv.viewFilter);
+  const filtered = filterInitiatives(inv.initiatives, viewFilter ?? inv.viewFilter).map(
+    ensureInitiativeFields,
+  );
   const headers = [
     "title",
     "description",
     "horizon",
     "lever_type",
+    "finding_type",
+    "value_type",
+    "enabler_category",
+    "execution_complexity",
+    "current_maturity",
+    "target_maturity",
+    "benchmark_gap",
     "lifecycle",
     "impact_direction",
     "evidence_strength",
     "priority_score",
+    "root_cause_theme",
+    "timing_dependency",
     "process_steps",
     "pain_points",
     "dependencies",
@@ -80,10 +105,19 @@ export function inventoryToCsv(
       csvCell(i.description),
       i.horizon,
       i.leverType,
+      i.findingType,
+      i.valueType,
+      i.enablerCategory,
+      i.executionComplexity,
+      i.currentMaturity,
+      i.targetMaturity,
+      i.benchmarkGap,
       i.lifecycle,
       i.impactDirection,
       i.evidenceStrength,
       String(i.priorityScore),
+      csvCell(i.rootCauseTheme ?? ""),
+      csvCell(i.timingDependency ?? ""),
       csvCell(i.processStepIds.join("|")),
       csvCell(i.painPointIds.join("|")),
       csvCell(i.dependencies.join("|")),
@@ -107,12 +141,15 @@ export function inventoryToPipelineJson(
   return JSON.stringify(
     {
       sourceAgent: "improvement-initiatives" as const,
+      diagnosticFramework: "mckinsey-two-lens" as const,
       workflowId: inv.workflowId,
       workflowName: inv.workflowName,
       companyName: inv.companyName,
       processSteps: inv.processSteps,
       painPoints: inv.painPoints,
-      initiatives: filterInitiatives(inv.initiatives, viewFilter ?? inv.viewFilter),
+      initiatives: filterInitiatives(inv.initiatives, viewFilter ?? inv.viewFilter).map(
+        ensureInitiativeFields,
+      ),
       mappings: inv.mappings,
       generatedAt: inv.updatedAt,
     },

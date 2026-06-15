@@ -5,11 +5,34 @@ export type InputMode = "standalone" | "pipeline";
 export type InitiativeViewFilter =
   | "comprehensive"
   | "top_priorities"
+  | "value_blockers"
   | "ai_automation"
   | "process_redesign"
   | "horizon_h1"
   | "horizon_h2"
   | "horizon_h3";
+
+export type FindingType = "value_blocker" | "efficiency_improvement";
+
+export type ValueType =
+  | "run_rate_savings"
+  | "operational_value"
+  | "growth_at_stake"
+  | "risk_reduction";
+
+export type MaturityLevel = "reactive" | "inconsistent" | "institutionalized";
+
+export type EnablerCategory =
+  | "process"
+  | "capability"
+  | "technology_data"
+  | "governance"
+  | "talent"
+  | "kpis_reporting";
+
+export type ExecutionComplexity = "low" | "medium" | "high";
+
+export type BenchmarkGap = "above_peer" | "at_peer" | "below_peer" | "unknown";
 
 export type LeverType =
   | "process_fix"
@@ -47,6 +70,17 @@ export interface ImprovementInitiative {
   isDuplicate: boolean;
   duplicateNote?: string;
   order: number;
+  /** McKinsey diagnostic framing */
+  findingType: FindingType;
+  valueType: ValueType;
+  enablerCategory: EnablerCategory;
+  currentMaturity: MaturityLevel;
+  targetMaturity: MaturityLevel;
+  benchmarkGap: BenchmarkGap;
+  executionComplexity: ExecutionComplexity;
+  timingDependency?: string;
+  sequencingRationale?: string;
+  rootCauseTheme?: string;
 }
 
 export interface InitiativeMapping {

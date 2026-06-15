@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { BSN_PRESET } from "@/data/engagement-context";
 import { getWorkflow } from "@/data/catalog";
 import { complete, hasLlm } from "@/lib/llm/client";
+import { normalizeInitiativeFields } from "@/lib/diagnostics/mckinsey-framework";
 import {
   mergeProcessContext,
   templateInitiatives,
@@ -11,9 +12,46 @@ import {
   buildInitiativeUserPrompt,
   normalizeLeverType,
 } from "@/lib/prompts/improvement-initiatives";
-import type { InitiativeViewFilter, InputMode } from "@/types/initiative";
-import type { PainPoint, ProcessStep } from "@/types/pipeline";
+import type { ImprovementInitiative, InitiativeViewFilter, InputMode } from "@/types/initiative";
 import { v4 as uuidv4 } from "uuid";
+
+function mapInitiative(
+  item: Record<string, unknown>,
+  index: number,
+  painSeverity?: "high" | "medium" | "low",
+): ImprovementInitiative {
+  const mckinsey = normalizeInitiativeFields(item, index, painSeverity);
+  return {
+    id: (item.id as string) || uuidv4(),
+    title: String(item.title ?? "Untitled initiative"),
+    description: String(item.description ?? ""),
+    processStepIds: (item.processStepIds as string[]) ?? [],
+    painPointIds: (item.painPointIds as string[]) ?? [],
+    leverType: normalizeLeverType(String(item.leverType ?? "process_fix")),
+    horizon: (["H1", "H2", "H3"].includes(String(item.horizon)) ? item.horizon : "H2") as
+      | "H1"
+      | "H2"
+      | "H3",
+    lifecycle: (["new", "partially_existing", "in_flight"].includes(String(item.lifecycle))
+      ? item.lifecycle
+      : "new") as ImprovementInitiative["lifecycle"],
+    dependencies: (item.dependencies as string[]) ?? [],
+    risks: (item.risks as string[]) ?? [],
+    impactDirection: (["high", "medium", "low"].includes(String(item.impactDirection))
+      ? item.impactDirection
+      : "medium") as ImprovementInitiative["impactDirection"],
+    evidenceStrength: (["high", "medium", "low"].includes(String(item.evidenceStrength))
+      ? item.evidenceStrength
+      : "medium") as ImprovementInitiative["evidenceStrength"],
+    quickWinType: (item.quickWinType === "quick_win" ? "quick_win" : "deeper_redesign") as
+      | "quick_win"
+      | "deeper_redesign",
+    sourceReferences: (item.sourceReferences as string[]) ?? [],
+    isDuplicate: Boolean(item.isDuplicate),
+    order: Number(item.order) ?? index,
+    ...mckinsey,
+  };
+}
 
 export async function POST(request: Request) {
   try {
@@ -78,34 +116,20 @@ export async function POST(request: Request) {
 
     const parsed = JSON.parse(raw) as {
       initiatives: Record<string, unknown>[];
-      mappings: { initiativeId: string; painPointId: string; processStepId: string; rationale: string }[];
+      mappings: {
+        initiativeId: string;
+        painPointId: string;
+        processStepId: string;
+        rationale: string;
+      }[];
     };
 
-    const initiatives = parsed.initiatives.map((item, i) => ({
-      id: (item.id as string) || uuidv4(),
-      title: String(item.title ?? "Untitled initiative"),
-      description: String(item.description ?? ""),
-      processStepIds: (item.processStepIds as string[]) ?? [],
-      painPointIds: (item.painPointIds as string[]) ?? [],
-      leverType: normalizeLeverType(String(item.leverType ?? "process_fix")),
-      horizon: (["H1", "H2", "H3"].includes(String(item.horizon)) ? item.horizon : "H2") as "H1" | "H2" | "H3",
-      lifecycle: (["new", "partially_existing", "in_flight"].includes(String(item.lifecycle))
-        ? item.lifecycle
-        : "new") as "new" | "partially_existing" | "in_flight",
-      dependencies: (item.dependencies as string[]) ?? [],
-      risks: (item.risks as string[]) ?? [],
-      impactDirection: (["high", "medium", "low"].includes(String(item.impactDirection))
-        ? item.impactDirection
-        : "medium") as "high" | "medium" | "low",
-      evidenceStrength: (["high", "medium", "low"].includes(String(item.evidenceStrength))
-        ? item.evidenceStrength
-        : "medium") as "high" | "medium" | "low",
-      quickWinType: (item.quickWinType === "quick_win" ? "quick_win" : "deeper_redesign") as "quick_win" | "deeper_redesign",
-      sourceReferences: (item.sourceReferences as string[]) ?? [],
-      priorityScore: Number(item.priorityScore) || 70 - i,
-      isDuplicate: Boolean(item.isDuplicate),
-      order: Number(item.order) ?? i,
-    }));
+    const painById = new Map(painPoints.map((p) => [p.id, p]));
+    const initiatives = parsed.initiatives.map((item, i) => {
+      const painIds = (item.painPointIds as string[]) ?? [];
+      const firstPain = painIds.length ? painById.get(painIds[0]) : undefined;
+      return mapInitiative(item, i, firstPain?.severity);
+    });
 
     return NextResponse.json({
       processSteps,

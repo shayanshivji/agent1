@@ -67,9 +67,9 @@ export function InitiativeList() {
       </div>
 
       <div className="draft-banner rounded-lg px-4 py-3 text-sm mb-4">
-        <strong>Human review required.</strong> Value sizing and prioritization
-        assumptions must be validated before downstream agents (roadmap, future
-        state).
+        <strong>Human review required.</strong> Separate value blockers from efficiency
+        improvements; validate fact base and value-at-stake assumptions before downstream
+        agents (value modeling, roadmap, future state).
       </div>
 
       <div className="space-y-3">
