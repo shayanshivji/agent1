@@ -12,6 +12,7 @@ import {
 import {
   AGENT_SLUG_LABELS,
   UPSTREAM_AGENT,
+  UPSTREAM_DECLINED_NONE,
   type PlatformAgentSlug,
 } from "@/types/platform-session";
 
@@ -64,7 +65,7 @@ export function UpstreamHandoffBar({ agentSlug, onApplied }: UpstreamHandoffBarP
   }
 
   function handleSkip() {
-    if (activeSessionId) declineUpstream(agentSlug, activeSessionId);
+    declineUpstream(agentSlug, activeSessionId ?? UPSTREAM_DECLINED_NONE);
     setDismissed(true);
   }
 

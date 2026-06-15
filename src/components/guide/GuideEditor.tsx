@@ -7,22 +7,29 @@ import { ExportBar } from "@/components/guide/ExportBar";
 import { useGuideStore } from "@/store/guide-store";
 import type { GuideSectionId } from "@/types/guide";
 
-export function GuideEditor() {
+interface GuideEditorProps {
+  llmEnabled?: boolean | null;
+}
+
+export function GuideEditor({ llmEnabled }: GuideEditorProps) {
   const {
     guide,
     workflowId,
     roleId,
+    level,
+    customNotes,
     sources,
+    companyName,
+    industryId,
+    functionId,
     updateSection,
     setReviewStatus,
   } = useGuideStore();
-  const [regeneratingId, setRegeneratingId] = useState<GuideSectionId | null>(
-    null,
-  );
+  const [regeneratingId, setRegeneratingId] = useState<GuideSectionId | null>(null);
   const [regenError, setRegenError] = useState<string | null>(null);
 
   async function regenerateSection(sectionId: GuideSectionId, title: string) {
-    if (!guide) return;
+    if (!guide || !llmEnabled) return;
     const section = guide.sections.find((s) => s.id === sectionId);
     if (!section) return;
 
@@ -38,7 +45,13 @@ export function GuideEditor() {
           sectionTitle: title,
           workflowId,
           roleId,
+          level,
+          customNotes,
+          companyName,
+          industryId,
+          functionId,
           currentContent: section.content,
+          currentBullets: section.bullets,
           sources,
         }),
       });
@@ -56,13 +69,10 @@ export function GuideEditor() {
     return (
       <div className="section-card p-12 text-center">
         <div className="max-w-md mx-auto">
-          <h2 className="text-lg font-semibold text-gradient mb-2">
-            No guide yet
-          </h2>
+          <h2 className="text-lg font-semibold text-gradient mb-2">No guide yet</h2>
           <p className="text-sm text-[var(--text-muted)]">
-            Select a workflow and role, optionally upload source materials, then
-            click <strong>Generate guide</strong> to create a structured
-            interview guide tailored to the SME.
+            Select a workflow and role, optionally upload source materials, then click{" "}
+            <strong>Generate guide</strong> to create a structured interview guide tailored to the SME.
           </p>
         </div>
       </div>
@@ -73,9 +83,7 @@ export function GuideEditor() {
     <div>
       <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
         <div>
-          <h2 className="text-xl font-semibold text-[var(--text)]">
-            {guide.workflowName}
-          </h2>
+          <h2 className="text-xl font-semibold text-[var(--text)]">{guide.workflowName}</h2>
           <p className="text-sm text-[var(--text-muted)] mt-1">
             {guide.roleName} · {guide.level.replace("_", " ")}
           </p>
@@ -83,9 +91,7 @@ export function GuideEditor() {
         <select
           value={guide.reviewStatus}
           onChange={(e) =>
-            setReviewStatus(
-              e.target.value as "draft" | "in_review" | "validated",
-            )
+            setReviewStatus(e.target.value as "draft" | "in_review" | "validated")
           }
           className="field-input text-sm w-auto"
         >
@@ -96,10 +102,16 @@ export function GuideEditor() {
       </div>
 
       <div className="draft-banner rounded-md px-4 py-3 text-sm mb-6">
-        <strong>Human review required.</strong> This guide is a draft for
-        consultant validation before field use. Edit sections inline and mark
-        status when ready.
+        <strong>Human review required.</strong> This guide is a draft for consultant validation before
+        field use. Edit sections inline and mark status when ready.
       </div>
+
+      {!llmEnabled && (
+        <div className="mb-4 rounded-md border border-yellow-500/30 bg-yellow-500/10 px-4 py-3 text-xs text-yellow-200">
+          Section regeneration requires LLM mode (OpenAI API key). Edit sections inline in template
+          mode.
+        </div>
+      )}
 
       {regenError && (
         <div className="error-banner flex items-center gap-2 mb-4">
@@ -114,10 +126,8 @@ export function GuideEditor() {
             key={section.id}
             section={section}
             index={i}
-            onChange={(content, bullets) =>
-              updateSection(section.id, content, bullets)
-            }
-            onRegenerate={() => regenerateSection(section.id, section.title)}
+            onChange={(content, bullets) => updateSection(section.id, content, bullets)}
+            onRegenerate={llmEnabled ? () => regenerateSection(section.id, section.title) : undefined}
             regenerating={regeneratingId === section.id}
             defaultOpen={i < 3}
           />

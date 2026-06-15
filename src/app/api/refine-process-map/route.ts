@@ -72,21 +72,21 @@ export async function POST(request: Request) {
     const updated = applyRefinement(document, target, patch);
 
     if (target === "process_steps" && patch.steps) {
-      updated.steps = patch.steps.map((s) => ({
+      updated.steps = patch.steps.map((s, i) => ({
         ...s,
-        id: s.id || uuidv4(),
+        id: s.id || document.steps[i]?.id || uuidv4(),
       }));
     }
     if (target === "pain_points" && patch.painPoints) {
-      updated.painPoints = patch.painPoints.map((p) => ({
+      updated.painPoints = patch.painPoints.map((p, i) => ({
         ...p,
-        id: p.id || uuidv4(),
+        id: p.id || document.painPoints[i]?.id || uuidv4(),
       }));
     }
     if (target === "improvements" && patch.improvements) {
-      updated.improvements = patch.improvements.map((imp) => ({
+      updated.improvements = patch.improvements.map((imp, i) => ({
         ...imp,
-        id: imp.id || uuidv4(),
+        id: imp.id || document.improvements[i]?.id || uuidv4(),
       }));
     }
 

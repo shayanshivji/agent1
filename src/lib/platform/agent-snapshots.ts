@@ -4,8 +4,15 @@ import type {
   SavedEngagement,
   ScopingSessionOutput,
 } from "@/types/platform-session";
-import { extractQuestionsFromGuide, guideToHandoffPayload } from "@/lib/pipeline/guide-handoff";
-import type { InterviewGuide } from "@/types/guide";
+import { UPSTREAM_DECLINED_NONE } from "@/types/platform-session";
+import {
+  extractQuestionsFromGuide,
+  formatGuideSectionsForNotes,
+  guideToHandoffPayload,
+} from "@/lib/pipeline/guide-handoff";
+import type { InterviewGuide, InterviewLevel } from "@/types/guide";
+import type { InputMode } from "@/types/initiative";
+import type { InterviewExecutionMode } from "@/types/interview-execution";
 
 /** Lazy store access avoids circular import crashes in the client bundle. */
 function getGuideStore() {
@@ -58,10 +65,15 @@ export function captureAgentSnapshot(slug: PlatformAgentSlug): Partial<AgentSess
       "live-interview": {
         savedAt: now,
         mode: s.mode,
+        inputMode: s.inputMode,
         workflowId: s.workflowId,
         roleId: s.roleId,
         stakeholderName: s.stakeholderName,
         guidePayload: s.guidePayload,
+        guideQuestions: s.guideQuestions,
+        linkedGuideId: s.linkedGuideId,
+        linkedGuideUpdatedAt: s.linkedGuideUpdatedAt,
+        guideSource: s.guideSource,
         transcriptText: s.transcriptText,
         liveTurns: s.liveTurns,
         document: s.document,
@@ -75,7 +87,13 @@ export function captureAgentSnapshot(slug: PlatformAgentSlug): Partial<AgentSess
       "process-mapping": {
         savedAt: now,
         workflowId: s.workflowId,
-        guidePayload: s.pipelinePayload,
+        companyName: s.companyName,
+        industryId: s.industryId,
+        functionId: s.functionId,
+        inputMode: s.inputMode,
+        pipelinePayload: s.pipelinePayload,
+        pastedNotes: s.pastedNotes,
+        customNotes: s.customNotes,
         document: s.document,
       },
     };
@@ -86,10 +104,110 @@ export function captureAgentSnapshot(slug: PlatformAgentSlug): Partial<AgentSess
     "improvement-initiatives": {
       savedAt: now,
       workflowId: s.workflowId,
+      companyName: s.companyName,
+      industryId: s.industryId,
+      functionId: s.functionId,
+      inputMode: s.inputMode,
+      processMapText: s.processMapText,
+      customNotes: s.customNotes,
       document: s.inventory,
       pipelinePayload: s.pipelinePayload,
+      processSteps: s.processSteps,
+      painPoints: s.painPoints,
     },
   };
+}
+
+export function restoreAgentFromSession(
+  session: SavedEngagement,
+  slug: PlatformAgentSlug,
+): boolean {
+  const output = session.outputs[slug];
+  if (!output) return false;
+
+  if (slug === "scoping" && session.outputs.scoping) {
+    const s = session.outputs.scoping;
+    getGuideStore().setState({
+      companyName: s.companyName,
+      industryId: s.industryId,
+      functionId: s.functionId,
+      workflowId: s.workflowId,
+      roleId: s.roleId,
+      level: s.level as InterviewLevel,
+      customNotes: s.customNotes,
+      guide: s.guide,
+      error: null,
+      isGenerating: false,
+    });
+    return Boolean(s.guide);
+  }
+
+  if (slug === "live-interview" && session.outputs["live-interview"]) {
+    const o = session.outputs["live-interview"];
+    getInterviewStore().setState({
+      companyName: session.companyName || o.document?.companyName || getInterviewStore().getState().companyName,
+      industryId: session.industryId || getInterviewStore().getState().industryId,
+      functionId: session.functionId || getInterviewStore().getState().functionId,
+      workflowId: o.workflowId,
+      roleId: o.roleId,
+      mode: o.mode as InterviewExecutionMode,
+      inputMode: o.inputMode ?? "pipeline",
+      stakeholderName: o.stakeholderName,
+      guidePayload: o.guidePayload,
+      guideQuestions: o.guideQuestions ?? [],
+      linkedGuideId: o.linkedGuideId ?? null,
+      linkedGuideUpdatedAt: o.linkedGuideUpdatedAt ?? null,
+      guideSource: o.guideSource ?? null,
+      transcriptText: o.transcriptText,
+      liveTurns: o.liveTurns ?? [],
+      document: o.document,
+      error: null,
+      isGenerating: false,
+      isSuggesting: false,
+    });
+    return Boolean(o.document);
+  }
+
+  if (slug === "process-mapping" && session.outputs["process-mapping"]) {
+    const o = session.outputs["process-mapping"];
+    getProcessMapStore().setState({
+      companyName: o.companyName || session.companyName,
+      industryId: o.industryId || session.industryId,
+      functionId: o.functionId || session.functionId,
+      workflowId: o.workflowId,
+      inputMode: o.inputMode ?? "pipeline",
+      pipelinePayload: o.pipelinePayload ?? "",
+      pastedNotes: o.pastedNotes ?? "",
+      customNotes: o.customNotes ?? "",
+      document: o.document,
+      error: null,
+      isGenerating: false,
+      isRefining: false,
+    });
+    return Boolean(o.document);
+  }
+
+  if (slug === "improvement-initiatives" && session.outputs["improvement-initiatives"]) {
+    const o = session.outputs["improvement-initiatives"];
+    getInitiativeStore().setState({
+      companyName: o.companyName || session.companyName,
+      industryId: o.industryId || session.industryId,
+      functionId: o.functionId || session.functionId,
+      workflowId: o.workflowId,
+      inputMode: o.inputMode ?? "pipeline",
+      processMapText: o.processMapText ?? "",
+      customNotes: o.customNotes ?? "",
+      pipelinePayload: o.pipelinePayload ?? "",
+      processSteps: o.processSteps ?? [],
+      painPoints: o.painPoints ?? [],
+      inventory: o.document,
+      error: null,
+      isGenerating: false,
+    });
+    return Boolean(o.document);
+  }
+
+  return false;
 }
 
 export function applyScopingToInterview(scoping: ScopingSessionOutput) {
@@ -107,20 +225,32 @@ export function applyScopingToInterview(scoping: ScopingSessionOutput) {
       guidePayload: guideToHandoffPayload(scoping.guide),
       guideQuestions: questions,
       linkedGuideId: scoping.guide.id,
+      linkedGuideUpdatedAt: scoping.guide.updatedAt,
       guideSource: "scoping",
       inputMode: "pipeline",
+    });
+  } else {
+    getInterviewStore().setState({
+      guidePayload: "",
+      guideQuestions: [],
+      linkedGuideId: null,
+      linkedGuideUpdatedAt: null,
+      guideSource: null,
     });
   }
 }
 
-export function applyScopingGuide(guide: InterviewGuide, ctx: {
-  companyName: string;
-  industryId: string;
-  functionId: string;
-  workflowId: string;
-  roleId: string;
-  customNotes: string;
-}) {
+export function applyScopingGuide(
+  guide: InterviewGuide,
+  ctx: {
+    companyName: string;
+    industryId: string;
+    functionId: string;
+    workflowId: string;
+    roleId: string;
+    customNotes: string;
+  },
+) {
   applyScopingToInterview({
     savedAt: new Date().toISOString(),
     ...ctx,
@@ -129,7 +259,9 @@ export function applyScopingGuide(guide: InterviewGuide, ctx: {
   });
 }
 
-export function applyInterviewToProcessMap(output: NonNullable<AgentSessionOutputs["live-interview"]>) {
+export function applyInterviewToProcessMap(
+  output: NonNullable<AgentSessionOutputs["live-interview"]>,
+) {
   const store = getProcessMapStore().getState();
   if (output.document) {
     store.setCompanyName(output.document.companyName ?? store.companyName);
@@ -152,7 +284,9 @@ export function applyInterviewToProcessMap(output: NonNullable<AgentSessionOutpu
         title: p.title,
         description: p.description,
         severity: p.severity,
-        evidenceSnippet: p.description,
+        evidenceSnippet:
+          output.document!.evidenceRegistry.find((e) => p.evidenceIds.includes(e.id))?.quote ??
+          p.description,
       })),
       interviewNotes: output.document.executiveSummary,
       processMapText: output.document.executiveSummary,
@@ -166,15 +300,20 @@ export function applyInterviewToProcessMap(output: NonNullable<AgentSessionOutpu
   if (output.transcriptText) store.setPastedNotes(output.transcriptText);
 }
 
-export function applyProcessMapToInitiatives(output: NonNullable<AgentSessionOutputs["process-mapping"]>) {
+export function applyProcessMapToInitiatives(
+  output: NonNullable<AgentSessionOutputs["process-mapping"]>,
+) {
   const { toPipelineHandoff } = getProcessMapLogic();
   const store = getInitiativeStore().getState();
   store.setWorkflowId(output.workflowId);
   if (output.document) {
-    store.setPipelinePayload(JSON.stringify(toPipelineHandoff(output.document), null, 2));
+    const handoff = toPipelineHandoff(output.document);
+    store.setPipelinePayload(JSON.stringify(handoff, null, 2));
+    store.setProcessSteps(handoff.processSteps ?? []);
+    store.setPainPoints(handoff.painPoints ?? []);
     store.setInputMode("pipeline");
-  } else if (output.guidePayload) {
-    store.setPipelinePayload(output.guidePayload);
+  } else if (output.pipelinePayload) {
+    store.setPipelinePayload(output.pipelinePayload);
     store.setInputMode("pipeline");
   }
 }
@@ -196,7 +335,8 @@ export function applyUpstreamForAgent(slug: PlatformAgentSlug, session: SavedEng
     store.setFunctionId(scoping.functionId);
     store.setWorkflowId(scoping.workflowId);
     if (scoping.guide) {
-      store.setPastedNotes(scoping.guide.sections.map((s) => s.content).join("\n"));
+      store.setPastedNotes(formatGuideSectionsForNotes(scoping.guide));
+      store.setInputMode("standalone");
     }
     return true;
   }

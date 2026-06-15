@@ -12,6 +12,7 @@ import { getProcessMapSeed } from "@/data/process-map-seeds";
 import { getSeedForWorkflow } from "@/data/initiative-seeds";
 import { getWorkflow } from "@/data/catalog";
 import type { EngagementContext } from "@/data/engagement-context";
+import { validatePipelinePayload } from "@/lib/pipeline/validate";
 
 export const PROCESS_MAP_DEFAULTS = {
   workflowId: "mts-shop-build",
@@ -22,12 +23,11 @@ export const PROCESS_MAP_DEFAULTS = {
 };
 
 export function parsePipelinePayload(raw: string): UpstreamPipelinePayload | null {
-  if (!raw.trim()) return null;
-  try {
-    return JSON.parse(raw) as UpstreamPipelinePayload;
-  } catch {
-    return null;
-  }
+  return validatePipelinePayload(raw).parsed;
+}
+
+export function getPipelineValidation(raw: string, workflowId?: string) {
+  return validatePipelinePayload(raw, { workflowId });
 }
 
 function genericFromInitiativeSeed(workflowId: string): ReturnType<typeof getProcessMapSeed> {

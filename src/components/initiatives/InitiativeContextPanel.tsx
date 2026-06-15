@@ -1,10 +1,12 @@
 "use client";
 
 import { useInitiativeStore } from "@/store/initiative-store";
+import { PipelineValidationBanner } from "@/components/workspace/PipelineValidationBanner";
 
 export function InitiativeContextPanel() {
   const {
     inputMode,
+    workflowId,
     customNotes,
     pipelinePayload,
     processMapText,
@@ -25,6 +27,7 @@ export function InitiativeContextPanel() {
         {inputMode === "pipeline" && (
           <div>
             <label className="field-label">Pipeline JSON (Agents 1–3)</label>
+            <PipelineValidationBanner payload={pipelinePayload} workflowId={workflowId} />
             <textarea
               value={pipelinePayload}
               onChange={(e) => setPipelinePayload(e.target.value)}

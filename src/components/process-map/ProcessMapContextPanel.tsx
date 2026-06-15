@@ -1,10 +1,12 @@
 "use client";
 
 import { useProcessMapStore } from "@/store/process-map-store";
+import { PipelineValidationBanner } from "@/components/workspace/PipelineValidationBanner";
 
 export function ProcessMapContextPanel() {
   const {
     inputMode,
+    workflowId,
     customNotes,
     pipelinePayload,
     pastedNotes,
@@ -25,6 +27,7 @@ export function ProcessMapContextPanel() {
         {inputMode === "pipeline" && (
           <div>
             <label className="field-label">Pipeline JSON (Agents 1–2)</label>
+            <PipelineValidationBanner payload={pipelinePayload} workflowId={workflowId} />
             <textarea
               value={pipelinePayload}
               onChange={(e) => setPipelinePayload(e.target.value)}

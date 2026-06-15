@@ -10,8 +10,8 @@ import type {
 } from "@/types/initiative";
 import { getSeedForWorkflow } from "@/data/initiative-seeds";
 import { getWorkflow } from "@/data/catalog";
-import type { EngagementContext } from "@/data/engagement-context";
-import { BSN_PRESET } from "@/data/engagement-context";
+import { validatePipelinePayload } from "@/lib/pipeline/validate";
+import { BSN_PRESET, type EngagementContext } from "@/data/engagement-context";
 import {
   computeMcKinseyPriorityScore,
   inferExecutionComplexity,
@@ -22,12 +22,11 @@ import {
 } from "@/lib/diagnostics/mckinsey-framework";
 
 export function parsePipelinePayload(raw: string): UpstreamPipelinePayload | null {
-  if (!raw.trim()) return null;
-  try {
-    return JSON.parse(raw) as UpstreamPipelinePayload;
-  } catch {
-    return null;
-  }
+  return validatePipelinePayload(raw).parsed;
+}
+
+export function getPipelineValidation(raw: string, workflowId?: string) {
+  return validatePipelinePayload(raw, { workflowId });
 }
 
 export function mergeProcessContext(

@@ -21,6 +21,7 @@ import {
   resolveWorkflows,
 } from "@/data/catalog";
 import { BSN_PRESET, type EngagementContext } from "@/data/engagement-context";
+import { GUIDE_TRANSIENT, omitTransient } from "@/lib/store/persist-config";
 
 interface GuideStore extends EngagementContext {
   workflowId: string;
@@ -123,8 +124,8 @@ export const useGuideStore = create<GuideStore>()(
 
       setWorkflowId: (id) => set({ workflowId: id, guide: null }),
       setRoleId: (id) => set({ roleId: id, guide: null }),
-      setLevel: (level) => set({ level }),
-      setCustomNotes: (notes) => set({ customNotes: notes }),
+      setLevel: (level) => set({ level, guide: null }),
+      setCustomNotes: (notes) => set({ customNotes: notes, guide: null }),
 
       addSource: (doc) =>
         set((s) => ({ sources: [...s.sources, doc], guide: null })),
@@ -177,12 +178,26 @@ export const useGuideStore = create<GuideStore>()(
 
       loadVersion: (versionId) => {
         const entry = get().versions.find((v) => v.id === versionId);
-        if (entry) set({ guide: entry.guide });
+        if (!entry) return;
+        const g = entry.guide;
+        set({
+          guide: g,
+          workflowId: g.workflowId,
+          roleId: g.roleId,
+          level: g.level,
+          companyName: g.companyName ?? get().companyName,
+          industryId: g.industryId ?? get().industryId,
+          functionId: g.functionId ?? get().functionId,
+          customNotes: g.customNotes ?? get().customNotes,
+        });
       },
 
       reset: () => set({ ...defaults, versions: get().versions }),
     }),
-    { name: "bsn-interview-guide-agent" },
+    {
+      name: "bsn-interview-guide-agent",
+      partialize: (state) => omitTransient(state, [...GUIDE_TRANSIENT]),
+    },
   ),
 );
 

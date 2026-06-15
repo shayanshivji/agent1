@@ -12,6 +12,7 @@ interface StageFooterProps {
   generateLabel?: string;
   showSkip?: boolean;
   onSkip?: () => void;
+  skipLabel?: string;
 }
 
 export function StageFooter({
@@ -24,6 +25,7 @@ export function StageFooter({
   generateLabel = "Generate & review",
   showSkip,
   onSkip,
+  skipLabel = "Generate without sources",
 }: StageFooterProps) {
   return (
     <div className="stage-footer">
@@ -45,7 +47,7 @@ export function StageFooter({
               disabled={isGenerating}
               className="btn-secondary text-xs"
             >
-              Skip sources
+              {skipLabel}
             </button>
           )}
           {stage < 2 && onContinue && (

@@ -73,9 +73,13 @@ export function InitiativeList() {
       </div>
 
       <div className="space-y-3">
-        {filtered.map((init) => (
-          <InitiativeCard key={init.id} initiative={init} />
-        ))}
+        {filtered.length === 0 ? (
+          <p className="text-sm text-[var(--text-muted)] italic py-6 text-center">
+            No initiatives match the &quot;{viewFilter.replace(/_/g, " ")}&quot; filter.
+          </p>
+        ) : (
+          filtered.map((init) => <InitiativeCard key={init.id} initiative={init} />)
+        )}
       </div>
     </div>
   );

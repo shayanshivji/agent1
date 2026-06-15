@@ -56,7 +56,8 @@ export function inventoryToMarkdown(
   }
 
   lines.push("## Pain point → initiative mapping", "");
-  for (const m of inv.mappings) {
+  const filteredIds = new Set(filtered.map((i) => i.id));
+  for (const m of inv.mappings.filter((mapping) => filteredIds.has(mapping.initiativeId))) {
     const pp = inv.painPoints.find((p) => p.id === m.painPointId);
     const init = inv.initiatives.find((i) => i.id === m.initiativeId);
     lines.push(
@@ -138,6 +139,11 @@ export function inventoryToPipelineJson(
   inv: InitiativeInventory,
   viewFilter?: InitiativeViewFilter,
 ): string {
+  const filter = viewFilter ?? inv.viewFilter;
+  const filtered = filterInitiatives(inv.initiatives, filter).map(ensureInitiativeFields);
+  const filteredIds = new Set(filtered.map((i) => i.id));
+  const filteredMappings = inv.mappings.filter((m) => filteredIds.has(m.initiativeId));
+
   return JSON.stringify(
     {
       sourceAgent: "improvement-initiatives" as const,
@@ -147,10 +153,8 @@ export function inventoryToPipelineJson(
       companyName: inv.companyName,
       processSteps: inv.processSteps,
       painPoints: inv.painPoints,
-      initiatives: filterInitiatives(inv.initiatives, viewFilter ?? inv.viewFilter).map(
-        ensureInitiativeFields,
-      ),
-      mappings: inv.mappings,
+      initiatives: filtered,
+      mappings: filteredMappings,
       generatedAt: inv.updatedAt,
     },
     null,

@@ -31,6 +31,7 @@ import {
   syncQuestionStatusFromTurns,
 } from "@/lib/pipeline/guide-handoff";
 import { pickDefaultRoleId, resolveWorkflows } from "@/data/catalog";
+import { INTERVIEW_TRANSIENT, omitTransient } from "@/lib/store/persist-config";
 
 interface InterviewStore extends EngagementContext {
   workflowId: string;
@@ -50,6 +51,7 @@ interface InterviewStore extends EngagementContext {
   liveSpeaker: "interviewer" | "interviewee";
   guideQuestions: GuideQuestionItem[];
   linkedGuideId: string | null;
+  linkedGuideUpdatedAt: string | null;
   guideSource: "scoping" | "manual" | null;
   pendingGuideQuestionId: string | null;
   suggestedFollowUps: string[];
@@ -110,6 +112,7 @@ export const useInterviewStore = create<InterviewStore>()(
       liveSpeaker: "interviewer",
       guideQuestions: [],
       linkedGuideId: null,
+      linkedGuideUpdatedAt: null,
       guideSource: null,
       pendingGuideQuestionId: null,
       suggestedFollowUps: [],
@@ -154,11 +157,46 @@ export const useInterviewStore = create<InterviewStore>()(
         set({ workflowId, document: null });
       },
       setRoleId: (roleId) => set({ roleId, document: null }),
-      setMode: (mode) => set({ mode, document: null }),
+      setMode: (mode) =>
+        set((s) =>
+          s.mode === mode
+            ? { mode }
+            : {
+                mode,
+                document: null,
+                liveTurns: [],
+                transcriptText: "",
+                liveDraft: "",
+              },
+        ),
       setInputMode: (inputMode) => set({ inputMode, document: null }),
       setStakeholderName: (stakeholderName) => set({ stakeholderName }),
       setCustomNotes: (customNotes) => set({ customNotes }),
-      setGuidePayload: (guidePayload) => set({ guidePayload, document: null }),
+      setGuidePayload: (guidePayload) => {
+        const parsed = parseGuidePayload(guidePayload);
+        if (parsed) {
+          set({
+            guidePayload,
+            document: null,
+            guideQuestions: extractQuestionsFromGuide(parsed),
+            linkedGuideId: parsed.id,
+            linkedGuideUpdatedAt: parsed.updatedAt,
+            guideSource: "manual",
+            inputMode: "pipeline",
+          });
+        } else if (!guidePayload.trim()) {
+          set({
+            guidePayload: "",
+            document: null,
+            guideQuestions: [],
+            linkedGuideId: null,
+            linkedGuideUpdatedAt: null,
+            guideSource: null,
+          });
+        } else {
+          set({ guidePayload, document: null });
+        }
+      },
       setTranscriptText: (transcriptText) => set({ transcriptText }),
       setActiveTab: (activeTab) => set({ activeTab }),
       setLiveDraft: (liveDraft) => set({ liveDraft }),
@@ -181,7 +219,13 @@ export const useInterviewStore = create<InterviewStore>()(
         const scoping = require("@/store/guide-store").useGuideStore.getState();
         const guide = scoping.guide;
         if (!guide) return false;
-        if (!force && get().linkedGuideId === guide.id && get().guideQuestions.length > 0) {
+        const syncedAt = get().linkedGuideUpdatedAt;
+        if (
+          !force &&
+          get().linkedGuideId === guide.id &&
+          get().guideQuestions.length > 0 &&
+          syncedAt === guide.updatedAt
+        ) {
           return true;
         }
 
@@ -190,6 +234,7 @@ export const useInterviewStore = create<InterviewStore>()(
           guidePayload: guideToHandoffPayload(guide),
           guideQuestions: questions,
           linkedGuideId: guide.id,
+          linkedGuideUpdatedAt: guide.updatedAt,
           guideSource: "scoping",
           inputMode: "pipeline",
           workflowId: guide.workflowId,
@@ -293,7 +338,45 @@ export const useInterviewStore = create<InterviewStore>()(
         set((s) => {
           const liveTurns = s.liveTurns.filter((t) => t.id !== id);
           const guideQuestions = syncQuestionStatusFromTurns(s.guideQuestions, liveTurns);
-          return { liveTurns, guideQuestions };
+          const guide = parseGuidePayload(s.guidePayload);
+          const fallback = computeCoverageFromTurns(liveTurns, guide);
+          const score = guideQuestions.length
+            ? computeGuideCoverage(guideQuestions)
+            : fallback.score;
+          const questionsAsked = guideQuestions.length
+            ? guideQuestions.filter((q) => q.status !== "pending").map((q) => q.text)
+            : fallback.questionsAsked;
+
+          return {
+            liveTurns,
+            guideQuestions,
+            document: s.document
+              ? {
+                  ...s.document,
+                  liveTurns,
+                  coverage: {
+                    ...s.document.coverage,
+                    score,
+                    questionsAsked,
+                    topics: guideQuestions.map((q) => ({
+                      id: q.id,
+                      name: q.text.slice(0, 80),
+                      status:
+                        q.status === "answered"
+                          ? "covered"
+                          : q.status === "asked"
+                            ? "partial"
+                            : "missing",
+                      linkedQuestion: q.text,
+                    })),
+                    missingTopics: guideQuestions
+                      .filter((q) => q.status === "pending")
+                      .map((q) => q.text.slice(0, 60)),
+                  },
+                  updatedAt: new Date().toISOString(),
+                }
+              : s.document,
+          };
         }),
 
       updatePainPoint: (id, patch) =>
@@ -370,6 +453,7 @@ export const useInterviewStore = create<InterviewStore>()(
           liveSpeaker: "interviewer",
           guideQuestions: [],
           linkedGuideId: null,
+          linkedGuideUpdatedAt: null,
           guideSource: null,
           pendingGuideQuestionId: null,
           suggestedFollowUps: [],
@@ -379,6 +463,9 @@ export const useInterviewStore = create<InterviewStore>()(
           lastGenerationMode: null,
         }),
     }),
-    { name: "live-interview-agent" },
+    {
+      name: "live-interview-agent",
+      partialize: (state) => omitTransient(state, [...INTERVIEW_TRANSIENT]),
+    },
   ),
 );

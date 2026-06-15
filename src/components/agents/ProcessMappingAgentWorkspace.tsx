@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { BSN_PRESET } from "@/data/engagement-context";
-import { PROCESS_MAP_DEFAULTS } from "@/lib/process-map/logic";
+import { PROCESS_MAP_DEFAULTS, getPipelineValidation } from "@/lib/process-map/logic";
 import { useProcessMapStore } from "@/store/process-map-store";
 import { ProcessMapConfigPanel } from "@/components/process-map/ProcessMapConfigPanel";
 import { ProcessMapContextPanel } from "@/components/process-map/ProcessMapContextPanel";
@@ -70,6 +70,28 @@ export function ProcessMappingAgentWorkspace() {
     }
   }, [document, hydrated]);
 
+  useEffect(() => {
+    if (hydrated && !document && stage === 3) {
+      setStage(2);
+      setMaxStage((m) => Math.min(m, 2));
+    }
+  }, [document, hydrated, stage]);
+
+  function handleSessionRestored(hasOutput: boolean) {
+    if (hasOutput) {
+      setStage(3);
+      setMaxStage(3);
+    } else {
+      setStage(1);
+      setMaxStage(1);
+    }
+  }
+
+  function handleUpstreamApplied() {
+    setStage(2);
+    setMaxStage(2);
+  }
+
   const hasWork =
     Boolean(document) ||
     sources.length > 0 ||
@@ -80,6 +102,14 @@ export function ProcessMappingAgentWorkspace() {
     workflowId !== PROCESS_MAP_DEFAULTS.workflowId;
 
   async function handleGenerate() {
+    if (inputMode === "pipeline" && pipelinePayload.trim()) {
+      const validation = getPipelineValidation(pipelinePayload, workflowId);
+      if (!validation.valid) {
+        setError(validation.error ?? "Invalid pipeline JSON");
+        return;
+      }
+    }
+
     setGenerating(true);
     setError(null);
 
@@ -152,6 +182,7 @@ export function ProcessMappingAgentWorkspace() {
         hasWork={hasWork}
         llmEnabled={llmEnabled}
         lastMode={lastGenerationMode && document ? lastGenerationMode : null}
+        onSessionRestored={handleSessionRestored}
       />
       <div className="toolbar-strip border-t-0 pt-0">
         <div className="max-w-[1600px] mx-auto px-6 pb-4">
@@ -166,7 +197,7 @@ export function ProcessMappingAgentWorkspace() {
 
       <main className="flex-1 max-w-[1600px] mx-auto w-full px-6 py-6">
         {error && <div className="mb-4 error-banner">{error}</div>}
-        <UpstreamHandoffBar agentSlug="process-mapping" />
+        <UpstreamHandoffBar agentSlug="process-mapping" onApplied={handleUpstreamApplied} />
 
         {stage === 1 && (
           <div className="workspace-stage-panel">
@@ -209,6 +240,7 @@ export function ProcessMappingAgentWorkspace() {
                 generateLabel="Generate process map"
                 showSkip
                 onSkip={handleGenerate}
+                skipLabel="Generate without extra sources"
               />
             )}
           </div>

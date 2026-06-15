@@ -41,6 +41,7 @@ export function ScopingAgentWorkspace() {
   const [maxStage, setMaxStage] = useState(1);
   const [llmEnabled, setLlmEnabled] = useState<boolean | null>(null);
   const [hydrated, setHydrated] = useState(false);
+  const [templateNotice, setTemplateNotice] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/api/status")
@@ -59,9 +60,32 @@ export function ScopingAgentWorkspace() {
     }
   }, [guide, hydrated]);
 
+  useEffect(() => {
+    if (hydrated && !guide && stage === 3) {
+      setStage(2);
+      setMaxStage((m) => Math.min(m, 2));
+    }
+  }, [guide, hydrated, stage]);
+
+  function handleSessionRestored(hasOutput: boolean) {
+    if (hasOutput) {
+      setStage(3);
+      setMaxStage(3);
+    } else {
+      setStage(1);
+      setMaxStage(1);
+    }
+  }
+
   async function handleGenerate() {
+    if (!companyName.trim()) {
+      setError("Enter a company / client name before generating.");
+      return;
+    }
+
     setGenerating(true);
     setError(null);
+    setTemplateNotice(null);
 
     try {
       const res = await fetch("/api/generate-guide", {
@@ -83,6 +107,7 @@ export function ScopingAgentWorkspace() {
       if (!res.ok) throw new Error(data.error ?? "Generation failed");
 
       setLastGenerationMode(data.mode ?? "template");
+      if (data.notice) setTemplateNotice(data.notice);
       setGuide(
         buildGuideFromResponse(
           workflowId,
@@ -145,6 +170,7 @@ export function ScopingAgentWorkspace() {
         hasWork={hasWork}
         llmEnabled={llmEnabled}
         lastMode={lastGenerationMode && guide ? lastGenerationMode : null}
+        onSessionRestored={handleSessionRestored}
       />
       <div className="toolbar-strip border-t-0 pt-0">
         <div className="max-w-[1600px] mx-auto px-6 pb-4">
@@ -159,6 +185,11 @@ export function ScopingAgentWorkspace() {
 
       <main className="flex-1 max-w-[1600px] mx-auto w-full px-6 py-6">
         {error && <div className="mb-4 error-banner">{error}</div>}
+        {templateNotice && (
+          <div className="mb-4 rounded-md border border-yellow-500/30 bg-yellow-500/10 px-4 py-3 text-xs text-yellow-200">
+            {templateNotice}
+          </div>
+        )}
 
         {stage === 1 && (
           <div className="workspace-stage-panel">
@@ -182,6 +213,12 @@ export function ScopingAgentWorkspace() {
               </p>
             </div>
             <div className="space-y-4">
+              {!llmEnabled && (sources.length > 0 || customNotes.trim()) && (
+                <div className="rounded-md border border-yellow-500/30 bg-yellow-500/10 px-4 py-3 text-xs text-yellow-200">
+                  Template mode is active — uploaded sources and custom notes are not sent to the model.
+                  Add an OpenAI API key for LLM generation, or continue with catalog-based templates.
+                </div>
+              )}
               <SourcePanel />
               <GuideContextPanel />
             </div>
@@ -199,6 +236,7 @@ export function ScopingAgentWorkspace() {
                 generateLabel="Generate interview guide"
                 showSkip
                 onSkip={handleGenerate}
+                skipLabel="Generate without sources"
               />
             )}
           </div>
@@ -229,7 +267,7 @@ export function ScopingAgentWorkspace() {
                     Regenerate
                   </button>
                 </div>
-                <GuideEditor />
+                <GuideEditor llmEnabled={llmEnabled} />
               </>
             )}
           </div>

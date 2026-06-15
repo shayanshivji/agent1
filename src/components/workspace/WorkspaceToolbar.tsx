@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { WorkspaceBackLink } from "@/components/layout/WorkspaceBackLink";
 import { usePlatformSessionsStore } from "@/store/platform-sessions-store";
-import { getSessionSummary } from "@/lib/platform/agent-snapshots";
+import { restoreAgentFromSession, getSessionSummary } from "@/lib/platform/agent-snapshots";
 import type { PlatformAgentSlug } from "@/types/platform-session";
 import { AGENT_SLUG_LABELS } from "@/types/platform-session";
 
@@ -29,6 +29,7 @@ interface WorkspaceToolbarProps {
   llmEnabled?: boolean | null;
   lastMode?: string | null;
   children?: ReactNode;
+  onSessionRestored?: (hasOutput: boolean) => void;
 }
 
 export function WorkspaceToolbar({
@@ -44,6 +45,7 @@ export function WorkspaceToolbar({
   llmEnabled,
   lastMode,
   children,
+  onSessionRestored,
 }: WorkspaceToolbarProps) {
   return (
     <div className="toolbar-strip">
@@ -74,7 +76,7 @@ export function WorkspaceToolbar({
               Last: {lastMode}
             </span>
           )}
-          <SavedSessionsMenu agentSlug={agentSlug} />
+          <SavedSessionsMenu agentSlug={agentSlug} onSessionRestored={onSessionRestored} />
           <button
             type="button"
             onClick={onClear}
@@ -92,7 +94,13 @@ export function WorkspaceToolbar({
   );
 }
 
-function SavedSessionsMenu({ agentSlug }: { agentSlug: PlatformAgentSlug }) {
+function SavedSessionsMenu({
+  agentSlug,
+  onSessionRestored,
+}: {
+  agentSlug: PlatformAgentSlug;
+  onSessionRestored?: (hasOutput: boolean) => void;
+}) {
   const [open, setOpen] = useState(false);
   const [newName, setNewName] = useState("");
   const savedSessions = usePlatformSessionsStore((s) => s.savedSessions) ?? [];
@@ -139,7 +147,7 @@ function SavedSessionsMenu({ agentSlug }: { agentSlug: PlatformAgentSlug }) {
           <div className="absolute right-0 top-full mt-1 z-50 w-80 section-card shadow-xl p-3">
             <p className="text-xs font-semibold text-[var(--text)] mb-2">Saved engagement sessions</p>
             <p className="text-[10px] text-[var(--text-muted)] mb-3">
-              Save work here and optionally load upstream outputs in later agents.
+              Save work here, or click a session to load it into this agent&apos;s workspace.
             </p>
 
             <div className="flex gap-2 mb-3">
@@ -176,6 +184,8 @@ function SavedSessionsMenu({ agentSlug }: { agentSlug: PlatformAgentSlug }) {
                     className="text-left flex-1 min-w-0"
                     onClick={() => {
                       setActiveSession(session.id);
+                      const hasOutput = restoreAgentFromSession(session, agentSlug);
+                      onSessionRestored?.(hasOutput);
                       setOpen(false);
                     }}
                   >

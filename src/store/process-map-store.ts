@@ -20,6 +20,7 @@ import {
   toPipelineHandoff,
 } from "@/lib/process-map/logic";
 import { resolveWorkflows } from "@/data/catalog";
+import { PROCESS_MAP_TRANSIENT, omitTransient } from "@/lib/store/persist-config";
 
 interface ProcessMapStore extends EngagementContext {
   workflowId: string;
@@ -111,9 +112,9 @@ export const useProcessMapStore = create<ProcessMapStore>()(
       },
       setWorkflowId: (workflowId) => set({ workflowId, document: null }),
       setInputMode: (inputMode) => set({ inputMode, document: null }),
-      setCustomNotes: (customNotes) => set({ customNotes }),
+      setCustomNotes: (customNotes) => set({ customNotes, document: null }),
       setPipelinePayload: (pipelinePayload) => set({ pipelinePayload, document: null }),
-      setPastedNotes: (pastedNotes) => set({ pastedNotes }),
+      setPastedNotes: (pastedNotes) => set({ pastedNotes, document: null }),
       setActiveTab: (activeTab) => set({ activeTab }),
       setSelectedStepId: (selectedStepId) => set({ selectedStepId }),
       setSelectedPhaseId: (selectedPhaseId) => set({ selectedPhaseId }),
@@ -202,7 +203,10 @@ export const useProcessMapStore = create<ProcessMapStore>()(
           lastGenerationMode: null,
         }),
     }),
-    { name: "process-mapping-agent" },
+    {
+      name: "process-mapping-agent",
+      partialize: (state) => omitTransient(state, [...PROCESS_MAP_TRANSIENT]),
+    },
   ),
 );
 

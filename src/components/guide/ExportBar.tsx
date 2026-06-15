@@ -1,21 +1,24 @@
 "use client";
 
 import { useState } from "react";
-import { Download, FileText, FileType, Save } from "lucide-react";
+import { Download, FileJson, FileText, FileType, Save } from "lucide-react";
 import { useGuideStore } from "@/store/guide-store";
+import { guideToHandoffPayload } from "@/lib/pipeline/guide-handoff";
 import { downloadMarkdown } from "@/lib/export/markdown";
 import { downloadDocx } from "@/lib/export/docx";
 import { downloadPdf } from "@/lib/export/pdf";
+import { downloadFile } from "@/lib/export/initiatives";
 
 export function ExportBar() {
   const { guide, versions, saveVersion, loadVersion } = useGuideStore();
   const [exporting, setExporting] = useState<string | null>(null);
   const [exportError, setExportError] = useState<string | null>(null);
+  const [loadedVersionId, setLoadedVersionId] = useState("");
 
   if (!guide) return null;
 
   async function handleExport(
-    type: "md" | "docx" | "pdf",
+    type: string,
     fn: () => void | Promise<void>,
   ) {
     setExporting(type);
@@ -65,18 +68,34 @@ export function ExportBar() {
 
         <button
           type="button"
-          onClick={() => saveVersion()}
-          className="btn-secondary ml-auto"
+          onClick={() =>
+            handleExport("json", () =>
+              downloadFile(
+                guideToHandoffPayload(guide),
+                `guide-handoff-${guide.workflowId}-${guide.roleId}.json`,
+                "application/json",
+              ),
+            )
+          }
+          disabled={!!exporting}
+          className="btn-secondary"
         >
+          <FileJson className="h-4 w-4" />
+          JSON handoff
+        </button>
+
+        <button type="button" onClick={() => saveVersion()} className="btn-secondary ml-auto">
           <Save className="h-4 w-4" />
           Save version
         </button>
 
         {versions.length > 0 && (
           <select
-            value=""
+            value={loadedVersionId}
             onChange={(e) => {
-              if (e.target.value) loadVersion(e.target.value);
+              const id = e.target.value;
+              setLoadedVersionId(id);
+              if (id) loadVersion(id);
             }}
             className="field-input text-sm w-auto"
           >
@@ -90,7 +109,8 @@ export function ExportBar() {
         )}
       </div>
       <p className="text-[10px] text-[var(--text-muted)] mt-2">
-        PDF opens a print dialog, choose &quot;Save as PDF&quot; in your browser.
+        PDF opens a print dialog — choose &quot;Save as PDF&quot; in your browser. JSON handoff is for
+        Agent 2 (Walter) pipeline paste.
       </p>
     </div>
   );

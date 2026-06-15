@@ -4,6 +4,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { v4 as uuidv4 } from "uuid";
 import type { PlatformAgentSlug, SavedEngagement } from "@/types/platform-session";
+import { UPSTREAM_DECLINED_NONE } from "@/types/platform-session";
 
 function captureSnapshot(slug: PlatformAgentSlug) {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -116,7 +117,10 @@ export const usePlatformSessionsStore = create<PlatformSessionsStore>()(
 
       isUpstreamDeclined: (agentSlug) => {
         const { declinedUpstream, activeSessionId } = get();
-        return Boolean(activeSessionId && declinedUpstream[agentSlug] === activeSessionId);
+        const declined = declinedUpstream[agentSlug];
+        if (!declined) return false;
+        if (declined === UPSTREAM_DECLINED_NONE) return !activeSessionId;
+        return Boolean(activeSessionId && declined === activeSessionId);
       },
     }),
     {

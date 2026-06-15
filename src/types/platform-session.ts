@@ -1,7 +1,14 @@
 import type { InterviewGuide } from "@/types/guide";
-import type { InterviewExecutionDocument, LiveTurn } from "@/types/interview-execution";
+import type {
+  InterviewExecutionDocument,
+  GuideQuestionItem,
+  LiveTurn,
+} from "@/types/interview-execution";
 import type { ProcessMapDocument } from "@/types/process-map";
-import type { InitiativeInventory } from "@/types/initiative";
+import type { PainPoint, ProcessStep } from "@/types/pipeline";
+import type { InitiativeInventory, InputMode } from "@/types/initiative";
+
+export const UPSTREAM_DECLINED_NONE = "__none__";
 
 export type PlatformAgentSlug =
   | "scoping"
@@ -24,10 +31,15 @@ export interface ScopingSessionOutput {
 export interface InterviewSessionOutput {
   savedAt: string;
   mode: string;
+  inputMode: InputMode;
   workflowId: string;
   roleId: string;
   stakeholderName: string;
   guidePayload: string;
+  guideQuestions: GuideQuestionItem[];
+  linkedGuideId: string | null;
+  linkedGuideUpdatedAt: string | null;
+  guideSource: "scoping" | "manual" | null;
   transcriptText: string;
   liveTurns: LiveTurn[];
   document: InterviewExecutionDocument | null;
@@ -36,15 +48,29 @@ export interface InterviewSessionOutput {
 export interface ProcessMapSessionOutput {
   savedAt: string;
   workflowId: string;
-  guidePayload: string;
+  companyName: string;
+  industryId: string;
+  functionId: string;
+  inputMode: InputMode;
+  pipelinePayload: string;
+  pastedNotes: string;
+  customNotes: string;
   document: ProcessMapDocument | null;
 }
 
 export interface InitiativesSessionOutput {
   savedAt: string;
   workflowId: string;
+  companyName: string;
+  industryId: string;
+  functionId: string;
+  inputMode: InputMode;
+  processMapText: string;
+  customNotes: string;
   document: InitiativeInventory | null;
   pipelinePayload: string;
+  processSteps: ProcessStep[];
+  painPoints: PainPoint[];
 }
 
 export interface AgentSessionOutputs {

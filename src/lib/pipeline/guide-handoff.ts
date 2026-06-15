@@ -19,6 +19,36 @@ const SECTION_LABELS: Partial<Record<GuideSectionId, string>> = {
   evidence_to_capture: "Evidence",
 };
 
+const MIN_QUESTION_LENGTH = 5;
+
+function linesFromSection(section: { content?: string; bullets?: string[] }): string[] {
+  const lines: string[] = [];
+  if (section.bullets?.length) {
+    lines.push(...section.bullets);
+  }
+  if (section.content?.trim()) {
+    lines.push(
+      ...section.content
+        .split(/\n+/)
+        .map((l) => l.replace(/^[-•*]\s*/, "").trim())
+        .filter(Boolean),
+    );
+  }
+  return lines;
+}
+
+export function formatGuideSectionsForNotes(guide: InterviewGuide): string {
+  return guide.sections
+    .map((section) => {
+      const lines = linesFromSection(section);
+      if (!lines.length && !section.content?.trim()) return "";
+      const body = lines.length ? lines.map((l) => `- ${l}`).join("\n") : section.content;
+      return `## ${section.title}\n${body}`;
+    })
+    .filter(Boolean)
+    .join("\n\n");
+}
+
 export interface ScopingGuideHandoff {
   sourceAgent: "scoping";
   guide: InterviewGuide;
@@ -42,20 +72,10 @@ export function extractQuestionsFromGuide(guide: InterviewGuide): GuideQuestionI
     const section = guide.sections.find((s) => s.id === sectionId);
     if (!section) continue;
 
-    const lines: string[] = [];
-    if (section.bullets?.length) {
-      lines.push(...section.bullets);
-    } else if (section.content?.trim()) {
-      lines.push(
-        ...section.content
-          .split(/\n+/)
-          .map((l) => l.replace(/^[-•*]\s*/, "").trim())
-          .filter(Boolean),
-      );
-    }
+    const lines = linesFromSection(section);
 
     for (const text of lines) {
-      if (text.length < 8) continue;
+      if (text.length < MIN_QUESTION_LENGTH) continue;
       items.push({
         id: `gq-${sectionId}-${index++}`,
         text,

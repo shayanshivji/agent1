@@ -78,6 +78,28 @@ export function LiveInterviewAgentWorkspace() {
     }
   }, [document, hydrated]);
 
+  useEffect(() => {
+    if (hydrated && !document && stage === 3) {
+      setStage(2);
+      setMaxStage((m) => Math.min(m, 2));
+    }
+  }, [document, hydrated, stage]);
+
+  function handleSessionRestored(hasOutput: boolean) {
+    if (hasOutput) {
+      setStage(3);
+      setMaxStage(3);
+    } else {
+      setStage(1);
+      setMaxStage(1);
+    }
+  }
+
+  function handleUpstreamApplied() {
+    setStage(2);
+    setMaxStage(2);
+  }
+
   const hasWork =
     Boolean(document) ||
     sources.length > 0 ||
@@ -187,6 +209,7 @@ export function LiveInterviewAgentWorkspace() {
         hasWork={hasWork}
         llmEnabled={llmEnabled}
         lastMode={lastGenerationMode && document ? lastGenerationMode : null}
+        onSessionRestored={handleSessionRestored}
       />
       <div className="toolbar-strip border-t-0 pt-0">
         <div className="max-w-[1600px] mx-auto px-6 pb-4">
@@ -201,7 +224,7 @@ export function LiveInterviewAgentWorkspace() {
 
       <main className="flex-1 max-w-[1600px] mx-auto w-full px-6 py-6">
         {error && <div className="mb-4 error-banner">{error}</div>}
-        <UpstreamHandoffBar agentSlug="live-interview" />
+        <UpstreamHandoffBar agentSlug="live-interview" onApplied={handleUpstreamApplied} />
 
         {stage === 1 && (
           <div className="workspace-stage-panel">
@@ -245,6 +268,7 @@ export function LiveInterviewAgentWorkspace() {
                 generateLabel={mode === "live" ? "Process live interview" : "Process transcript"}
                 showSkip
                 onSkip={handleGenerate}
+                skipLabel="Process without extra sources"
               />
             )}
           </div>

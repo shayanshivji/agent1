@@ -18,6 +18,7 @@ import {
   buildInventoryFromResponse,
 } from "@/lib/initiatives/logic";
 import { resolveWorkflows } from "@/data/catalog";
+import { INITIATIVE_TRANSIENT, omitTransient } from "@/lib/store/persist-config";
 
 interface InitiativeStore extends EngagementContext {
   workflowId: string;
@@ -100,7 +101,7 @@ export const useInitiativeStore = create<InitiativeStore>()(
       setWorkflowId: (workflowId) => set({ workflowId, inventory: null }),
       setInputMode: (inputMode) => set({ inputMode, inventory: null }),
       setViewFilter: (viewFilter) => set({ viewFilter }),
-      setCustomNotes: (customNotes) => set({ customNotes }),
+      setCustomNotes: (customNotes) => set({ customNotes, inventory: null }),
       setPipelinePayload: (pipelinePayload) => set({ pipelinePayload, inventory: null }),
       setProcessMapText: (processMapText) => set({ processMapText, inventory: null }),
       setSidePanel: (sidePanel) => set({ sidePanel }),
@@ -171,7 +172,10 @@ export const useInitiativeStore = create<InitiativeStore>()(
           sidePanel: "pain",
         }),
     }),
-    { name: "improvement-initiatives-agent" },
+    {
+      name: "improvement-initiatives-agent",
+      partialize: (state) => omitTransient(state, [...INITIATIVE_TRANSIENT]),
+    },
   ),
 );
 

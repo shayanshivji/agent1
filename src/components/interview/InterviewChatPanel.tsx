@@ -66,6 +66,12 @@ export function InterviewChatPanel() {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [liveTurns.length]);
 
+  useEffect(() => {
+    if (scopingGuide && !linkedGuideId) {
+      importGuideFromScoping();
+    }
+  }, [scopingGuide, linkedGuideId, importGuideFromScoping]);
+
   async function handleSuggest() {
     setSuggesting(true);
     try {
@@ -77,11 +83,18 @@ export function InterviewChatPanel() {
           roleId,
           roleName: document?.roleName,
           document,
+          guideQuestions: guideQuestions
+            .filter((q) => q.status === "pending")
+            .map((q) => q.text),
           recentTurns: liveTurns.slice(-6).map((t) => ({ speaker: t.speaker, content: t.content })),
         }),
       });
       const data = await res.json();
-      if (res.ok) setSuggestedFollowUps(data.followUps ?? []);
+      if (res.ok) {
+        setSuggestedFollowUps(data.followUps ?? []);
+      } else {
+        setSuggestedFollowUps([]);
+      }
     } finally {
       setSuggesting(false);
     }

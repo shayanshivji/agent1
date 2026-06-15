@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { BSN_PRESET } from "@/data/engagement-context";
-import { INITIATIVE_DEFAULTS } from "@/lib/initiatives/logic";
+import { INITIATIVE_DEFAULTS, getPipelineValidation } from "@/lib/initiatives/logic";
 import {
   buildInventoryFromResponse,
   useInitiativeStore,
@@ -69,6 +69,28 @@ export function InitiativesAgentWorkspace() {
     }
   }, [inventory, hydrated]);
 
+  useEffect(() => {
+    if (hydrated && !inventory && stage === 3) {
+      setStage(2);
+      setMaxStage((m) => Math.min(m, 2));
+    }
+  }, [inventory, hydrated, stage]);
+
+  function handleSessionRestored(hasOutput: boolean) {
+    if (hasOutput) {
+      setStage(3);
+      setMaxStage(3);
+    } else {
+      setStage(1);
+      setMaxStage(1);
+    }
+  }
+
+  function handleUpstreamApplied() {
+    setStage(2);
+    setMaxStage(2);
+  }
+
   const hasWork =
     Boolean(inventory) ||
     sources.length > 0 ||
@@ -79,6 +101,14 @@ export function InitiativesAgentWorkspace() {
     workflowId !== INITIATIVE_DEFAULTS.workflowId;
 
   async function handleGenerate() {
+    if (inputMode === "pipeline" && pipelinePayload.trim()) {
+      const validation = getPipelineValidation(pipelinePayload, workflowId);
+      if (!validation.valid) {
+        setError(validation.error ?? "Invalid pipeline JSON");
+        return;
+      }
+    }
+
     setGenerating(true);
     setError(null);
 
@@ -162,6 +192,7 @@ export function InitiativesAgentWorkspace() {
         hasWork={hasWork}
         llmEnabled={llmEnabled}
         lastMode={lastGenerationMode && inventory ? lastGenerationMode : null}
+        onSessionRestored={handleSessionRestored}
       />
       <div className="toolbar-strip border-t-0 pt-0">
         <div className="max-w-[1600px] mx-auto px-6 pb-4">
@@ -176,7 +207,7 @@ export function InitiativesAgentWorkspace() {
 
       <main className="flex-1 max-w-[1600px] mx-auto w-full px-6 py-6">
         {error && <div className="mb-4 error-banner">{error}</div>}
-        <UpstreamHandoffBar agentSlug="improvement-initiatives" />
+        <UpstreamHandoffBar agentSlug="improvement-initiatives" onApplied={handleUpstreamApplied} />
 
         {stage === 1 && (
           <div className="workspace-stage-panel">
@@ -219,6 +250,7 @@ export function InitiativesAgentWorkspace() {
                 generateLabel="Generate initiatives"
                 showSkip
                 onSkip={handleGenerate}
+                skipLabel="Generate without extra sources"
               />
             )}
           </div>

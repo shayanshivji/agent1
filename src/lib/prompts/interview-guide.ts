@@ -105,18 +105,29 @@ export function buildSectionRegeneratePrompt(input: {
   sectionTitle: string;
   workflowId: string;
   roleId: string;
+  level: InterviewLevel;
+  customNotes?: string;
   currentContent: string;
+  currentBullets?: string[];
   sources: SourceDocument[];
+  engagement: EngagementContext;
 }): string {
-  const workflow = getWorkflow(input.workflowId);
-  const role = getRole(input.roleId);
+  const workflow = getWorkflow(input.workflowId, input.engagement);
+  const role = getRole(input.roleId, input.engagement);
 
   return `Regenerate ONLY the "${input.sectionTitle}" section for:
+Engagement: ${getEngagementLabel(input.engagement)}
 Workflow: ${workflow?.name}
 Role: ${role?.name}
+Interview level: ${input.level}
+
+Custom notes: ${input.customNotes || "None"}
 
 Current content to improve (keep what works, make more specific):
 ${input.currentContent}
+
+Current bullets:
+${(input.currentBullets ?? []).map((b) => `- ${b}`).join("\n") || "None"}
 
 Sources: ${input.sources.map((s) => s.name).join(", ") || "none"}
 

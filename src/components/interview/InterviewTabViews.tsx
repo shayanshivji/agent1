@@ -26,9 +26,17 @@ function SeverityBadge({ severity }: { severity: string }) {
   );
 }
 
+function EmptyTabMessage({ label }: { label: string }) {
+  return (
+    <div className="section-card p-8 text-center text-sm text-[var(--text-muted)]">
+      No {label} available yet. Process the interview or add live capture first.
+    </div>
+  );
+}
+
 export function InterviewTranscriptView() {
   const { document, liveTurns } = useInterviewStore();
-  if (!document) return null;
+  if (!document) return <EmptyTabMessage label="transcript" />;
 
   const text = document.transcriptRaw;
   const turns = document.liveTurns.length ? document.liveTurns : liveTurns;
@@ -57,7 +65,7 @@ export function InterviewTranscriptView() {
 
 export function InterviewSummaryView() {
   const { document } = useInterviewStore();
-  if (!document) return null;
+  if (!document) return <EmptyTabMessage label="summary" />;
 
   return (
     <div className="space-y-4">
@@ -117,7 +125,7 @@ export function InterviewSummaryView() {
 
 export function InterviewWorkflowView() {
   const { document, updateWorkflowStep } = useInterviewStore();
-  if (!document) return null;
+  if (!document) return <EmptyTabMessage label="workflow steps" />;
 
   return (
     <div className="space-y-3">
@@ -158,7 +166,7 @@ export function InterviewWorkflowView() {
 
 export function InterviewPainView() {
   const { document, updatePainPoint } = useInterviewStore();
-  if (!document) return null;
+  if (!document) return <EmptyTabMessage label="pain points" />;
 
   return (
     <div className="space-y-3">
@@ -199,7 +207,7 @@ export function InterviewPainView() {
 
 export function InterviewEvidenceView() {
   const { document, updateEvidence } = useInterviewStore();
-  if (!document) return null;
+  if (!document) return <EmptyTabMessage label="evidence" />;
 
   return (
     <div className="space-y-3">
@@ -239,7 +247,7 @@ export function InterviewEvidenceView() {
 
 export function InterviewHandoffsView() {
   const { document } = useInterviewStore();
-  if (!document) return null;
+  if (!document) return <EmptyTabMessage label="handoffs" />;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -274,7 +282,7 @@ export function InterviewHandoffsView() {
 
 export function InterviewOpenQuestionsView() {
   const { document } = useInterviewStore();
-  if (!document) return null;
+  if (!document) return <EmptyTabMessage label="open questions" />;
 
   return (
     <div className="space-y-3">
@@ -296,7 +304,7 @@ export function InterviewOpenQuestionsView() {
 
 export function InterviewCoverageView() {
   const { document } = useInterviewStore();
-  if (!document) return null;
+  if (!document) return <EmptyTabMessage label="coverage data" />;
 
   const { coverage } = document;
 
@@ -377,7 +385,7 @@ export function InterviewCoverageView() {
 
 export function InterviewExportView() {
   const { document, setReviewStatus, versions, saveVersion, loadVersion } = useInterviewStore();
-  if (!document) return null;
+  if (!document) return <EmptyTabMessage label="export options" />;
 
   return (
     <div className="space-y-4">
