@@ -10,8 +10,8 @@ export function PlatformHeader({ compact }: PlatformHeaderProps) {
     <header className="consulting-header">
       <div className="max-w-[1600px] mx-auto px-4 py-3 flex items-center justify-between gap-4">
         <Link href="/" className="group flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-[var(--accent)] to-[var(--accent-secondary)] shadow-[0_0_20px_var(--accent-glow)]">
-            <Cpu className="h-4 w-4 text-[#06080f]" />
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--accent)] shadow-sm">
+            <Cpu className="h-4 w-4 text-[var(--text-on-accent)]" />
           </div>
           <div>
             <p className="text-[10px] uppercase tracking-[0.2em] text-[var(--accent)] group-hover:text-[var(--text)] transition-colors">

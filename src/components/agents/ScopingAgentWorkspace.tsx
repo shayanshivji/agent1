@@ -211,7 +211,7 @@ export function ScopingAgentWorkspace({ embedded }: ScopingAgentWorkspaceProps =
       <main className="flex-1 max-w-[1600px] mx-auto w-full px-6 py-6">
         {error && <div className="mb-4 error-banner">{error}</div>}
         {templateNotice && (
-          <div className="mb-4 rounded-md border border-yellow-500/30 bg-yellow-500/10 px-4 py-3 text-xs text-yellow-200">
+          <div className="mb-4 notice-banner rounded-md px-4 py-3 text-xs">
             {templateNotice}
           </div>
         )}

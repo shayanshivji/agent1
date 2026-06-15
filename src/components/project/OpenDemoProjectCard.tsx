@@ -15,28 +15,23 @@ export function OpenDemoProjectCard() {
   }
 
   return (
-    <button type="button" onClick={handleOpen} className="cover-action-card group w-full text-left">
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <PlayCircle className="h-6 w-6 text-emerald-400 mb-3" />
-          <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-xl font-semibold text-[var(--text)] group-hover:text-[var(--accent)] transition-colors">
-              Open demo project
-            </h3>
-            <span className="text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full border border-emerald-500/30 text-emerald-400 bg-emerald-500/10">
-              Recommended
-            </span>
-          </div>
-          <p className="text-sm text-[var(--text-muted)] mt-2 leading-relaxed">
-            Pre-loaded BSN MTS study with interview guide, Walter output, process map, and
-            initiatives — no API key needed. Best for demos and walkthroughs.
-          </p>
-          <p className="text-[10px] text-[var(--accent)] mt-3 font-medium">
-            4 agent outputs ready · 100% workflow progress
-          </p>
-        </div>
-        <ArrowRight className="h-5 w-5 text-[var(--text-muted)] group-hover:text-[var(--accent)] shrink-0 mt-1" />
+    <button type="button" onClick={handleOpen} className="cover-action-card group w-full text-left h-full">
+      <PlayCircle className="h-5 w-5 text-[var(--accent)] mb-3" />
+      <div className="flex items-center gap-2 mb-1 flex-wrap">
+        <h3 className="text-base font-semibold text-[var(--text)] group-hover:text-[var(--accent)] transition-colors">
+          Open demo project
+        </h3>
+        <span className="text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full border border-[var(--accent)]/30 text-[var(--accent)] bg-[var(--accent-soft)]">
+          Recommended
+        </span>
       </div>
+      <p className="text-sm text-[var(--text-muted)] mt-2 leading-relaxed">
+        Pre-loaded BSN study with all four agent outputs — no API key needed.
+      </p>
+      <span className="inline-flex items-center gap-1 text-xs text-[var(--accent)] mt-4 font-medium">
+        Open demo
+        <ArrowRight className="h-3.5 w-3.5" />
+      </span>
     </button>
   );
 }

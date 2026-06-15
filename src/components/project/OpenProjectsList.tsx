@@ -48,13 +48,13 @@ export function OpenProjectsList() {
       ) : (
         <div className="space-y-3">
           {demo && (
-            <div className="section-card p-4 flex items-center gap-4 border-l-4 border-l-emerald-500/50">
+            <div className="section-card p-4 flex items-center gap-4 border-l-4 border-l-[var(--accent)]">
               <Link href={`/projects/${demo.id}`} className="flex-1 min-w-0 group">
                 <div className="flex items-center gap-2">
                   <p className="font-semibold text-[var(--text)] group-hover:text-[var(--accent)] truncate">
                     {demo.name}
                   </p>
-                  <span className="text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full border border-emerald-500/30 text-emerald-400">
+                  <span className="text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full border border-[var(--accent)]/30 text-[var(--accent)] bg-[var(--accent-soft)]">
                     Demo
                   </span>
                 </div>

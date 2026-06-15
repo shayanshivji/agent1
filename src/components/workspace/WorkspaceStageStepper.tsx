@@ -43,10 +43,10 @@ export function WorkspaceStageStepper({
               <span
                 className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-semibold shrink-0 ${
                   done
-                    ? "bg-[var(--accent)] text-[#06080f] shadow-[0_0_12px_var(--accent-glow)]"
+                    ? "bg-[var(--accent)] text-[var(--text-on-accent)]"
                     : active
-                      ? "bg-gradient-to-br from-[var(--accent)] to-[var(--accent-secondary)] text-[#06080f]"
-                      : "bg-[rgba(6,8,15,0.6)] text-[var(--text-muted)] border border-[var(--border)]"
+                      ? "bg-[var(--accent)] text-[var(--text-on-accent)]"
+                      : "bg-[var(--surface-muted)] text-[var(--text-muted)] border border-[var(--border)]"
                 }`}
               >
                 {done ? "✓" : step.id}
