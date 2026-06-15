@@ -23,6 +23,7 @@ export interface ScopingSessionOutput {
   industryId: string;
   functionId: string;
   workflowId: string;
+  workflowIds?: string[];
   roleId: string;
   level: string;
   customNotes: string;

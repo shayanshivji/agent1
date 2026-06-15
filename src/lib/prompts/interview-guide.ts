@@ -9,6 +9,50 @@ import {
   type EngagementContext,
 } from "@/data/engagement-context";
 
+function resolveWorkflowIdList(workflowIds: string[] | undefined, workflowId: string): string[] {
+  if (workflowIds?.length) return workflowIds;
+  return workflowId ? [workflowId] : [];
+}
+
+function formatWorkflowsBlock(ids: string[], engagement: EngagementContext): string {
+  const workflows = ids
+    .map((id) => getWorkflow(id, engagement))
+    .filter((w): w is NonNullable<typeof w> => Boolean(w));
+
+  if (workflows.length <= 1) {
+    const w = workflows[0];
+    return `WORKFLOW: ${w?.name ?? ids[0]}
+${w?.description ?? ""}
+Systems: ${w?.typicalSystems.join(", ") ?? "N/A"}
+Background: ${w?.seedContext ?? ""}`;
+  }
+
+  return `SELECTED WORKFLOWS (${workflows.length}) — cover ALL in one integrated guide:
+
+${workflows
+  .map(
+    (w, i) => `WORKFLOW ${i + 1}: ${w.name}
+${w.description}
+Systems: ${w.typicalSystems.join(", ")}
+Background: ${w.seedContext}`,
+  )
+  .join("\n\n")}`;
+}
+
+function collectRoleHints(ids: string[], roleId: string): string[] {
+  const seen = new Set<string>();
+  const hints: string[] = [];
+  for (const id of ids) {
+    for (const hint of getRoleHints(id, roleId)) {
+      if (!seen.has(hint)) {
+        seen.add(hint);
+        hints.push(hint);
+      }
+    }
+  }
+  return hints;
+}
+
 export const SYSTEM_PROMPT = `You are a McKinsey engagement team member creating SME interview guides for a BSN Sports sales support diagnostic (Varsity Brands / KKR portco).
 
 ${MCKINSEY_INTERVIEW_PRINCIPLES}
@@ -26,6 +70,7 @@ Return valid JSON only.`;
 
 export function buildUserPrompt(input: {
   workflowId: string;
+  workflowIds?: string[];
   roleId: string;
   level: InterviewLevel;
   customNotes?: string;
@@ -33,11 +78,12 @@ export function buildUserPrompt(input: {
   sources: SourceDocument[];
   engagement: EngagementContext;
 }): string {
-  const workflow = getWorkflow(input.workflowId, input.engagement);
+  const ids = resolveWorkflowIdList(input.workflowIds, input.workflowId);
   const role = getRole(input.roleId, input.engagement);
-  const hints = getRoleHints(input.workflowId, input.roleId);
+  const hints = collectRoleHints(ids, input.roleId);
   const industry = getIndustry(input.engagement.industryId);
   const fn = getFunction(input.engagement.functionId);
+  const workflowBlock = formatWorkflowsBlock(ids, input.engagement);
 
   const sourceBlock =
     input.sources.length > 0
@@ -61,10 +107,7 @@ ENGAGEMENT: ${getEngagementLabel(input.engagement)}
 Industry context: ${industry?.description ?? input.engagement.industryId}
 Function context: ${fn?.description ?? input.engagement.functionId}
 
-WORKFLOW: ${workflow?.name ?? input.workflowId}
-${workflow?.description ?? ""}
-Systems: ${workflow?.typicalSystems.join(", ") ?? "N/A"}
-Background: ${workflow?.seedContext ?? ""}
+${workflowBlock}
 
 ROLE: ${role?.name ?? input.roleId}
 ${role?.description ?? ""}
@@ -111,6 +154,7 @@ pain_points_to_test should reference compendium-style hypotheses where relevant.
 
 export function buildGuideRefinePrompt(input: {
   workflowId: string;
+  workflowIds?: string[];
   roleId: string;
   level: InterviewLevel;
   customNotes?: string;
@@ -120,8 +164,9 @@ export function buildGuideRefinePrompt(input: {
   sources: SourceDocument[];
   engagement: EngagementContext;
 }): string {
-  const workflow = getWorkflow(input.workflowId, input.engagement);
+  const ids = resolveWorkflowIdList(input.workflowIds, input.workflowId);
   const role = getRole(input.roleId, input.engagement);
+  const workflowBlock = formatWorkflowsBlock(ids, input.engagement);
 
   const guideBlock = input.sections
     .map((s) => {
@@ -133,7 +178,7 @@ export function buildGuideRefinePrompt(input: {
   return `Revise this interview guide based on consultant feedback.
 
 Engagement: ${getEngagementLabel(input.engagement)}
-Workflow: ${workflow?.name}
+${workflowBlock}
 Role: ${role?.name}
 Interview level: ${input.level}
 Interview objective: ${input.interviewObjective?.trim() || "Not specified"}
@@ -192,36 +237,46 @@ Return JSON: { "content": "...", "bullets": ["..."] }`;
 
 export function templateGuide(input: {
   workflowId: string;
+  workflowIds?: string[];
   roleId: string;
   level: InterviewLevel;
   engagement: EngagementContext;
 }): { sections: { id: GuideSectionId; title: string; content: string; bullets?: string[] }[] } {
-  const workflow = getWorkflow(input.workflowId, input.engagement);
+  const ids = resolveWorkflowIdList(input.workflowIds, input.workflowId);
+  const workflows = ids
+    .map((id) => getWorkflow(id, input.engagement))
+    .filter((w): w is NonNullable<typeof w> => Boolean(w));
+  const workflow = workflows[0];
   const role = getRole(input.roleId, input.engagement);
   if (!workflow || !role) {
     throw new Error("Invalid workflow or role for engagement context");
   }
-  const hints = getRoleHints(input.workflowId, input.roleId);
+  const hints = collectRoleHints(ids, input.roleId);
+  const workflowLabel =
+    workflows.length > 1
+      ? workflows.map((w) => w.name).join(", ")
+      : workflow.name;
+  const allSystems = [...new Set(workflows.flatMap((w) => w.typicalSystems))];
 
   return {
     sections: [
       {
         id: "objective",
         title: "Interview objective",
-        content: `Establish a fact-based view of how ${role.name} executes "${workflow.name}", specific steps, systems, pain points, and handoffs. ${input.level === "validation" ? "Validate Phase 1 hypotheses." : "Build foundation for process mapping."}`,
+        content: `Establish a fact-based view of how ${role.name} executes ${workflows.length > 1 ? "these workflows" : `"${workflow.name}"`}: ${workflowLabel}. Cover specific steps, systems, pain points, and handoffs across all selected processes. ${input.level === "validation" ? "Validate Phase 1 hypotheses." : "Build foundation for process mapping."}`,
       },
       {
         id: "role_snapshot",
         title: "Role snapshot",
-        content: `${role.description} In this workflow, clarify daily touchpoints with: ${workflow.typicalSystems.join(", ")}.`,
+        content: `${role.description} In ${workflows.length > 1 ? "these workflows" : "this workflow"}, clarify daily touchpoints with: ${allSystems.join(", ")}.`,
       },
       {
         id: "known_facts",
         title: "What we already know",
         content: "From reference materials and prior diagnostic work:",
         bullets: [
-          workflow.seedContext,
-          `Typical systems: ${workflow.typicalSystems.join(", ")}`,
+          ...workflows.map((w) => `[${w.name}] ${w.seedContext}`),
+          `Typical systems: ${allSystems.join(", ")}`,
           "Add uploaded source context after generation with API key",
         ],
       },
@@ -242,7 +297,9 @@ export function templateGuide(input: {
         title: "Primary questions",
         content: "Open with these core questions:",
         bullets: [
-          `Walk me through the last time you handled ${workflow.name}, start to finish.`,
+          ...workflows.flatMap((w) => [
+            `[${w.name}] Walk me through the last time you handled this process, start to finish.`,
+          ]),
           "What triggered that work item? Who else was involved?",
           "Which systems did you use at each step?",
           "Where did you wait on someone else?",
@@ -276,7 +333,7 @@ export function templateGuide(input: {
         id: "systems_references",
         title: "Systems & process references",
         content: "Ask about concrete usage in each system:",
-        bullets: workflow.typicalSystems.map((s) => `Probe usage and pain points in ${s}`),
+        bullets: allSystems.map((s) => `Probe usage and pain points in ${s}`),
       },
       {
         id: "evidence_to_capture",

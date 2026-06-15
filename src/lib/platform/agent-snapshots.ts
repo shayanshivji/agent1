@@ -46,12 +46,14 @@ export function captureAgentSnapshot(slug: PlatformAgentSlug): Partial<AgentSess
 
   if (slug === "scoping") {
     const s = getGuideStore().getState();
+    const workflowIds = s.workflowIds?.length ? s.workflowIds : [s.workflowId];
     const output: ScopingSessionOutput = {
       savedAt: now,
       companyName: s.companyName,
       industryId: s.industryId,
       functionId: s.functionId,
       workflowId: s.workflowId,
+      workflowIds,
       roleId: s.roleId,
       level: s.level,
       customNotes: s.customNotes,
@@ -138,6 +140,7 @@ export function restoreAgentFromSession(
       industryId: s.industryId,
       functionId: s.functionId,
       workflowId: s.workflowId,
+      workflowIds: s.workflowIds?.length ? s.workflowIds : [s.workflowId],
       roleId: s.roleId,
       level: s.level as InterviewLevel,
       customNotes: s.customNotes,

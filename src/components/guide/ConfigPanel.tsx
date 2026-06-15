@@ -7,6 +7,7 @@ import {
 } from "@/data/engagement-context";
 import { resolveRoles, resolveWorkflows } from "@/data/catalog";
 import { useGuideStore } from "@/store/guide-store";
+import { WorkflowMultiSelect } from "@/components/guide/WorkflowMultiSelect";
 import type { InterviewLevel } from "@/types/guide";
 import { Loader2, RotateCcw, Sparkles } from "lucide-react";
 
@@ -38,13 +39,14 @@ export function ConfigPanel({
     industryId,
     functionId,
     workflowId,
+    workflowIds,
     roleId,
     level,
     customNotes,
     setCompanyName,
     setIndustryId,
     setFunctionId,
-    setWorkflowId,
+    toggleWorkflowId,
     setRoleId,
     setLevel,
     setCustomNotes,
@@ -54,7 +56,7 @@ export function ConfigPanel({
   const ctx = getContext();
   const workflows = resolveWorkflows(ctx);
   const roles = resolveRoles(ctx);
-  const workflow = workflows.find((w) => w.id === workflowId);
+  const selectedWorkflowIds = workflowIds.length ? workflowIds : [workflowId];
   const role = roles.find((r) => r.id === roleId);
   const isBsn = useBsnCatalog(industryId, functionId);
 
@@ -121,23 +123,12 @@ export function ConfigPanel({
         </div>
 
         <div className="border-t border-[var(--border)] pt-4">
-          <label className="field-label">Workflow / process</label>
-          <select
-            value={workflowId}
-            onChange={(e) => setWorkflowId(e.target.value)}
-            className="field-input"
-          >
-            {workflows.map((w) => (
-              <option key={w.id} value={w.id}>
-                {w.name}
-              </option>
-            ))}
-          </select>
-          {workflow && (
-            <p className="text-xs text-[var(--text-muted)] mt-1.5 leading-relaxed">
-              {workflow.description}
-            </p>
-          )}
+          <label className="field-label">Workflows / processes</label>
+          <WorkflowMultiSelect
+            workflows={workflows}
+            selectedIds={selectedWorkflowIds}
+            onToggle={toggleWorkflowId}
+          />
         </div>
 
         <div>

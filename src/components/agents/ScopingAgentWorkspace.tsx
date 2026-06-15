@@ -28,6 +28,7 @@ export function ScopingAgentWorkspace({ embedded }: ScopingAgentWorkspaceProps =
     industryId,
     functionId,
     workflowId,
+    workflowIds,
     roleId,
     level,
     customNotes,
@@ -96,6 +97,11 @@ export function ScopingAgentWorkspace({ embedded }: ScopingAgentWorkspaceProps =
       setError("Enter a company / client name before generating.");
       return;
     }
+    const ids = workflowIds.length ? workflowIds : [workflowId];
+    if (!ids.length) {
+      setError("Select at least one workflow to scope.");
+      return;
+    }
 
     setGenerating(true);
     setError(null);
@@ -109,7 +115,8 @@ export function ScopingAgentWorkspace({ embedded }: ScopingAgentWorkspaceProps =
           companyName,
           industryId,
           functionId,
-          workflowId,
+          workflowId: ids[0],
+          workflowIds: ids,
           roleId,
           level,
           customNotes: customNotes || undefined,
@@ -125,7 +132,7 @@ export function ScopingAgentWorkspace({ embedded }: ScopingAgentWorkspaceProps =
       if (data.notice) setTemplateNotice(data.notice);
       setGuide(
         buildGuideFromResponse(
-          workflowId,
+          ids,
           roleId,
           level,
           data.sections,
@@ -153,6 +160,8 @@ export function ScopingAgentWorkspace({ embedded }: ScopingAgentWorkspaceProps =
     industryId !== BSN_PRESET.industryId ||
     functionId !== BSN_PRESET.functionId ||
     workflowId !== "mts-shop-build" ||
+    workflowIds.length !== 1 ||
+    workflowIds[0] !== "mts-shop-build" ||
     roleId !== "mts-pod" ||
     level !== "deep_dive";
 

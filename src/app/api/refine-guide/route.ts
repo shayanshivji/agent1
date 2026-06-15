@@ -37,7 +37,12 @@ export async function POST(request: Request) {
     const raw = await complete(
       "You revise McKinsey-style SME interview guides based on consultant feedback. Return JSON only.",
       buildGuideRefinePrompt({
-        workflowId: body.workflowId as string,
+        workflowId: (body.workflowId as string) ?? (body.workflowIds as string[])?.[0],
+        workflowIds: (body.workflowIds as string[] | undefined)?.length
+          ? (body.workflowIds as string[])
+          : body.workflowId
+            ? [body.workflowId as string]
+            : undefined,
         roleId: body.roleId as string,
         level,
         customNotes: body.customNotes as string | undefined,

@@ -18,6 +18,7 @@ export function GuideFeedbackChat({ llmEnabled }: GuideFeedbackChatProps) {
   const {
     guide,
     workflowId,
+    workflowIds,
     roleId,
     level,
     customNotes,
@@ -68,7 +69,8 @@ export function GuideFeedbackChat({ llmEnabled }: GuideFeedbackChatProps) {
         body: JSON.stringify({
           sections: guide.sections,
           feedback,
-          workflowId,
+          workflowId: guide.workflowIds?.[0] ?? workflowId,
+          workflowIds: guide.workflowIds?.length ? guide.workflowIds : workflowIds.length ? workflowIds : [workflowId],
           roleId,
           level,
           customNotes,

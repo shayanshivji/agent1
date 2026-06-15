@@ -82,6 +82,8 @@ export type ReviewStatus = "draft" | "in_review" | "validated";
 export interface InterviewGuide {
   id: string;
   workflowId: string;
+  /** All scoped workflows when multi-select is used; primary is workflowId. */
+  workflowIds?: string[];
   workflowName: string;
   roleId: string;
   roleName: string;

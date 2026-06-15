@@ -25,6 +25,7 @@ import { GUIDE_TRANSIENT, omitTransient } from "@/lib/store/persist-config";
 
 interface GuideStore extends EngagementContext {
   workflowId: string;
+  workflowIds: string[];
   roleId: string;
   level: InterviewLevel;
   customNotes: string;
@@ -40,6 +41,8 @@ interface GuideStore extends EngagementContext {
   setIndustryId: (id: string) => void;
   setFunctionId: (id: string) => void;
   setWorkflowId: (id: string) => void;
+  setWorkflowIds: (ids: string[]) => void;
+  toggleWorkflowId: (id: string) => void;
   setRoleId: (id: string) => void;
   setLevel: (level: InterviewLevel) => void;
   setCustomNotes: (notes: string) => void;
@@ -69,6 +72,7 @@ const defaults = {
   industryId: BSN_PRESET.industryId,
   functionId: BSN_PRESET.functionId,
   workflowId: "mts-shop-build",
+  workflowIds: ["mts-shop-build"],
   roleId: "mts-pod",
   level: "deep_dive" as InterviewLevel,
   customNotes: "",
@@ -83,18 +87,18 @@ const defaults = {
 
 function resetSelectionsForContext(
   ctx: EngagementContext,
-  workflowId: string,
+  workflowIds: string[],
   roleId: string,
 ) {
   const workflows = resolveWorkflows(ctx);
   const roles = resolveRoles(ctx);
-  const nextWorkflow = workflows.some((w) => w.id === workflowId)
-    ? workflowId
-    : pickDefaultWorkflowId(ctx);
+  const validIds = workflowIds.filter((id) => workflows.some((w) => w.id === id));
+  const nextWorkflowIds =
+    validIds.length > 0 ? validIds : [pickDefaultWorkflowId(ctx)];
   const nextRole = roles.some((r) => r.id === roleId)
     ? roleId
     : pickDefaultRoleId(ctx);
-  return { workflowId: nextWorkflow, roleId: nextRole };
+  return { workflowIds: nextWorkflowIds, workflowId: nextWorkflowIds[0], roleId: nextRole };
 }
 
 export const useGuideStore = create<GuideStore>()(
@@ -112,26 +116,42 @@ export const useGuideStore = create<GuideStore>()(
       setIndustryId: (industryId) =>
         set((s) => {
           const ctx = { ...s, industryId };
-          const { workflowId, roleId } = resetSelectionsForContext(
+          const { workflowIds, workflowId, roleId } = resetSelectionsForContext(
             ctx,
-            s.workflowId,
+            s.workflowIds.length ? s.workflowIds : [s.workflowId],
             s.roleId,
           );
-          return { industryId, workflowId, roleId, guide: null };
+          return { industryId, workflowIds, workflowId, roleId, guide: null };
         }),
 
       setFunctionId: (functionId) =>
         set((s) => {
           const ctx = { ...s, functionId };
-          const { workflowId, roleId } = resetSelectionsForContext(
+          const { workflowIds, workflowId, roleId } = resetSelectionsForContext(
             ctx,
-            s.workflowId,
+            s.workflowIds.length ? s.workflowIds : [s.workflowId],
             s.roleId,
           );
-          return { functionId, workflowId, roleId, guide: null };
+          return { functionId, workflowIds, workflowId, roleId, guide: null };
         }),
 
-      setWorkflowId: (id) => set({ workflowId: id, guide: null }),
+      setWorkflowId: (id) => set({ workflowId: id, workflowIds: [id], guide: null }),
+      setWorkflowIds: (ids) => {
+        if (!ids.length) return;
+        set({ workflowIds: ids, workflowId: ids[0], guide: null });
+      },
+      toggleWorkflowId: (id) =>
+        set((s) => {
+          const current = s.workflowIds.length ? s.workflowIds : [s.workflowId];
+          let next: string[];
+          if (current.includes(id)) {
+            if (current.length === 1) return s;
+            next = current.filter((x) => x !== id);
+          } else {
+            next = [...current, id];
+          }
+          return { workflowIds: next, workflowId: next[0], guide: null };
+        }),
       setRoleId: (id) => set({ roleId: id, guide: null }),
       setLevel: (level) => set({ level, guide: null }),
       setCustomNotes: (notes) => set({ customNotes: notes, guide: null }),
@@ -264,6 +284,7 @@ export const useGuideStore = create<GuideStore>()(
         set({
           guide: g,
           workflowId: g.workflowId,
+          workflowIds: g.workflowIds?.length ? g.workflowIds : [g.workflowId],
           roleId: g.roleId,
           level: g.level,
           companyName: g.companyName ?? get().companyName,
@@ -279,12 +300,18 @@ export const useGuideStore = create<GuideStore>()(
     {
       name: "bsn-interview-guide-agent",
       partialize: (state) => omitTransient(state, [...GUIDE_TRANSIENT]),
+      onRehydrateStorage: () => (state) => {
+        if (!state) return;
+        if (!state.workflowIds?.length) {
+          state.workflowIds = [state.workflowId];
+        }
+      },
     },
   ),
 );
 
 export function buildGuideFromResponse(
-  workflowId: string,
+  workflowIds: string[],
   roleId: string,
   level: InterviewLevel,
   sections: { id: GuideSectionId; title: string; content?: string; bullets?: string[] }[],
@@ -292,8 +319,15 @@ export function buildGuideFromResponse(
   customNotes?: string,
   interviewObjective?: string,
 ): InterviewGuide {
-  const workflow = getWorkflow(workflowId, ctx);
+  const ids = workflowIds.length ? workflowIds : ["mts-shop-build"];
+  const primaryId = ids[0];
+  const workflow = getWorkflow(primaryId, ctx);
   const role = getRole(roleId, ctx);
+  const names = ids
+    .map((id) => getWorkflow(id, ctx)?.name ?? id)
+    .filter(Boolean);
+  const workflowName =
+    names.length > 1 ? names.join(" · ") : (workflow?.name ?? primaryId);
   const now = new Date().toISOString();
 
   const normalized = GUIDE_SECTIONS.map((def) => {
@@ -308,8 +342,9 @@ export function buildGuideFromResponse(
 
   return {
     id: uuidv4(),
-    workflowId,
-    workflowName: workflow?.name ?? workflowId,
+    workflowId: primaryId,
+    workflowIds: ids,
+    workflowName,
     roleId,
     roleName: role?.name ?? roleId,
     level,

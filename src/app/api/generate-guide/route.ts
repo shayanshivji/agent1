@@ -10,10 +10,18 @@ import type { GuideSectionId, InterviewLevel, SourceDocument } from "@/types/gui
 
 const VALID_LEVELS: InterviewLevel[] = ["intro", "deep_dive", "validation"];
 
+function resolveWorkflowIds(body: Record<string, unknown>): string[] {
+  const fromArray = body.workflowIds as string[] | undefined;
+  if (fromArray?.length) return fromArray;
+  const single = body.workflowId as string | undefined;
+  return single ? [single] : [];
+}
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const workflowId = body.workflowId as string;
+    const workflowIds = resolveWorkflowIds(body);
+    const workflowId = workflowIds[0] ?? (body.workflowId as string);
     const roleId = body.roleId as string;
     const level = VALID_LEVELS.includes(body.level) ? body.level : "deep_dive";
     const customNotes = body.customNotes as string | undefined;
@@ -25,15 +33,15 @@ export async function POST(request: Request) {
       functionId: (body.functionId as string) || BSN_PRESET.functionId,
     };
 
-    if (!workflowId || !roleId) {
+    if (!workflowIds.length || !roleId) {
       return NextResponse.json(
-        { error: "Workflow and role are required" },
+        { error: "At least one workflow and a role are required" },
         { status: 400 },
       );
     }
 
     if (!hasLlm()) {
-      const template = templateGuide({ workflowId, roleId, level, engagement });
+      const template = templateGuide({ workflowId, workflowIds, roleId, level, engagement });
       return NextResponse.json({
         sections: template.sections,
         mode: "template",
@@ -48,6 +56,7 @@ export async function POST(request: Request) {
       SYSTEM_PROMPT,
       buildUserPrompt({
         workflowId,
+        workflowIds,
         roleId,
         level,
         customNotes,
