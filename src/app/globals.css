@@ -458,10 +458,8 @@ code {
 
 .cover-banner-logo-img {
   display: block;
-  height: 2.25rem;
+  height: 2.5rem;
   width: auto;
-  /* Logo asset is navy on black — lighten drops the black box on the blue bar */
-  mix-blend-mode: lighten;
 }
 
 .cover-action-card {

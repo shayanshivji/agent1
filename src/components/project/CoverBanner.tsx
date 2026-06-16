@@ -34,8 +34,8 @@ export function CoverBanner() {
         <Image
           src="/mckinsey-logo.png"
           alt="McKinsey & Company"
-          width={140}
-          height={40}
+          width={160}
+          height={48}
           className="cover-banner-logo-img"
           priority
         />
