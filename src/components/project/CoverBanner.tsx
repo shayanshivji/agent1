@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 /** Decorative header strip for the cover page with McKinsey branding. */
 export function CoverBanner() {
   return (
@@ -28,26 +30,15 @@ export function CoverBanner() {
           fill="rgba(5,28,44,0.15)"
         />
       </svg>
-      <div className="cover-banner-logo" aria-label="McKinsey">
-        <svg
-          viewBox="0 0 180 32"
-          className="cover-banner-logo-svg"
-          xmlns="http://www.w3.org/2000/svg"
-          role="img"
-          aria-label="McKinsey & Company"
-        >
-          <text
-            x="0"
-            y="24"
-            fill="#ffffff"
-            fontFamily="Georgia, 'Times New Roman', serif"
-            fontSize="22"
-            fontWeight="600"
-            letterSpacing="0.5"
-          >
-            McKinsey
-          </text>
-        </svg>
+      <div className="cover-banner-logo">
+        <Image
+          src="/mckinsey-logo.png"
+          alt="McKinsey & Company"
+          width={140}
+          height={40}
+          className="cover-banner-logo-img"
+          priority
+        />
       </div>
     </div>
   );
