@@ -22,12 +22,12 @@ export function OpenDemoProjectCard() {
           Open demo project
         </h3>
         <span className="text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full border border-[var(--accent)]/30 text-[var(--accent)] bg-[var(--accent-soft)]">
-          Recommended
+          Kick off example
         </span>
       </div>
       <p className="text-sm text-[var(--text-muted)] mt-2 leading-relaxed">
-        Example walkthrough of how the platform works — pre-loaded study with sample outputs across
-        all value creation steps. No API key needed.
+        Guided walkthrough for tomorrow&apos;s kickoff — pre-loaded BSN Sports study with sample
+        outputs across all live steps. No API key needed.
       </p>
       <span className="inline-flex items-center gap-1 text-xs text-[var(--accent)] mt-4 font-medium">
         Open demo

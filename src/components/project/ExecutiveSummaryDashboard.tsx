@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { WORKFLOW_STEPS, workflowHref } from "@/data/workflow-pipeline";
-import { getOutputSummaries } from "@/lib/platform/project-persistence";
+import { getMissingOutputLabels, getOutputSummaries } from "@/lib/platform/project-persistence";
 import type { StudyProject } from "@/types/project";
 import { OutputCard } from "@/components/project/OutputCard";
 
@@ -13,6 +13,7 @@ interface ExecutiveSummaryDashboardProps {
 
 export function ExecutiveSummaryDashboard({ project }: ExecutiveSummaryDashboardProps) {
   const summaries = getOutputSummaries(project);
+  const missing = getMissingOutputLabels(project.outputs);
   const nextStep = WORKFLOW_STEPS.find(
     (s) => s.status === "live" && s.agentSlug && !summaries.find((x) => x.id === s.id)?.ready,
   );
@@ -26,11 +27,11 @@ export function ExecutiveSummaryDashboard({ project }: ExecutiveSummaryDashboard
         <h2 className="text-2xl font-semibold text-[var(--text)]">{project.name}</h2>
         <p className="text-sm text-[var(--text-muted)] mt-2 max-w-2xl leading-relaxed">
           High-level view of diagnostic progress for {project.clientName}. This dashboard is suitable
-          for leadership review — open any agent step for the full fact base and editable outputs.
+          for leadership review — open any step for the full fact base and editable outputs.
         </p>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
         <div className="exec-metric">
           <p className="exec-metric-label">Progress</p>
           <p className="exec-metric-value">{project.progress}%</p>
@@ -40,14 +41,21 @@ export function ExecutiveSummaryDashboard({ project }: ExecutiveSummaryDashboard
           <p className="exec-metric-value text-base">{project.studyStage}</p>
         </div>
         <div className="exec-metric">
-          <p className="exec-metric-label">Outputs ready</p>
-          <p className="exec-metric-value">
-            {summaries.filter((s) => s.ready).length}/{summaries.length}
-          </p>
-        </div>
-        <div className="exec-metric">
-          <p className="exec-metric-label">Feedback items</p>
-          <p className="exec-metric-value">{project.feedbackLog.length}</p>
+          <p className="exec-metric-label">Output missing</p>
+          {missing.length === 0 ? (
+            <p className="exec-metric-value text-base text-[var(--success)]">None</p>
+          ) : (
+            <ul className="mt-1 space-y-1">
+              {missing.slice(0, 3).map((label) => (
+                <li key={label} className="text-xs text-[var(--text-muted)] leading-snug">
+                  {label}
+                </li>
+              ))}
+              {missing.length > 3 && (
+                <li className="text-[10px] text-[var(--text-muted)]">+{missing.length - 3} more</li>
+              )}
+            </ul>
+          )}
         </div>
       </div>
 
@@ -61,7 +69,7 @@ export function ExecutiveSummaryDashboard({ project }: ExecutiveSummaryDashboard
               detail={s.detail}
               ready={s.ready}
               updatedAt={s.updatedAt}
-              href={`/projects/${project.id}/agents/${s.id}`}
+              href={s.href}
             />
           ))}
         </div>

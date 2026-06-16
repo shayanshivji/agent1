@@ -29,6 +29,7 @@ import {
   WorkspaceStageStepper,
 } from "@/components/workspace/WorkspaceStageStepper";
 import { StageFooter } from "@/components/workspace/StageFooter";
+import { ClientInterviewCallout } from "@/components/interview/ClientInterviewCallout";
 import { flushProjectSave } from "@/store/project-store";
 
 interface LiveInterviewAgentWorkspaceProps {
@@ -238,6 +239,7 @@ export function LiveInterviewAgentWorkspace({ embedded }: LiveInterviewAgentWork
       <main className="flex-1 max-w-[1600px] mx-auto w-full px-6 py-6">
         {error && <div className="mb-4 error-banner">{error}</div>}
         <InterviewSessionsBar />
+        <ClientInterviewCallout />
         <UpstreamHandoffBar agentSlug="live-interview" onApplied={handleUpstreamApplied} />
 
         {stage === 1 && (

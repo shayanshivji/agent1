@@ -23,7 +23,7 @@ import { GUIDE_SECTIONS } from "@/types/guide";
 export const DEMO_PROJECT_ID = "demo-bsn-mts-study";
 
 /** Bump to refresh demo outputs for all users on next load. */
-export const DEMO_SEED_VERSION = 1;
+export const DEMO_SEED_VERSION = 2;
 
 const WORKFLOW_ID = "mts-shop-build";
 const ROLE_ID = "mts-pod";
@@ -181,19 +181,6 @@ export function buildDemoAgentOutputs(): AgentSessionOutputs {
           createdAt: savedAt,
           updatedAt: savedAt,
         },
-        {
-          id: "demo-interview-2",
-          label: "Interview 2",
-          stakeholderName: "",
-          roleId: ROLE_ID,
-          mode: "live",
-          transcriptText: "",
-          liveTurns: [],
-          document: null,
-          guideQuestions: extractQuestionsFromGuide(guide),
-          createdAt: savedAt,
-          updatedAt: savedAt,
-        },
       ],
     },
     "process-mapping": {
@@ -232,7 +219,7 @@ export function buildDemoStudyProject(): StudyProject {
 
   return {
     id: DEMO_PROJECT_ID,
-    name: "BSN MTS Shop-Build Diagnostic",
+    name: "BSN Sports Diagnostic & Design",
     clientName: BSN_PRESET.companyName,
     status: inferProjectStatus(progress, outputs),
     studyStage: inferStudyStage(outputs),
@@ -242,7 +229,7 @@ export function buildDemoStudyProject(): StudyProject {
     industryId: BSN_PRESET.industryId,
     functionId: BSN_PRESET.functionId,
     workflowId: WORKFLOW_ID,
-    notes: "Demo project with pre-loaded outputs across all four live agents. Safe for client walkthroughs.",
+    notes: "Kickoff example — pre-loaded outputs across all live steps. Safe for internal walkthroughs.",
     outputs,
     sourceFiles: [
       {

@@ -37,7 +37,7 @@ export function ProjectHeader({ project }: ProjectHeaderProps) {
             <span className="truncate">{project.name}</span>
             {isDemoProject(project.id) && (
               <span className="text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full border border-[var(--accent)]/30 text-[var(--accent)] bg-[var(--accent-soft)] shrink-0">
-                Demo
+                Kick off example
               </span>
             )}
           </h1>

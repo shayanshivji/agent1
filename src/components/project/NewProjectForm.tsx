@@ -47,7 +47,7 @@ export function NewProjectForm() {
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="e.g. BSN Sports — Sales Support Diagnostic"
+            placeholder="e.g. BSN Sports Diagnostic & Design"
             className="field-input"
             autoFocus
             required

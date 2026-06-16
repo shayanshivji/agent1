@@ -434,6 +434,7 @@ code {
 }
 
 .cover-banner {
+  position: relative;
   width: 100%;
   height: 4.5rem;
   overflow: hidden;
@@ -444,6 +445,21 @@ code {
   display: block;
   width: 100%;
   height: 100%;
+}
+
+.cover-banner-logo {
+  position: absolute;
+  left: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.cover-banner-logo-svg {
+  display: block;
+  height: 1.75rem;
+  width: auto;
 }
 
 .cover-action-card {

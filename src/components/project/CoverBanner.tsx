@@ -1,12 +1,13 @@
-/** Decorative header strip for the cover page — subtle brand color without dominating the layout. */
+/** Decorative header strip for the cover page with McKinsey branding. */
 export function CoverBanner() {
   return (
-    <div className="cover-banner" aria-hidden>
+    <div className="cover-banner">
       <svg
         className="cover-banner-svg"
         viewBox="0 0 1200 80"
         preserveAspectRatio="xMidYMid slice"
         xmlns="http://www.w3.org/2000/svg"
+        aria-hidden
       >
         <defs>
           <linearGradient id="coverGrad" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -27,6 +28,27 @@ export function CoverBanner() {
           fill="rgba(5,28,44,0.15)"
         />
       </svg>
+      <div className="cover-banner-logo" aria-label="McKinsey">
+        <svg
+          viewBox="0 0 180 32"
+          className="cover-banner-logo-svg"
+          xmlns="http://www.w3.org/2000/svg"
+          role="img"
+          aria-label="McKinsey & Company"
+        >
+          <text
+            x="0"
+            y="24"
+            fill="#ffffff"
+            fontFamily="Georgia, 'Times New Roman', serif"
+            fontSize="22"
+            fontWeight="600"
+            letterSpacing="0.5"
+          >
+            McKinsey
+          </text>
+        </svg>
+      </div>
     </div>
   );
 }
