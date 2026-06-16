@@ -59,21 +59,23 @@ export function clearAllAgentStores(): void {
   initiatives.reset();
 }
 
+function isWorkflowStepComplete(
+  outputs: AgentSessionOutputs,
+  step: (typeof WORKFLOW_STEPS)[number],
+): boolean {
+  if (!step.agentSlug) return false;
+  return stepHasOutput(outputs, step.agentSlug);
+}
+
 export function computeProjectProgress(outputs: AgentSessionOutputs): number {
-  const total = WORKFLOW_STEPS.length;
-  const liveSteps = WORKFLOW_STEPS.filter((s) => s.status === "live" && s.agentSlug);
-  let completed = 0;
+  const progress = WORKFLOW_STEPS.reduce((sum, step) => {
+    if (isWorkflowStepComplete(outputs, step)) {
+      return sum + step.progressWeight;
+    }
+    return sum;
+  }, 0);
 
-  for (const step of liveSteps) {
-    if (stepHasOutput(outputs, step.agentSlug!)) completed += 1;
-  }
-
-  // Partial credit on first planned step when all live agents have outputs (~75% for demo)
-  if (completed === liveSteps.length && liveSteps.length < total) {
-    completed += 1.25;
-  }
-
-  return Math.min(100, Math.round((completed / total) * 100));
+  return Math.min(100, progress);
 }
 
 export function inferProjectStatus(progress: number, outputs: AgentSessionOutputs): ProjectStatus {
@@ -86,20 +88,15 @@ export function inferProjectStatus(progress: number, outputs: AgentSessionOutput
 
 export function inferStudyStage(outputs: AgentSessionOutputs): string {
   for (const step of WORKFLOW_STEPS) {
-    if (step.status === "live" && step.agentSlug) {
-      if (!stepHasOutput(outputs, step.agentSlug)) return step.label;
-    }
+    if (!isWorkflowStepComplete(outputs, step)) return step.label;
   }
-  const firstPlanned = WORKFLOW_STEPS.find((s) => s.status === "planned");
-  return firstPlanned?.label ?? WORKFLOW_STEPS[WORKFLOW_STEPS.length - 1].label;
+  return WORKFLOW_STEPS[WORKFLOW_STEPS.length - 1].label;
 }
 
 export function getMissingOutputLabels(outputs: AgentSessionOutputs): string[] {
-  return WORKFLOW_STEPS.filter((step) => {
-    if (step.status === "planned") return true;
-    if (!step.agentSlug) return true;
-    return !stepHasOutput(outputs, step.agentSlug);
-  }).map((s) => s.label);
+  return WORKFLOW_STEPS.filter((step) => !isWorkflowStepComplete(outputs, step)).map(
+    (s) => s.label,
+  );
 }
 
 export function projectToEngagementShape(project: StudyProject) {

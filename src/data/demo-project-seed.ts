@@ -23,7 +23,7 @@ import { GUIDE_SECTIONS } from "@/types/guide";
 export const DEMO_PROJECT_ID = "demo-bsn-mts-study";
 
 /** Bump to refresh demo outputs for all users on next load. */
-export const DEMO_SEED_VERSION = 2;
+export const DEMO_SEED_VERSION = 3;
 
 const WORKFLOW_ID = "mts-shop-build";
 const ROLE_ID = "mts-pod";

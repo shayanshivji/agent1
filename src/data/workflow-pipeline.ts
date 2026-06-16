@@ -16,6 +16,8 @@ export interface WorkflowStep {
   status: WorkflowStepStatus;
   /** Optional tab hint for agents with multiple views */
   agentTab?: string;
+  /** Share of 100% study progress when this step is complete (early steps weigh less). */
+  progressWeight: number;
 }
 
 /** Value creation steps — aligned to kickoff deck (page 8). */
@@ -29,6 +31,7 @@ export const WORKFLOW_STEPS: WorkflowStep[] = [
     description: "Discovery scope, interview guides, and fact-base requirements",
     agentSlug: "scoping",
     status: "live",
+    progressWeight: 5,
   },
   {
     id: "live-interview",
@@ -39,6 +42,7 @@ export const WORKFLOW_STEPS: WorkflowStep[] = [
     description: "Structured diagnostic interviews with evidence registry and guide coverage",
     agentSlug: "live-interview",
     status: "live",
+    progressWeight: 7,
   },
   {
     id: "process-mapping",
@@ -49,6 +53,7 @@ export const WORKFLOW_STEPS: WorkflowStep[] = [
     description: "Swimlanes, systems, handoffs, and pain points tied to workflow steps",
     agentSlug: "process-mapping",
     status: "live",
+    progressWeight: 13,
   },
   {
     id: "improvement-initiatives",
@@ -59,6 +64,7 @@ export const WORKFLOW_STEPS: WorkflowStep[] = [
     description: "Horizon-tagged initiatives mapped to pain points and value levers",
     agentSlug: "improvement-initiatives",
     status: "live",
+    progressWeight: 15,
   },
   {
     id: "value-modeling",
@@ -69,6 +75,7 @@ export const WORKFLOW_STEPS: WorkflowStep[] = [
     description: "Size opportunities and prioritize initiatives by value at stake",
     agentSlug: null,
     status: "planned",
+    progressWeight: 18,
   },
   {
     id: "roadmap",
@@ -79,6 +86,7 @@ export const WORKFLOW_STEPS: WorkflowStep[] = [
     description: "Sequence initiatives across horizons and define future-state requirements",
     agentSlug: null,
     status: "planned",
+    progressWeight: 20,
   },
   {
     id: "brd",
@@ -89,6 +97,7 @@ export const WORKFLOW_STEPS: WorkflowStep[] = [
     description: "Business requirement definition and design documentation for build",
     agentSlug: null,
     status: "planned",
+    progressWeight: 22,
   },
 ];
 
