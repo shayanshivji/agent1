@@ -555,6 +555,20 @@ code {
   cursor: default;
 }
 
+.rail-marquee-track {
+  display: block;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.rail-marquee-inner {
+  display: inline-block;
+  white-space: nowrap;
+  transition-property: transform;
+  transition-timing-function: ease;
+  will-change: transform;
+}
+
 .project-main {
   background: var(--bg);
 }
