@@ -42,20 +42,11 @@ export function ExecutiveSummaryDashboard({ project }: ExecutiveSummaryDashboard
         </div>
         <div className="exec-metric">
           <p className="exec-metric-label">Output missing</p>
-          {missing.length === 0 ? (
-            <p className="exec-metric-value text-base text-[var(--success)]">None</p>
-          ) : (
-            <ul className="mt-1 space-y-1">
-              {missing.slice(0, 3).map((label) => (
-                <li key={label} className="text-xs text-[var(--text-muted)] leading-snug">
-                  {label}
-                </li>
-              ))}
-              {missing.length > 3 && (
-                <li className="text-[10px] text-[var(--text-muted)]">+{missing.length - 3} more</li>
-              )}
-            </ul>
-          )}
+          <p
+            className={`exec-metric-value ${missing.length === 0 ? "text-[var(--success)]" : ""}`}
+          >
+            {missing.length}
+          </p>
         </div>
       </div>
 
